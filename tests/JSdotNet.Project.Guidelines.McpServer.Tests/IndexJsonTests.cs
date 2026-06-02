@@ -2,11 +2,11 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using HexMaster.CodingGuidelines.Docs.Infrastructure;
+using JSdotNet.Project.Guidelines.Docs.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 
-namespace HexMaster.CodingGuidelines.McpServer.Tests;
+namespace JSdotNet.Project.Guidelines.McpServer.Tests;
 
 public class IndexJsonTests
 {
@@ -196,10 +196,15 @@ Content here.
         var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir != null)
         {
-            if (Directory.Exists(Path.Combine(dir.FullName, ".git")))
+            if (File.Exists(Path.Combine(dir.FullName, "docs", "index.json")))
                 return dir.FullName;
+
+            if (File.Exists(Path.Combine(dir.FullName, "JSdotNet.Project.Guidelines.slnx")))
+                return dir.FullName;
+
             dir = dir.Parent;
         }
+
         return null;
     }
 }

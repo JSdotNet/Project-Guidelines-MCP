@@ -1,5 +1,5 @@
-﻿using HexMaster.CodingGuidelines.Docs.Abstractions;
-using HexMaster.CodingGuidelines.Docs.Infrastructure;
+using JSdotNet.Project.Guidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.Docs.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,8 +8,8 @@ using ModelContextProtocol.Server;
 using ModelContextProtocol.Protocol;
 using System.Net.Http;
 
-// HexMaster Coding Guidelines MCP Server
-// Chooses a document catalog: local path when HEXMASTER_DOCS_PATH is set, otherwise GitHub.
+// JSdotNet Coding Guidelines MCP Server
+// Chooses a document catalog: local path when JSDOTNET_DOCS_PATH is set, otherwise GitHub.
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Logging.AddConsole(consoleLogOptions =>
@@ -27,7 +27,7 @@ builder.Services.AddMemoryCache();
 // Resolve docs provider based on environment settings
 builder.Services.AddSingleton<IDocumentCatalog>(sp =>
 {
-    var localPath = Environment.GetEnvironmentVariable("HEXMASTER_DOCS_PATH");
+    var localPath = Environment.GetEnvironmentVariable("JSDOTNET_DOCS_PATH");
     if (!string.IsNullOrWhiteSpace(localPath) && Directory.Exists(localPath))
     {
         return new FileSystemDocumentCatalog(localPath);
@@ -44,7 +44,7 @@ builder.Services
     {
         options.ServerInfo = new Implementation
         {
-            Name = "HexMaster.CodingGuidelines.McpServer",
+            Name = "JSdotNet.Project.Guidelines.McpServer",
             Version = "0.1.0"
         };
     })

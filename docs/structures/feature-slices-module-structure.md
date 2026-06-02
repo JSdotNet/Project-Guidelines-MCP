@@ -32,65 +32,65 @@ Namespace.XYZ.{ModuleName}.Features.{FeatureName}
 
 ```
 src/
-  {ModuleName}/                                       ← Short module folder name (e.g., Orders, Conferences)
-    Namespace.XYZ.Orders/                             ← Module implementation project
-      DomainModels/
-        Order.cs
-        OrderLine.cs
-      IOrderRepository.cs                             ← Repository port — lives in module project root
-      Features/
-        CreateOrder/
-          CreateOrderCommand.cs
-          CreateOrderCommandHandler.cs
-        DeleteOrder/
-          DeleteOrderCommand.cs
-          DeleteOrderCommandHandler.cs
-        GetOrderById/
-          GetOrderByIdQuery.cs
-          GetOrderByIdQueryHandler.cs
-      Observability/
-        OrderMetrics.cs                               ← OpenTelemetry metrics, ActivitySource
-      Services/                                       ← Application/domain services
-      Extensions/                                     ← DI helper extensions
-      OrdersModuleRegistration.cs                     ← DI extension method
-      Namespace.XYZ.Orders.csproj
+    {ModuleName}/                                       ← Short module folder name (e.g., Orders, Conferences)
+        Namespace.XYZ.Orders/                             ← Module implementation project
+            DomainModels/
+                Order.cs
+                OrderLine.cs
+            IOrderRepository.cs                             ← Repository port — lives in module project root
+            Features/
+                CreateOrder/
+                    CreateOrderCommand.cs
+                    CreateOrderCommandHandler.cs
+                DeleteOrder/
+                    DeleteOrderCommand.cs
+                    DeleteOrderCommandHandler.cs
+                GetOrderById/
+                    GetOrderByIdQuery.cs
+                    GetOrderByIdQueryHandler.cs
+            Observability/
+                OrderMetrics.cs                               ← OpenTelemetry metrics, ActivitySource
+            Services/                                       ← Application/domain services
+            Extensions/                                     ← DI helper extensions
+            OrdersModuleRegistration.cs                     ← DI extension method
+            Namespace.XYZ.Orders.csproj
 
-    Namespace.XYZ.Orders.Abstractions/                ← Module Abstractions project
-      DataTransferObjects/
-        CreateOrderRequest.cs
-        OrderDto.cs
-        OrderLineRequest.cs
-      Services/
-        IOrderService.cs                              ← Cross-module service port (if needed)
-      Namespace.XYZ.Orders.Abstractions.csproj
+        Namespace.XYZ.Orders.Abstractions/                ← Module Abstractions project
+            DataTransferObjects/
+                CreateOrderRequest.cs
+                OrderDto.cs
+                OrderLineRequest.cs
+            Services/
+                IOrderService.cs                              ← Cross-module service port (if needed)
+            Namespace.XYZ.Orders.Abstractions.csproj
 
-    Namespace.XYZ.Orders.Api/                         ← Module API project (one per module)
-      Endpoints/
-        OrderEndpoints.cs
-      Authorization/                                  ← Auth policies (if needed)
-      BackgroundServices/                             ← Hosted services (if needed)
-      Program.cs
-      appsettings.json
-      Namespace.XYZ.Orders.Api.csproj
+        Namespace.XYZ.Orders.Api/                         ← Module API project (one per module)
+            Endpoints/
+                OrderEndpoints.cs
+            Authorization/                                  ← Auth policies (if needed)
+            BackgroundServices/                             ← Hosted services (if needed)
+            Program.cs
+            appsettings.json
+            Namespace.XYZ.Orders.Api.csproj
 
-    Namespace.XYZ.Orders.Data.Postgres/               ← Persistence adapter (optional)
-      OrderRepository.cs
-      OrderDbContext.cs
-      Migrations/
-      Namespace.XYZ.Orders.Data.Postgres.csproj
+        Namespace.XYZ.Orders.Data.Postgres/               ← Persistence adapter (optional)
+            OrderRepository.cs
+            OrderDbContext.cs
+            Migrations/
+            Namespace.XYZ.Orders.Data.Postgres.csproj
 
-    Namespace.XYZ.Orders.Tests/                       ← Test project (mirrors feature structure)
-      CreateOrder/
-        CreateOrderCommandHandlerTests.cs
-      DeleteOrder/
-        DeleteOrderCommandHandlerTests.cs
-      GetOrderById/
-        GetOrderByIdQueryHandlerTests.cs
-      DomainModels/
-        OrderTests.cs
-      Helpers/                                        ← Shared test helpers
-      Factories/                                      ← Test object factories (Bogus-based)
-      Namespace.XYZ.Orders.Tests.csproj
+        Namespace.XYZ.Orders.Tests/                       ← Test project (mirrors feature structure)
+            CreateOrder/
+                CreateOrderCommandHandlerTests.cs
+            DeleteOrder/
+                DeleteOrderCommandHandlerTests.cs
+            GetOrderById/
+                GetOrderByIdQueryHandlerTests.cs
+            DomainModels/
+                OrderTests.cs
+            Helpers/                                        ← Shared test helpers
+            Factories/                                      ← Test object factories (Bogus-based)
+            Namespace.XYZ.Orders.Tests.csproj
 ```
 
 ---
@@ -102,6 +102,7 @@ src/
 All types exchanged with the outside world (API payloads, responses, integration events) are C# `record` types under `DataTransferObjects`:
 
 **`DataTransferObjects/CreateOrderRequest.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Abstractions.DataTransferObjects;
 
@@ -111,6 +112,7 @@ public sealed record OrderLineRequest(Guid ProductId, int Quantity, decimal Unit
 ```
 
 **`DataTransferObjects/OrderDto.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Abstractions.DataTransferObjects;
 
@@ -131,6 +133,7 @@ public sealed record OrderLineDto(Guid ProductId, int Quantity, decimal UnitPric
 Each feature lives in its own namespace under `Features`:
 
 **`Features/CreateOrder/CreateOrderCommand.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.CreateOrder;
 
@@ -142,6 +145,7 @@ public sealed record CreateOrderResult(Guid OrderId, decimal Total, DateTimeOffs
 ```
 
 **`Features/CreateOrder/CreateOrderCommandHandler.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.CreateOrder;
 
@@ -171,6 +175,7 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
 ```
 
 **`Features/DeleteOrder/DeleteOrderCommand.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.DeleteOrder;
 
@@ -178,6 +183,7 @@ public sealed record DeleteOrderCommand(Guid OrderId);
 ```
 
 **`Features/DeleteOrder/DeleteOrderCommandHandler.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.DeleteOrder;
 
@@ -205,6 +211,7 @@ public sealed class DeleteOrderCommandHandler : ICommandHandler<DeleteOrderComma
 ```
 
 **`Features/GetOrderById/GetOrderByIdQuery.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.GetOrderById;
 
@@ -214,6 +221,7 @@ public sealed record GetOrderByIdQuery(Guid OrderId);
 ```
 
 **`Features/GetOrderById/GetOrderByIdQueryHandler.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders.Features.GetOrderById;
 
@@ -248,6 +256,7 @@ public sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, 
 ### Module Registration
 
 **`OrdersModuleRegistration.cs`**
+
 ```csharp
 namespace Namespace.XYZ.Orders;
 
@@ -278,6 +287,7 @@ public static class OrdersModuleRegistration
 Each module has its own API project (`Namespace.XYZ.Orders.Api`). The endpoint class references the module's Abstractions for DTOs and the module project (or Core) for handler interfaces:
 
 **`Endpoints/OrderEndpoints.cs`** (in the module's own API project)
+
 ```csharp
 namespace Namespace.XYZ.Orders.Api.Endpoints;
 
@@ -346,6 +356,7 @@ public static class OrderEndpoints
 ```
 
 **`Program.cs`** (module API host wiring)
+
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 
@@ -368,13 +379,13 @@ app.Run();
 | Artifact | Pattern | Example |
 |---|---|---|
 | Module folder | Short module name | `Orders/`, `Conferences/` |
-| Module implementation project | `Namespace.XYZ.{ModuleName}` | `HexMaster.Orders` |
-| Module abstractions project | `Namespace.XYZ.{ModuleName}.Abstractions` | `HexMaster.Orders.Abstractions` |
-| Module API project | `Namespace.XYZ.{ModuleName}.Api` | `HexMaster.Orders.Api` |
-| Module test project | `Namespace.XYZ.{ModuleName}.Tests` | `HexMaster.Orders.Tests` |
-| DTO namespace | `Namespace.XYZ.{ModuleName}.Abstractions.DataTransferObjects` | `HexMaster.Orders.Abstractions.DataTransferObjects` |
+| Module implementation project | `Namespace.XYZ.{ModuleName}` | `Company.Product.Orders` |
+| Module abstractions project | `Namespace.XYZ.{ModuleName}.Abstractions` | `Company.Product.Orders.Abstractions` |
+| Module API project | `Namespace.XYZ.{ModuleName}.Api` | `Company.Product.Orders.Api` |
+| Module test project | `Namespace.XYZ.{ModuleName}.Tests` | `Company.Product.Orders.Tests` |
+| DTO namespace | `Namespace.XYZ.{ModuleName}.Abstractions.DataTransferObjects` | `Company.Product.Orders.Abstractions.DataTransferObjects` |
 | Repository interface | `I{Entity}Repository` at module project root | `IOrderRepository` |
-| Feature namespace | `Namespace.XYZ.{ModuleName}.Features.{FeatureName}` | `HexMaster.Orders.Features.CreateOrder` |
+| Feature namespace | `Namespace.XYZ.{ModuleName}.Features.{FeatureName}` | `Company.Product.Orders.Features.CreateOrder` |
 | Command record | `{FeatureName}Command` | `CreateOrderCommand` |
 | Query record | `{FeatureName}Query` | `GetOrderByIdQuery` |
 | Command handler class | `{FeatureName}CommandHandler` | `CreateOrderCommandHandler` |
@@ -417,16 +428,16 @@ Tests live in a **dedicated test project** (`Namespace.XYZ.Orders.Tests`), mirro
 
 ```
 Namespace.XYZ.Orders.Tests/
-  CreateOrder/
-    CreateOrderCommandHandlerTests.cs
-  DeleteOrder/
-    DeleteOrderCommandHandlerTests.cs
-  DomainModels/
-    OrderTests.cs
-  Helpers/
-    TestMetricsFactory.cs
-  Factories/
-    OrderFaker.cs                      ← Bogus-based test data factories
+    CreateOrder/
+        CreateOrderCommandHandlerTests.cs
+    DeleteOrder/
+        DeleteOrderCommandHandlerTests.cs
+    DomainModels/
+        OrderTests.cs
+    Helpers/
+        TestMetricsFactory.cs
+    Factories/
+        OrderFaker.cs                      ← Bogus-based test data factories
 ```
 
 Use **xUnit**, **Moq**, and **Bogus** for unit tests:
@@ -492,9 +503,9 @@ public sealed class CreateOrderCommandHandlerTests
 
 ## References
 
-- ADR 0002: Modular Monolith Project Structure
-- ADR 0004: CQRS Recommendation for ASP.NET API Projects
-- ADR 0005: Minimal APIs Over Controller-Based APIs
-- ADR 0007: Vertical Slice Architecture for Feature Organization
+- ADR 0005: Modular Monolith Project Structure
+- ADR 0006: CQRS Recommendation for ASP.NET API Projects
+- ADR 0007: Minimal APIs Over Controller-Based APIs
+- ADR 0008: Vertical Slice Architecture for Feature Organization
 - ADR 0009: Feature Slices Within Module Projects
 - Structure: Minimal API Endpoint Organization

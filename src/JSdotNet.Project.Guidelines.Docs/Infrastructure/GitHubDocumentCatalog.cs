@@ -5,15 +5,15 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using HexMaster.CodingGuidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.Docs.Abstractions;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace HexMaster.CodingGuidelines.Docs.Infrastructure;
+namespace JSdotNet.Project.Guidelines.Docs.Infrastructure;
 
 /// <summary>
 /// Loads Markdown documents from the GitHub repository's docs/ folder.
 /// Prefers docs/index.json with 30-minute cache; falls back to directory traversal if index is missing.
-/// Default repo: nikneem/hexmaster-design-guidelines (branch: main).
+/// Default repo: JSdotNet/Project-Guidelines-MCP (branch: main).
 /// </summary>
 public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
 {
@@ -26,8 +26,8 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
 
     public GitHubDocumentCatalog(
         IMemoryCache cache,
-        string owner = "nikneem",
-        string repo = "hexmaster-design-guidelines",
+        string owner = "JSdotNet",
+        string repo = "Project-Guidelines-MCP",
         string branch = "main",
         HttpClient? httpClient = null)
     {
@@ -36,7 +36,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         _branch = branch;
         _http = httpClient ?? new HttpClient();
         _cache = cache;
-        _http.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HexMaster.McpServer", "1.0"));
+        _http.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("JSdotNet.McpServer", "1.0"));
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
         if (!string.IsNullOrWhiteSpace(token))
         {

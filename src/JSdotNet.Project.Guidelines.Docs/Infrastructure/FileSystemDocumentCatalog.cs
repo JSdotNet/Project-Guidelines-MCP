@@ -6,9 +6,9 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using HexMaster.CodingGuidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.Docs.Abstractions;
 
-namespace HexMaster.CodingGuidelines.Docs.Infrastructure;
+namespace JSdotNet.Project.Guidelines.Docs.Infrastructure;
 
 /// <summary>
 /// Loads markdown documents from a local filesystem folder structure.
@@ -114,6 +114,8 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
                             d.Category,
                             d.RelativePath,
                             (IReadOnlyList<string>)(d.Tags ?? new List<string>())))
+                        .OrderBy(d => d.Category)
+                        .ThenBy(d => d.Title)
                         .ToList();
                 }
             }

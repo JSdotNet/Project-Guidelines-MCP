@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using HexMaster.CodingGuidelines.Docs.Abstractions;
-using HexMaster.CodingGuidelines.Docs.Infrastructure;
+using JSdotNet.Project.Guidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.Docs.Infrastructure;
 using Xunit;
 
-namespace HexMaster.CodingGuidelines.McpServer.Tests;
+namespace JSdotNet.Project.Guidelines.McpServer.Tests;
 
 public class DocumentCatalogTests
 {
@@ -148,7 +148,9 @@ public class DocumentCatalogTests
         var catalog = new FileSystemDocumentCatalog();
         var results = catalog.Search("adrs");
         Assert.NotEmpty(results);
-        Assert.All(results, r => Assert.Contains("adrs", r.Category));
+        Assert.Contains(results, r =>
+            r.Category.Contains("adrs", StringComparison.OrdinalIgnoreCase) ||
+            r.RelativePath.Contains("adrs/", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]

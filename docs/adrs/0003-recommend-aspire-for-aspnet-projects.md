@@ -61,6 +61,7 @@ Place all Aspire orchestration projects under `src/Aspire/`:
 src/Aspire/
   Company.Product.Aspire.AppHost/
   Company.Product.Aspire.ServiceDefaults/
+  Company.Product.Aspire.Extensions/         ← Strongly-typed resource definitions (recommended)
 ```
 
 Each module's `.Api` project calls `builder.AddServiceDefaults()` (from ServiceDefaults) at startup before building the app:
@@ -91,20 +92,61 @@ var postgres = builder.AddPostgres("postgres");
 var conferencesDb = postgres.AddDatabase("conferencesdb");
 var profilesDb = postgres.AddDatabase("profilesdb");
 
-builder.AddProject<Projects.HexMaster_Attendr_Conferences_Api>("conferences-api")
+builder.AddProject<Projects.Company_Product_Conferences_Api>("conferences-api")
     .WithReference(conferencesDb)
     .WaitFor(conferencesDb);
 
-builder.AddProject<Projects.HexMaster_Attendr_Profiles_Api>("profiles-api")
+builder.AddProject<Projects.Company_Product_Profiles_Api>("profiles-api")
     .WithReference(profilesDb)
     .WaitFor(profilesDb);
 
 builder.Build().Run();
 ```
 
+### Extensions Project (Recommended)
+
+The Extensions project (`Company.Product.Aspire.Extensions`) centralizes reusable, strongly-typed resource definitions so infrastructure registration is consistent and magic strings are avoided in `AppHost`.
+
+- Organize resource definitions under `Extensions/Resources/`.
+- Each resource exposes a factory extension method returning `IResourceBuilder<T>`.
+- Avoid inline magic strings; parameterize connection info through Aspire parameters or environment variables.
+- Services consuming shared infrastructure should reference Extensions instead of duplicating `builder.AddX` calls inline.
+- Version resource definitions so breaking changes require explicit consumer updates.
+- Add XML doc comments to public resource extension methods to document required environment variables and intended consumers.
+- Keep secrets in user secrets, environment variables, or Azure Key Vault; never hardcode credentials in Aspire projects.
+
+```csharp
+// Aspire/Extensions/Resources/OrdersDatabaseResource.cs
+namespace Company.Product.Aspire.Extensions.Resources;
+
+public static class OrdersDatabaseResource
+{
+    public static IResourceBuilder<PostgresDatabaseResource> AddOrdersDatabase(
+        this IDistributedApplicationBuilder builder)
+    {
+        var postgres = builder.AddPostgres("orders-postgres")
+            .WithDataVolume("orders-postgres-data")
+            .WithLifetime(ContainerLifetime.Persistent);
+
+        return postgres.AddDatabase("orders-db");
+    }
+}
+```
+
+The AppHost references Extensions and calls the factory methods:
+
+```csharp
+var ordersDb = builder.AddOrdersDatabase();
+
+builder.AddProject<Projects.Company_Product_Orders_Api>("orders-api")
+    .WithReference(ordersDb)
+    .WaitFor(ordersDb);
+```
+
 ### Setup Steps
 - Create `Company.Product.Aspire.AppHost` using the Aspire template.
 - Create `Company.Product.Aspire.ServiceDefaults` (included in Aspire starter template).
+- Create `Company.Product.Aspire.Extensions` for strongly-typed resource definitions (recommended when infrastructure resources are shared across multiple modules; organize resource factories under `Extensions/Resources/`).
 - Reference web projects from AppHost to apply service defaults.
 - Call `builder.AddServiceDefaults()` in every module API's `Program.cs`.
 - Use generated environment variables for service endpoints (no hardcoded URLs).
@@ -123,4 +165,7 @@ Review adoption annually or when significant Aspire version changes occur. Measu
 - Official Docs: https://docs.microsoft.com/dotnet/aspire
 - eShop reference app (Aspire sample)
 - ADR 0001 (.NET 10 baseline)
-- ADR 0002 (Modular Monolith structure — `src/Aspire/` folder location)
+- ADR 0005 (Modular Monolith structure — `src/Aspire/` folder location)
+
+
+

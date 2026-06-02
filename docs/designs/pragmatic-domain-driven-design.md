@@ -17,6 +17,7 @@ This document provides guidance on applying Domain-Driven Design (DDD) principle
 ## Problem Statement
 
 Teams face challenges when applying DDD:
+
 - **Under-application**: Anemic domain models with all logic in services, leading to scattered business rules and validation
 - **Over-application**: Wrapping every primitive in a value object (e.g., `CustomerId`, `FirstName`, `Age`), resulting in verbose, hard-to-maintain code
 - **Inconsistent state**: Direct entity manipulation allowing invalid domain states to be persisted
@@ -31,6 +32,7 @@ We need a balanced approach that maintains domain integrity without excessive ce
 **All business operations must go through the domain model.**
 
 Domain entities are responsible for:
+
 - Enforcing invariants
 - Maintaining consistency
 - Expressing business rules
@@ -66,13 +68,13 @@ public class Order
         };
     }
     
-    public void AddLine(Product product, int quantity)
+    public Result AddLine(Product product, int quantity)
     {
         if (Status != OrderStatus.Draft)
-            throw new DomainException("Cannot modify order after it has been submitted");
+            return Result.ValidationError("Cannot modify order after it has been submitted");
             
         if (quantity <= 0)
-            throw new DomainException("Quantity must be positive");
+            return Result.ValidationError("Quantity must be positive");
             
         var existingLine = _lines.FirstOrDefault(l => l.ProductId == product.Id);
         if (existingLine is not null)
@@ -83,17 +85,20 @@ public class Order
         {
             _lines.Add(OrderLine.Create(product, quantity));
         }
+
+        return Result.Success();
     }
     
-    public void Submit()
+    public Result Submit()
     {
         if (!_lines.Any())
-            throw new DomainException("Cannot submit empty order");
+            return Result.ValidationError("Cannot submit empty order");
             
         if (Status != OrderStatus.Draft)
-            throw new DomainException("Order has already been submitted");
+            return Result.ValidationError("Order has already been submitted");
             
         Status = OrderStatus.Submitted;
+        return Result.Success();
     }
     
     public decimal CalculateTotal() => _lines.Sum(l => l.LineTotal);
@@ -125,14 +130,9 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
             return Result.NotFound("Order not found");
         
         // Domain model enforces business rules
-        try
-        {
-            order.Submit(); // All validation happens here
-        }
-        catch (DomainException ex)
-        {
-            return Result.ValidationError(ex.Message);
-        }
+        var domainResult = order.Submit();
+        if (!domainResult.IsSuccess)
+            return domainResult;
         
         // Persist valid state
         await _orders.UpdateAsync(order, cancellationToken);
@@ -144,10 +144,11 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
 ```
 
 **Key responsibilities**:
+
 - ✅ Load aggregates from repositories
 - ✅ Call domain model methods
 - ✅ Handle transaction boundaries
-- ✅ Translate domain exceptions to command results
+- ✅ Handle domain failures through `Result` and propagate/translate per ADR 0004
 - ❌ **NO** business logic or validation
 - ❌ **NO** direct property manipulation
 
@@ -160,6 +161,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
 ✅ **Create value objects for**:
 
 1. **Multi-field concepts**
+
    ```csharp
    public record Address(
        string Street,
@@ -167,7 +169,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
        string PostalCode,
        string Country)
    {
-       public static Address Create(string street, string city, string postalCode, string country)
+       public static Result<Address> Create(string street, string city, string postalCode, string country)
        {
            ArgumentException.ThrowIfNullOrWhiteSpace(street);
            ArgumentException.ThrowIfNullOrWhiteSpace(city);
@@ -175,9 +177,9 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
            ArgumentException.ThrowIfNullOrWhiteSpace(country);
            
            if (!IsValidPostalCode(postalCode, country))
-               throw new DomainException("Invalid postal code for country");
+               return Result.ValidationError<Address>("Invalid postal code for country");
            
-           return new Address(street, city, postalCode, country);
+           return Result.Success(new Address(street, city, postalCode, country));
        }
        
        private static bool IsValidPostalCode(string postalCode, string country)
@@ -194,6 +196,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    ```
 
 2. **Types with interdependent fields**
+
    ```csharp
    public record DateRange
    {
@@ -206,12 +209,12 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
            EndDate = end;
        }
        
-       public static DateRange Create(DateOnly start, DateOnly end)
+       public static Result<DateRange> Create(DateOnly start, DateOnly end)
        {
            if (end < start)
-               throw new DomainException("End date must be after start date");
+               return Result.ValidationError<DateRange>("End date must be after start date");
                
-           return new DateRange(start, end);
+           return Result.Success(new DateRange(start, end));
        }
        
        public int DurationInDays => EndDate.DayNumber - StartDate.DayNumber;
@@ -220,6 +223,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    ```
 
 3. **Types requiring format validation**
+
    ```csharp
    public record EmailAddress
    {
@@ -227,14 +231,14 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
        
        private EmailAddress(string value) => Value = value;
        
-       public static EmailAddress Create(string email)
+       public static Result<EmailAddress> Create(string email)
        {
            ArgumentException.ThrowIfNullOrWhiteSpace(email);
            
            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-               throw new DomainException("Invalid email format");
+               return Result.ValidationError<EmailAddress>("Invalid email format");
                
-           return new EmailAddress(email.ToLowerInvariant());
+           return Result.Success(new EmailAddress(email.ToLowerInvariant()));
        }
        
        public string Domain => Value.Split('@')[1];
@@ -242,6 +246,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    ```
 
 4. **Types with domain-specific behavior**
+
    ```csharp
    public record Money
    {
@@ -254,26 +259,26 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
            Currency = currency;
        }
        
-       public static Money Create(decimal amount, string currency)
+       public static Result<Money> Create(decimal amount, string currency)
        {
            if (amount < 0)
-               throw new DomainException("Amount cannot be negative");
+               return Result.ValidationError<Money>("Amount cannot be negative");
                
            if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
-               throw new DomainException("Currency must be 3-letter ISO code");
+               return Result.ValidationError<Money>("Currency must be 3-letter ISO code");
                
-           return new Money(Math.Round(amount, 2), currency.ToUpperInvariant());
+           return Result.Success(new Money(Math.Round(amount, 2), currency.ToUpperInvariant()));
        }
        
-       public Money Add(Money other)
+       public Result<Money> Add(Money other)
        {
            if (Currency != other.Currency)
-               throw new DomainException("Cannot add money with different currencies");
+               return Result.ValidationError<Money>("Cannot add money with different currencies");
                
            return Create(Amount + other.Amount, Currency);
        }
        
-       public Money Multiply(decimal factor) => Create(Amount * factor, Currency);
+       public Result<Money> Multiply(decimal factor) => Create(Amount * factor, Currency);
    }
    ```
 
@@ -282,6 +287,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
 ❌ **Don't create value objects for**:
 
 1. **Simple primitives without complex rules**
+
    ```csharp
    // ❌ OVERKILL
    public record FirstName(string Value);
@@ -304,6 +310,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    ```
 
 2. **IDs and technical identifiers** (unless they encode business meaning)
+
    ```csharp
    // ❌ OVERKILL - IDs are just GUIDs
    public record OrderId(Guid Value);
@@ -316,14 +323,15 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    ```
 
 3. **Simple validation without relationships**
+
    ```csharp
    // ❌ OVERKILL
    public record Quantity(int Value)
    {
-       public static Quantity Create(int value)
+       public static Result<Quantity> Create(int value)
        {
-           if (value <= 0) throw new DomainException("Must be positive");
-           return new Quantity(value);
+           if (value <= 0) return Result.ValidationError<Quantity>("Must be positive");
+           return Result.Success(new Quantity(value));
        }
    }
    
@@ -332,11 +340,12 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
    {
        public int Quantity { get; private set; }
        
-       public void IncreaseQuantity(int amount)
+       public Result IncreaseQuantity(int amount)
        {
            if (amount <= 0)
-               throw new DomainException("Amount must be positive");
+               return Result.ValidationError("Amount must be positive");
            Quantity += amount;
+           return Result.Success();
        }
    }
    ```
@@ -370,10 +379,15 @@ public class Order // Aggregate Root
     public IReadOnlyList<OrderLine> Lines => _lines.AsReadOnly();
     
     // Order controls its lines - no external manipulation
-    public void AddLine(Product product, int quantity)
+    public Result AddLine(Product product, int quantity)
     {
         // Validation and business rules here
-        _lines.Add(OrderLine.Create(this, product, quantity));
+        var lineResult = OrderLine.Create(this, product, quantity);
+        if (!lineResult.IsSuccess)
+            return lineResult;
+
+        _lines.Add(lineResult.Value!);
+        return Result.Success();
     }
     
     public void RemoveLine(Guid lineId)
@@ -391,19 +405,19 @@ public class OrderLine // Entity, part of Order aggregate
     public int Quantity { get; private set; }
     public decimal UnitPrice { get; private set; }
     
-    internal static OrderLine Create(Order order, Product product, int quantity)
+    internal static Result<OrderLine> Create(Order order, Product product, int quantity)
     {
         ArgumentNullException.ThrowIfNull(product);
         if (quantity <= 0)
-            throw new DomainException("Quantity must be positive");
+            return Result.ValidationError<OrderLine>("Quantity must be positive");
             
-        return new OrderLine
+        return Result.Success(new OrderLine
         {
             Id = Guid.NewGuid(),
             ProductId = product.Id,
             UnitPrice = product.Price,
             Quantity = quantity
-        };
+        });
     }
     
     public decimal LineTotal => UnitPrice * Quantity;
@@ -411,9 +425,15 @@ public class OrderLine // Entity, part of Order aggregate
 ```
 
 **Rules**:
+
 - ✅ External code only references aggregate roots
 - ✅ Child entities created through aggregate root methods
 - ✅ Child entities use `internal` or `private` constructors
+- ✅ Aggregate roots reference other aggregates by ID, not navigation properties
+- ✅ Aggregate roots contain entities/value objects, never other aggregate roots
+- ✅ Aggregate methods enforce invariants and expose business-intent behavior only
+- ✅ Aggregate factories (`Create(...)`) are preferred when construction requires validation
+- ❌ Aggregate methods do not call repositories or infrastructure directly
 - ❌ Never expose `List<T>` directly - use `IReadOnlyList<T>`
 
 ### Domain Events
@@ -500,7 +520,7 @@ var line = order.Lines.FirstOrDefault(l => l.Id == lineId);
 
 ## Command Handler Pattern
 
-**Handlers ensure valid state transitions.**
+**Handlers ensure valid state transitions and translate outcomes according to ADR 0004.**
 
 ```csharp
 public record AddOrderLineCommand(Guid OrderId, Guid ProductId, int Quantity) : IRequest<Result<Guid>>;
@@ -523,14 +543,11 @@ public class AddOrderLineCommandHandler : IRequestHandler<AddOrderLineCommand, R
             return Result.NotFound<Guid>("Product not found");
         
         // 2. Execute domain logic (all validation inside domain model)
-        try
-        {
-            var lineId = order.AddLine(product, command.Quantity);
-        }
-        catch (DomainException ex)
-        {
-            return Result.ValidationError<Guid>(ex.Message);
-        }
+        var addLineResult = order.AddLine(product, command.Quantity);
+        if (!addLineResult.IsSuccess)
+            return Result.ValidationError<Guid>(addLineResult.ErrorMessage ?? "Invalid order line");
+
+        var lineId = order.Lines.Last().Id;
         
         // 3. Persist valid state
         await _orders.UpdateAsync(order, ct);
@@ -543,9 +560,10 @@ public class AddOrderLineCommandHandler : IRequestHandler<AddOrderLineCommand, R
 ```
 
 **Handler checklist**:
+
 - ✅ Loads entities via repositories
 - ✅ Calls domain model methods
-- ✅ Catches and translates `DomainException`
+- ✅ Handles failed domain `Result` values and translates when needed
 - ✅ Manages transaction via `IUnitOfWork`
 - ✅ Returns strongly-typed results
 - ❌ Contains NO business logic
@@ -560,15 +578,16 @@ public class AddOrderLineCommandHandler : IRequestHandler<AddOrderLineCommand, R
 ```csharp
 public class Order
 {
-    public void Submit()
+    public Result Submit()
     {
         if (!_lines.Any())
-            throw new DomainException("Cannot submit order without lines");
+            return Result.ValidationError("Cannot submit order without lines");
             
         if (Status != OrderStatus.Draft)
-            throw new DomainException($"Cannot submit order in {Status} status");
+            return Result.ValidationError($"Cannot submit order in {Status} status");
             
         Status = OrderStatus.Submitted;
+        return Result.Success();
     }
 }
 ```
@@ -592,6 +611,7 @@ public class AddOrderLineValidator : AbstractValidator<AddOrderLineCommand>
 ```
 
 **Two-layer validation**:
+
 1. **Input validation** (FluentValidation): Basic format, required fields, ranges
 2. **Domain validation** (Domain model): Business rules, state consistency, invariants
 
@@ -660,15 +680,16 @@ public class OrderService
 // ✅ GOOD - Logic in domain
 public class Order
 {
-    public void Submit()
+    public Result Submit()
     {
         if (!_lines.Any())
-            throw new DomainException("Cannot submit empty order");
+            return Result.ValidationError("Cannot submit empty order");
             
         if (Status != OrderStatus.Draft)
-            throw new DomainException("Order already submitted");
+            return Result.ValidationError("Order already submitted");
             
         Status = OrderStatus.Submitted;
+        return Result.Success();
     }
 }
 ```
@@ -725,12 +746,13 @@ public class Order
     private readonly List<OrderLine> _lines = new();
     public IReadOnlyList<OrderLine> Lines => _lines.AsReadOnly();
     
-    public void Complete()
+    public Result Complete()
     {
         // Business rules enforced
         if (Status != OrderStatus.Submitted)
-            throw new DomainException("Can only complete submitted orders");
+            return Result.ValidationError("Can only complete submitted orders");
         Status = OrderStatus.Completed;
+        return Result.Success();
     }
 }
 ```
@@ -773,15 +795,16 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 public class OrderTests
 {
     [Fact]
-    public void Submit_WithEmptyLines_ThrowsDomainException()
+    public void Submit_WithEmptyLines_ReturnsValidationError()
     {
         // Arrange
         var customer = Customer.Create("John", "Doe");
         var order = Order.Create(customer);
         
         // Act & Assert
-        var exception = Assert.Throws<DomainException>(() => order.Submit());
-        Assert.Contains("empty", exception.Message, StringComparison.OrdinalIgnoreCase);
+        var result = order.Submit();
+        Assert.False(result.IsSuccess);
+        Assert.Contains("empty", result.ErrorMessage ?? string.Empty, StringComparison.OrdinalIgnoreCase);
     }
     
     [Fact]
@@ -794,9 +817,10 @@ public class OrderTests
         order.AddLine(product, 2);
         
         // Act
-        order.Submit();
+        var result = order.Submit();
         
         // Assert
+        Assert.True(result.IsSuccess);
         Assert.Equal(OrderStatus.Submitted, order.Status);
     }
 }
@@ -842,14 +866,15 @@ public class OrderTests
 
 ## Related Documents
 
-- **ADR 0002**: Modular Monolith Project Structure
-- **ADR 0004**: CQRS Recommendation for ASP.NET API
+- **ADR 0005**: Modular Monolith Project Structure
+- **ADR 0006**: CQRS Recommendation for ASP.NET API
 - **Design**: Modular Solution Structure
 - **Recommendation**: Unit Testing with xUnit, Moq, Bogus
 
 ## Conclusion
 
 Pragmatic DDD means:
+
 - ✅ Rich domain models that protect their invariants
 - ✅ Command handlers that orchestrate but don't contain logic
 - ✅ Value objects where they provide real value

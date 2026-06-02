@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-05-25T10:00:00Z",
+    "generated": "2026-06-02T21:24:20Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -18,16 +18,18 @@
             ]
         },
         {
-            "id": "0002-modular-monolith-structure",
-            "title": "ADR 0002: Modular Monolith Project Structure",
-            "description": "Defines the canonical top-level solution layout: App/, Aspire/, Core/, per-domain module folders (each with module, Abstractions, Api, Data, Tests projects), and integration event contracts. The authoritative reference for where every project lives in the repository.",
+            "id": "0002-central-package-management",
+            "title": "ADR 0002: Central Package Management for .NET Solutions",
+            "description": "Adopts NuGet Central Package Management (CPM) with a root-level Directory.Packages.props to declare all package versions once, preventing version drift across a multi-project solution.",
             "category": "adrs",
-            "relativePath": "adrs/0002-modular-monolith-structure.md",
+            "relativePath": "adrs/0002-central-package-management.md",
             "tags": [
-                "architecture",
-                "modular-monolith",
-                "structure",
-                "adr"
+                "nuget",
+                "package-management",
+                "dependencies",
+                "dotnet",
+                "adr",
+                "maintainability"
             ]
         },
         {
@@ -45,11 +47,38 @@
             ]
         },
         {
-            "id": "0004-cqrs-recommendation-for-aspnet-api",
-            "title": "ADR 0004: Recommendation to Implement CQRS for ASP.NET API Projects",
-            "description": "Adopts lightweight CQRS using custom ICommandHandler<TCommand, TResult> and IQueryHandler<TQuery, TResult> interfaces from the Core project. Explicitly rejects MediatR to avoid unnecessary indirection.",
+            "id": "0004-standardize-result-objects-for-expected-failures",
+            "title": "ADR 0004: Standardize Result Objects for Expected Application Outcomes",
+            "description": "Standardizes Result/Result\u003cT\u003e as the application-boundary contract for expected business outcomes, while reserving exceptions for unexpected technical failures.",
             "category": "adrs",
-            "relativePath": "adrs/0004-cqrs-recommendation-for-aspnet-api.md",
+            "relativePath": "adrs/0004-standardize-result-objects-for-expected-failures.md",
+            "tags": [
+                "result-pattern",
+                "error-handling",
+                "application",
+                "domain",
+                "adr"
+            ]
+        },
+        {
+            "id": "0005-modular-monolith-structure",
+            "title": "ADR 0005: Modular Monolith Project Structure",
+            "description": "Defines the canonical top-level solution layout: App/, Aspire/, Core/, per-domain module folders (each with module, Abstractions, Api, Data, Tests projects), and integration event contracts. The authoritative reference for where every project lives in the repository.",
+            "category": "adrs",
+            "relativePath": "adrs/0005-modular-monolith-structure.md",
+            "tags": [
+                "architecture",
+                "modular-monolith",
+                "structure",
+                "adr"
+            ]
+        },
+        {
+            "id": "0006-cqrs-recommendation-for-aspnet-api",
+            "title": "ADR 0006: Recommendation to Implement CQRS for ASP.NET API Projects",
+            "description": "Adopts lightweight CQRS using custom ICommandHandler\u003cTCommand, TResult\u003e and IQueryHandler\u003cTQuery, TResult\u003e interfaces from the Core project. Explicitly rejects MediatR to avoid unnecessary indirection.",
+            "category": "adrs",
+            "relativePath": "adrs/0006-cqrs-recommendation-for-aspnet-api.md",
             "tags": [
                 "cqrs",
                 "architecture",
@@ -59,11 +88,11 @@
             ]
         },
         {
-            "id": "0005-minimal-apis-over-controllers",
-            "title": "ADR 0005: Recommend Minimal APIs Over Controller-Based APIs",
+            "id": "0007-minimal-apis-over-controllers",
+            "title": "ADR 0007: Recommend Minimal APIs Over Controller-Based APIs",
             "description": "Mandates ASP.NET Core Minimal APIs with endpoint classes (not controllers). Covers MapGroup, endpoint naming, native ASP.NET 10 OpenAPI (AddOpenApi/MapOpenApi), Scalar as the API UI, shallow endpoint-filter validation, and how thin endpoints delegate to CQRS handlers.",
             "category": "adrs",
-            "relativePath": "adrs/0005-minimal-apis-over-controllers.md",
+            "relativePath": "adrs/0007-minimal-apis-over-controllers.md",
             "tags": [
                 "minimal-apis",
                 "aspnet",
@@ -72,52 +101,17 @@
             ]
         },
         {
-            "id": "0006-centralized-frontend-styling-variables",
-            "title": "ADR 0006: Centralized Frontend Styling Variables",
-            "description": "Requires all design tokens (colors, spacing, typography) to be declared as SASS/CSS variables in a single source file. Applies to Angular, React, Vue, and Blazor frontends.",
-            "category": "adrs",
-            "relativePath": "adrs/0006-centralized-frontend-styling-variables.md",
-            "tags": [
-                "frontend",
-                "styling",
-                "sass",
-                "css",
-                "angular",
-                "react",
-                "vue",
-                "svelte",
-                "design-system"
-            ]
-        },
-        {
-            "id": "0007-vertical-slice-architecture",
-            "title": "ADR 0007: Adopt Vertical Slice Architecture for Feature Organization",
+            "id": "0008-vertical-slice-architecture",
+            "title": "ADR 0008: Adopt Vertical Slice Architecture for Feature Organization",
             "description": "Requires organizing features as vertical slices: each use case gets its own folder with command/query, handler, and endpoint filter for shallow validation. DTOs go in the .Abstractions project (DataTransferObjects/); domain model enforces business invariants. Tests go in a separate .Tests project. Superseded in physical layout detail by ADR 0009.",
             "category": "adrs",
-            "relativePath": "adrs/0007-vertical-slice-architecture.md",
+            "relativePath": "adrs/0008-vertical-slice-architecture.md",
             "tags": [
                 "architecture",
                 "vertical-slice",
                 "feature-organization",
                 "adr",
                 "clean-architecture"
-            ]
-        },
-        {
-            "id": "0008-adopt-opentelemetry-for-observability",
-            "title": "ADR 0008: Adopt OpenTelemetry for Comprehensive Observability",
-            "description": "Mandates OpenTelemetry for traces, metrics, and logs. Each module exposes an Observability/ folder with a custom ActivitySource and counters (e.g., ConferenceMetrics.cs). Wired through Aspire ServiceDefaults.",
-            "category": "adrs",
-            "relativePath": "adrs/0008-adopt-opentelemetry-for-observability.md",
-            "tags": [
-                "opentelemetry",
-                "observability",
-                "telemetry",
-                "metrics",
-                "tracing",
-                "logging",
-                "adr",
-                "backend"
             ]
         },
         {
@@ -137,16 +131,83 @@
             ]
         },
         {
-            "id": "modular-solution-structure",
-            "title": "Modular Solution Structure Design",
-            "description": "Visual blueprint of a complete solution: App/, Aspire/, Core/, and per-domain module folders each containing module, Abstractions, Api, Data, and Tests projects. Includes a concrete named example and per-project responsibility descriptions.",
-            "category": "designs",
-            "relativePath": "designs/modular-solution-structure.md",
+            "id": "0010-adopt-opentelemetry-for-observability",
+            "title": "ADR 0010: Adopt OpenTelemetry for Comprehensive Observability",
+            "description": "Mandates OpenTelemetry for traces, metrics, and logs. Each module exposes an Observability/ folder with a custom ActivitySource and counters (e.g., ConferenceMetrics.cs). Wired through Aspire ServiceDefaults.",
+            "category": "adrs",
+            "relativePath": "adrs/0010-adopt-opentelemetry-for-observability.md",
             "tags": [
-                "design",
+                "opentelemetry",
+                "observability",
+                "telemetry",
+                "metrics",
+                "tracing",
+                "logging",
+                "adr",
+                "backend"
+            ]
+        },
+        {
+            "id": "0011-centralized-frontend-styling-variables",
+            "title": "ADR 0011: Centralized Frontend Styling Variables",
+            "description": "Requires all design tokens (colors, spacing, typography) to be declared as SASS/CSS variables in a single source file. Applies to Angular, React, Vue, and Blazor frontends.",
+            "category": "adrs",
+            "relativePath": "adrs/0011-centralized-frontend-styling-variables.md",
+            "tags": [
+                "frontend",
+                "styling",
+                "sass",
+                "css",
+                "angular",
+                "react",
+                "vue",
+                "svelte",
+                "blazor",
+                "design-system"
+            ]
+        },
+        {
+            "id": "modular-solution-structure",
+            "title": "Modular Solution Structure Template",
+            "description": "Canonical scaffold for the multi-module solution profile: App/, Aspire/, Core/, per-domain module folders for production code, and centralized test projects under root tests/ with naming and placement conventions.",
+            "category": "structures",
+            "relativePath": "structures/modular-solution-structure.md",
+            "tags": [
+                "structure",
                 "modular",
                 "architecture",
-                "aspire"
+                "aspire",
+                "template",
+                "testing"
+            ]
+        },
+        {
+            "id": "simple-solution-structure",
+            "title": "Simple Solution Structure Design",
+            "description": "Visual blueprint of a non-modular single-solution profile: core/api/data projects without module folders. Aspire is optional; test topology is flexible with Unit plus optional Integration and/or E2E tests (or Unit only for very small solutions).",
+            "category": "structures",
+            "relativePath": "structures/simple-solution-structure.md",
+            "tags": [
+                "design",
+                "simple-solution",
+                "architecture",
+                "aspire-optional",
+                "testing",
+                "e2e"
+            ]
+        },
+        {
+            "id": "modular-monolith-architecture-design",
+            "title": "Modular Monolith Architecture Design",
+            "description": "Architecture intent and trade-off guide for modular monoliths: boundary rules, in-process contract communication, consistency strategy, observability ownership, risks, and extraction path guidance.",
+            "category": "designs",
+            "relativePath": "designs/modular-monolith-architecture-design.md",
+            "tags": [
+                "design",
+                "modular-monolith",
+                "architecture",
+                "boundaries",
+                "integration"
             ]
         },
         {
@@ -163,23 +224,128 @@
             ]
         },
         {
-            "id": "unit-testing-xunit-moq-bogus",
+            "id": "testing-unit-xunit-moq-bogus",
             "title": "Unit testing with xUnit, Moq and Bogus",
-            "description": "Prescribes xUnit + Moq + Bogus as the standard test stack. Covers test project layout mirroring feature slices, Mock<T> setup patterns, Bogus Faker for test data, and naming convention Method_ShouldExpected_WhenCondition.",
+            "description": "Prescribes xUnit + Moq + Bogus as the standard test stack, with AwesomeAssertions-style fluent domain assertions. Covers test scope (one feature/public method per class), behavior-first method naming (Should_ExpectedBehavior_When_StateUnderTest), and builder/TestDataHelper-based arrangement.",
             "category": "recommendations",
-            "relativePath": "recommendations/unit-testing-xunit-moq-bogus.md",
+            "relativePath": "recommendations/testing-unit-xunit-moq-bogus.md",
             "tags": [
                 "testing",
                 "xunit",
                 "moq",
                 "bogus",
-                "unit-testing"
+                "unit-testing",
+                "assertions"
+            ]
+        },
+        {
+            "id": "csharp-coding-style",
+            "title": "C# Coding Style",
+            "description": "Prescribes C# coding conventions for .NET projects: file-scoped namespaces, sealed classes by default, nameof in exceptions, var usage, guard clauses, and modern C# features.",
+            "category": "recommendations",
+            "relativePath": "recommendations/csharp-coding-style.md",
+            "tags": [
+                "csharp",
+                "coding-style",
+                "conventions",
+                "dotnet",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "testing-architecture-layer-dependency-validation",
+            "title": "Architecture Testing for Layer and Module Boundaries",
+            "description": "Defines automated architecture tests for dependency direction, forbidden dependencies, and module boundary integrity using NetArchTest, including CI enforcement guidance.",
+            "category": "recommendations",
+            "relativePath": "recommendations/testing-architecture-layer-dependency-validation.md",
+            "tags": [
+                "architecture",
+                "testing",
+                "clean-architecture",
+                "netarchtest",
+                "boundaries",
+                "modular-monolith"
+            ]
+        },
+        {
+            "id": "testing-integration",
+            "title": "Integration Testing",
+            "description": "Defines integration testing as primarily gray-box with black-box assertions, allows module-specific projects for large solutions, recommends shared integration tests for cross-module and smaller solutions, and restricts mocking to external dependencies.",
+            "category": "recommendations",
+            "relativePath": "recommendations/testing-integration.md",
+            "tags": [
+                "testing",
+                "integration-testing",
+                "aspnet",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "testing-end-to-end",
+            "title": "End-to-End Testing",
+            "description": "Defines Aspire-orchestrated E2E testing as black-box by nature, focused on critical business journeys and observable outcomes, with clear scope separation from integration tests.",
+            "category": "recommendations",
+            "relativePath": "recommendations/testing-end-to-end.md",
+            "tags": [
+                "testing",
+                "e2e",
+                "quality",
+                "web-api",
+                "aspire",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "object-calisthenics-for-domain",
+            "title": "Object Calisthenics for Domain Code",
+            "description": "Applies the 9 Object Calisthenics rules to domain classes: one level of indentation, no else, wrap primitives, first-class collections, one dot per line, no abbreviations, small entities, two instance variables max, and no getters/setters.",
+            "category": "recommendations",
+            "relativePath": "recommendations/object-calisthenics-for-domain.md",
+            "tags": [
+                "domain",
+                "csharp",
+                "object-calisthenics",
+                "clean-code",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "specification-pattern-usage",
+            "title": "Specification Pattern for Business Rules",
+            "description": "Defines when to use the Specification pattern versus inline aggregate invariants: use for complex, reusable, or combinable rules; keep simple field checks inline.",
+            "category": "recommendations",
+            "relativePath": "recommendations/specification-pattern-usage.md",
+            "tags": [
+                "domain",
+                "ddd",
+                "specification-pattern",
+                "business-rules",
+                "csharp",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "blazor-frontend-framework-guidance",
+            "title": "Blazor Frontend Framework Guidance",
+            "description": "Practical guidance for Blazor frontend setup, feature-based component structure, backend integration patterns, state management, caching strategy, and security recommendations.",
+            "category": "recommendations",
+            "relativePath": "recommendations/blazor-frontend-framework-guidance.md",
+            "tags": [
+                "blazor",
+                "frontend",
+                "components",
+                "data-binding",
+                "state-management",
+                "caching",
+                "security",
+                "web-api",
+                "recommendations"
             ]
         },
         {
             "id": "minimal-api-endpoint-organization",
             "title": "Minimal API Endpoint Organization",
-            "description": "Template for organizing Minimal API endpoints within a module's .Api project: Endpoints/ folder, static MapXxxEndpoints extension methods, MapGroup with tags, and how endpoints delegate to ICommandHandler / IQueryHandler.",
+            "description": "Template for organizing Minimal API endpoints within a module\u0027s .Api project: Endpoints/ folder, static MapXxxEndpoints extension methods, MapGroup with tags, and how endpoints delegate to ICommandHandler / IQueryHandler.",
             "category": "structures",
             "relativePath": "structures/minimal-api-endpoint-organization.md",
             "tags": [
@@ -192,7 +358,7 @@
         {
             "id": "feature-slices-module-structure",
             "title": "Feature Slices Module Structure",
-            "description": "Copy-paste scaffold for a complete module: full folder tree (DomainModels/, Features/, Observability/, Services/, Extensions/), Abstractions project with DataTransferObjects/, Api project with Program.cs wiring (AddOpenApi/MapScalarApiReference), Data project, and Tests project with Moq/xUnit examples.",
+            "description": "Copy-paste scaffold for a complete module: full folder tree (DomainModels/, Features/, Observability/, Services/, Extensions/), Abstractions project with DataTransferObjects/, Api project with Program.cs wiring, Data project, and Tests project with Moq/xUnit examples.",
             "category": "structures",
             "relativePath": "structures/feature-slices-module-structure.md",
             "tags": [
@@ -203,6 +369,20 @@
                 "structure",
                 "modular-monolith",
                 "abstractions"
+            ]
+        },
+        {
+            "id": "folder-structure-reference",
+            "title": "Folder Structure Reference",
+            "description": "High-level solution folder map and navigation guide that points to detailed structure documents for module, feature-slice, and endpoint-specific layouts.",
+            "category": "structures",
+            "relativePath": "structures/folder-structure-reference.md",
+            "tags": [
+                "structure",
+                "folders",
+                "templates",
+                "modular-monolith",
+                "feature-slices"
             ]
         }
     ]

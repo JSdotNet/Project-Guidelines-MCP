@@ -11,9 +11,9 @@ on:
 
 env:
   DOTNET_VERSION: '10.0.x'
-  SOLUTION_PATH: 'src/HexMaster Coding Guidelines MCP.sln'
-  PROJECT_PATH: 'src/HexMaster.CodingGuidelines.McpServer/HexMaster.CodingGuidelines.McpServer.csproj'
-  TEST_PROJECT_PATH: 'src/HexMaster.CodingGuidelines.McpServer.Tests/HexMaster.CodingGuidelines.McpServer.Tests.csproj'
+  SOLUTION_PATH: 'JSdotNet.Project.Guidelines.slnx'
+  PROJECT_PATH: 'src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj'
+  TEST_PROJECT_PATH: 'tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj'
 
 permissions:
   contents: write
@@ -113,7 +113,7 @@ jobs:
             - Build: ${{ steps.gitversion.outputs.fullSemVer }}
             - Commit: ${{ steps.gitversion.outputs.sha }}
             
-            Published to NuGet: https://www.nuget.org/packages/HexMaster.CodingGuidelines.McpServer/${{ steps.gitversion.outputs.fullSemVer }}
+            Published to NuGet: https://www.nuget.org/packages/JSdotNet.Project.Guidelines.McpServer/${{ steps.gitversion.outputs.fullSemVer }}
           draft: false
           prerelease: ${{ steps.gitversion.outputs.preReleaseLabel != '' }}
 

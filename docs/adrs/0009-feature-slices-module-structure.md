@@ -8,7 +8,7 @@ tags: [architecture, feature-slices, modules, cqrs, minimal-api, adr, modular-mo
 
 ## Context
 
-ADR 0002 establishes the modular monolith structure: each domain module lives in its own set of projects (`Namespace.XYZ.{ModuleName}` and `Namespace.XYZ.{ModuleName}.Abstractions`). ADR 0007 establishes that application code is organized as vertical slices, and ADR 0004 mandates CQRS for request handling.
+ADR 0005 establishes the modular monolith structure: each domain module lives in its own set of projects (`Namespace.XYZ.{ModuleName}` and `Namespace.XYZ.{ModuleName}.Abstractions`). ADR 0008 establishes that application code is organized as vertical slices, and ADR 0006 mandates CQRS for request handling.
 
 However, there is no authoritative guidance on **how features are physically added to a module** — specifically:
 
@@ -25,7 +25,7 @@ We REQUIRE the following structure when adding features to a module.
 
 ### 1. Module Projects
 
-Every module consists of exactly two core projects (additional data adapter projects are optional per ADR 0002):
+Every module consists of exactly two core projects (additional data adapter projects are optional per ADR 0005):
 
 | Project | Purpose |
 |---|---|
@@ -43,13 +43,15 @@ Namespace.XYZ.{ModuleName}.Features.{FeatureName}
 ```
 
 Examples:
+
 - `Namespace.XYZ.Orders.Features.CreateOrder`
 - `Namespace.XYZ.Orders.Features.DeleteOrder`
 - `Namespace.XYZ.Orders.Features.GetOrderById`
 
 Each feature namespace contains:
+
 - The **command or query** record.
-- The **handler** class that implements `ICommandHandler<TCommand, TResult>` or `IQueryHandler<TQuery, TResult>` (interfaces defined in the shared `Core/` project per ADR 0004).
+- The **handler** class that implements `ICommandHandler<TCommand, TResult>` or `IQueryHandler<TQuery, TResult>` (interfaces defined in the shared `Core/` project per ADR 0006).
 
 **Handler naming convention**: Use `{FeatureName}CommandHandler` for command handlers and `{FeatureName}QueryHandler` for query handlers. The shorter `{FeatureName}Handler` is also acceptable but the full suffix makes the handler role unambiguous.
 
@@ -62,6 +64,7 @@ Namespace.XYZ.{ModuleName}.Abstractions.DataTransferObjects
 ```
 
 Examples:
+
 - `Namespace.XYZ.Orders.Abstractions.DataTransferObjects.CreateOrderRequest`
 - `Namespace.XYZ.Orders.Abstractions.DataTransferObjects.OrderDto`
 
@@ -82,7 +85,7 @@ The API host maps an incoming HTTP request to a DTO, then the endpoint lambda tr
 HTTP Request
   └─> Minimal API endpoint receives DTO record (from Abstractions.DataTransferObjects)
         └─> Endpoint maps DTO → Command/Query (defined in module Features namespace)
-              └─> Handler executes use case, returns result DTO
+          └─> Handler executes use case, returns Result/Result<T>
                     └─> Endpoint translates result to HTTP response
 ```
 
@@ -139,7 +142,7 @@ public sealed record CreateOrderResult(Guid OrderId, decimal Total, DateTimeOffs
 ```csharp
 namespace Namespace.XYZ.Orders.Features.CreateOrder;
 
-public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, CreateOrderResult>
+public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Result<CreateOrderResult>>
 {
     private readonly IOrderRepository _orders;
     private readonly ILogger<CreateOrderCommandHandler> _logger;
@@ -147,18 +150,18 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
     public CreateOrderCommandHandler(IOrderRepository orders, ILogger<CreateOrderCommandHandler> logger)
         => (_orders, _logger) = (orders, logger);
 
-    public async Task<CreateOrderResult> Handle(CreateOrderCommand command, CancellationToken ct)
+    public async Task<Result<CreateOrderResult>> Handle(CreateOrderCommand command, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(command);
         if (command.Lines.Count == 0)
-            throw new DomainException("Order must contain at least one line.");
+            return Result<CreateOrderResult>.Failure("order.validation", "Order must contain at least one line.");
 
         var order = Order.Create(command.CustomerId, command.Lines);
         await _orders.AddAsync(order, ct);
 
         _logger.LogInformation("Order {OrderId} created for customer {CustomerId}", order.Id, command.CustomerId);
 
-        return new CreateOrderResult(order.Id, order.Total, order.CreatedAt);
+        return Result<CreateOrderResult>.Success(new CreateOrderResult(order.Id, order.Total, order.CreatedAt));
     }
 }
 ```
@@ -207,7 +210,7 @@ public static class OrderEndpoints
 
     private static async Task<IResult> CreateOrder(
         CreateOrderRequest request,
-        ICommandHandler<CreateOrderCommand, CreateOrderResult> handler,
+        ICommandHandler<CreateOrderCommand, Result<CreateOrderResult>> handler,
         CancellationToken ct)
     {
         var command = new CreateOrderCommand(
@@ -215,7 +218,9 @@ public static class OrderEndpoints
             request.Lines.Select(l => new OrderLineDto(l.ProductId, l.Quantity, l.UnitPrice)).ToList());
 
         var result = await handler.Handle(command, ct);
-        return Results.Created($"/orders/{result.OrderId}", result);
+        return result.IsSuccess
+            ? Results.Created($"/orders/{result.Value!.OrderId}", result.Value)
+            : Results.BadRequest(new ProblemDetails { Title = result.ErrorCode, Detail = result.ErrorMessage });
     }
 
     private static async Task<IResult> DeleteOrder(
@@ -249,7 +254,7 @@ public static class OrdersModuleRegistration
 {
     public static IServiceCollection AddOrdersModule(this IServiceCollection services)
     {
-        services.AddScoped<ICommandHandler<CreateOrderCommand, CreateOrderResult>, CreateOrderCommandHandler>();
+        services.AddScoped<ICommandHandler<CreateOrderCommand, Result<CreateOrderResult>>, CreateOrderCommandHandler>();
         services.AddScoped<ICommandHandler<DeleteOrderCommand>, DeleteOrderCommandHandler>();
         services.AddScoped<IQueryHandler<GetOrderByIdQuery, OrderDto?>, GetOrderByIdQueryHandler>();
         // Register infrastructure adapters (repositories, etc.)
@@ -270,7 +275,7 @@ The host project calls `services.AddOrdersModule()` in `Program.cs`.
 4. **Thin endpoints**: Endpoint lambdas only map DTOs to commands/queries; no business logic.
 5. **Testability**: Handlers are isolated from HTTP concerns and can be unit tested with simple mocks (xUnit + Moq + Bogus).
 6. **Composability**: New features are new slice namespaces; no existing files are modified.
-7. **Aligns with prior ADRs**: Natural extension of ADR 0002 (Modular Monolith), ADR 0004 (CQRS), ADR 0005 (Minimal APIs), and ADR 0007 (Vertical Slices).
+7. **Aligns with prior ADRs**: Natural extension of ADR 0005 (Modular Monolith), ADR 0006 (CQRS), ADR 0007 (Minimal APIs), and ADR 0008 (Vertical Slices).
 
 ### Negative
 
@@ -288,15 +293,19 @@ The host project calls `services.AddOrdersModule()` in `Program.cs`.
 
 | ADR | Relationship |
 |---|---|
-| ADR 0002: Modular Monolith Structure | This ADR refines the internal project structure of each module |
-| ADR 0004: CQRS Recommendation | Feature slices use command/query handler interfaces defined there |
-| ADR 0005: Minimal APIs | Endpoint pattern delegates to feature slice handlers |
-| ADR 0007: Vertical Slice Architecture | This ADR applies vertical slices specifically to the module/Abstractions boundary |
+| ADR 0005: Modular Monolith Structure | This ADR refines the internal project structure of each module |
+| ADR 0006: CQRS Recommendation | Feature slices use command/query handler interfaces defined there |
+| ADR 0007: Minimal APIs | Endpoint pattern delegates to feature slice handlers |
+| ADR 0008: Vertical Slice Architecture | This ADR applies vertical slices specifically to the module/Abstractions boundary |
+| ADR 0004: Result Objects | Expected business outcomes are represented with `Result`/`Result<T>` at handler boundaries |
 
 ## References
 
-- ADR 0002: Modular Monolith Project Structure
-- ADR 0004: CQRS Recommendation for ASP.NET API Projects
-- ADR 0005: Minimal APIs Over Controller-Based APIs
-- ADR 0007: Vertical Slice Architecture for Feature Organization
+- ADR 0005: Modular Monolith Project Structure
+- ADR 0006: CQRS Recommendation for ASP.NET API Projects
+- ADR 0007: Minimal APIs Over Controller-Based APIs
+- ADR 0008: Vertical Slice Architecture for Feature Organization
 - Structure: Feature Slices Module Structure (see `structures/feature-slices-module-structure.md`)
+
+
+

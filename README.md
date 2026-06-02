@@ -1,19 +1,23 @@
-# HexMaster Design Guidelines
+# JSdotNet Project Guidelines
 
 Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, designs, recommendations and structures under `docs/`. An MCP Server in `src/` exposes these documents for tools/agents.
+
+> Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
+> Original repository: https://github.com/nikneem/hexmaster-design-guidelines
 
 ## MCP Server (C#, .NET 10)
 
 An MCP (Model Context Protocol) server implementing the official Microsoft MCP SDK. Exposes design guideline documents as tools that AI assistants can call.
 
 ### Requirements
+
 - .NET 10 SDK
 
 ### MCP Protocol
 
 The server implements the Model Context Protocol using the official `ModelContextProtocol` NuGet package. It exposes tools for:
 
-1. **ListDocuments** - Lists all available design guideline documents (ADRs, recommendations, structures)
+1. **ListDocuments** - Lists all available design guideline documents (ADRs, designs, recommendations, structures)
 2. **GetDocument** - Retrieves the content of a specific document by its ID
 3. **SearchDocuments** - Searches documents by keyword or phrase
 
@@ -24,7 +28,7 @@ Documents are served from the local filesystem when available, with automatic fa
 From the repository root:
 
 ```powershell
-dotnet run --project .\src\HexMaster.CodingGuidelines.McpServer\HexMaster.CodingGuidelines.McpServer.csproj
+dotnet run --project .\src\JSdotNet.Project.Guidelines.McpServer\JSdotNet.Project.Guidelines.McpServer.csproj
 ```
 
 The server uses stdio transport for MCP communication. Logs are written to stderr, JSON-RPC messages to stdout.
@@ -47,21 +51,22 @@ This is the recommended approach for general use. Documents are automatically fe
 **VS Code Setup**
 
 1. **Install the package**:
+
    ```bash
-   dotnet tool install --global HexMaster.CodingGuidelines.McpServer
+   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
    ```
 
 2. **Configure VS Code MCP settings**:
-   
+
    Create or edit `.vscode/mcp.json` in your user profile or workspace:
-   
+
    ```json
    {
      "inputs": [],
      "servers": {
-       "hexmaster-design-guidelines": {
+       "jsdotnet-coding-guidelines": {
          "type": "stdio",
-         "command": "hexmaster-codingguidelines-mcpserver",
+         "command": "jsdotnet-project-guidelines-mcpserver",
          "args": []
        }
      }
@@ -84,8 +89,9 @@ This is the recommended approach for general use. Documents are automatically fe
 **Visual Studio Setup**
 
 1. **Install the package**:
+
    ```powershell
-   dotnet tool install --global HexMaster.CodingGuidelines.McpServer
+   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
    ```
 
 2. **Configure Copilot MCP settings**:
@@ -93,8 +99,8 @@ This is the recommended approach for general use. Documents are automatically fe
    - Navigate to `GitHub` → `Copilot` → `MCP Servers`
    - Click "Add Server"
    - Configure:
-     - **Name:** `hexmaster-design-guidelines`
-     - **Command:** `hexmaster-codingguidelines-mcpserver`
+     - **Name:** `jsdotnet-coding-guidelines`
+     - **Command:** `jsdotnet-project-guidelines-mcpserver`
 
 3. **Restart Visual Studio** to apply changes
 
@@ -103,16 +109,18 @@ This is the recommended approach for general use. Documents are automatically fe
    - The MCP server should be listed as an active tool
    - Ask Copilot: "Show me the ADR for .NET version adoption"
 
-**How it works**: When installed as a global tool, the server automatically fetches documents from the GitHub repository (`https://github.com/nikneem/hexmaster-design-guidelines`). No local clone is required, and you'll always get the latest published content from the `main` branch.
+**How it works**: When installed as a global tool, the server automatically fetches documents from the GitHub repository (`https://github.com/JSdotNet/Project-Guidelines-MCP`). No local clone is required, and you'll always get the latest published content from the `main` branch.
 
 **Update**:
+
 ```bash
-dotnet tool update --global HexMaster.CodingGuidelines.McpServer
+dotnet tool update --global JSdotNet.Project.Guidelines.McpServer
 ```
 
 **Uninstall**:
+
 ```bash
-dotnet tool uninstall --global HexMaster.CodingGuidelines.McpServer
+dotnet tool uninstall --global JSdotNet.Project.Guidelines.McpServer
 ```
 
 ---
@@ -122,17 +130,19 @@ dotnet tool uninstall --global HexMaster.CodingGuidelines.McpServer
 Copilot CLI reads `.mcp.json` from your project root automatically. This repo ships a ready-to-use `.mcp.json` — you only need to install the global tool first.
 
 1. **Install the package** (if not already installed):
+
    ```bash
-   dotnet tool install --global HexMaster.CodingGuidelines.McpServer
+   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
    ```
 
 2. **Copy `.mcp.json` to your project root** (or add the server entry to an existing `.mcp.json`):
+
    ```json
    {
      "mcpServers": {
-       "hexmaster-design-guidelines": {
+       "jsdotnet-coding-guidelines": {
          "type": "stdio",
-         "command": "hexmaster-codingguidelines-mcpserver",
+         "command": "jsdotnet-project-guidelines-mcpserver",
          "args": [],
          "tools": ["*"]
        }
@@ -141,31 +151,39 @@ Copilot CLI reads `.mcp.json` from your project root automatically. This repo sh
    ```
 
 3. **Start Copilot CLI** in your project folder:
+
    ```bash
    copilot
    ```
+
    The MCP server is picked up automatically — no restart needed.
 
-4. **Verify** by running `/mcp show hexmaster-design-guidelines` inside the CLI session.
+4. **Verify** by running `/mcp show jsdotnet-coding-guidelines` inside the CLI session.
 
 **Alternatively**, add the server at the user level (available in all projects):
+
 ```bash
 # Inside a Copilot CLI session
 /mcp add
 ```
-Follow the prompts: type `stdio`, command `hexmaster-codingguidelines-mcpserver`, tools `*`.
+
+Follow the prompts: type `stdio`, command `jsdotnet-project-guidelines-mcpserver`, tools `*`.
 
 **Update**:
+
 ```bash
-dotnet tool update --global HexMaster.CodingGuidelines.McpServer
+dotnet tool update --global JSdotNet.Project.Guidelines.McpServer
 ```
+
 Then inside an active Copilot CLI session, run `/mcp show` to confirm the updated server version is loaded.
 
 **Uninstall**:
+
 ```bash
-dotnet tool uninstall --global HexMaster.CodingGuidelines.McpServer
+dotnet tool uninstall --global JSdotNet.Project.Guidelines.McpServer
 ```
-Then remove the entry from `.mcp.json` or run `/mcp delete hexmaster-design-guidelines` inside a Copilot CLI session to remove the user-level entry.
+
+Then remove the entry from `.mcp.json` or run `/mcp delete jsdotnet-coding-guidelines` inside a Copilot CLI session to remove the user-level entry.
 
 ---
 
@@ -176,30 +194,32 @@ For contributors testing local changes before publishing to NuGet. This allows y
 **VS Code Setup**
 
 1. **Clone the repository**:
+
    ```bash
-   git clone https://github.com/nikneem/hexmaster-design-guidelines.git
-   cd hexmaster-design-guidelines
+   git clone https://github.com/JSdotNet/Project-Guidelines-MCP.git
+   cd Project-Guidelines-MCP
    ```
 
 2. **Create or edit `.vscode/mcp.json`** in the repository root with your actual path:
+
    ```json
    {
      "inputs": [],
      "servers": {
-       "hexmaster-design-guidelines-local": {
+       "jsdotnet-project-guidelines-local": {
          "type": "stdio",
          "command": "dotnet",
          "args": [
            "run",
            "--project",
-           "D:/projects/github.com/nikneem/hexmaster-design-guidelines/src/HexMaster.CodingGuidelines.McpServer/HexMaster.CodingGuidelines.McpServer.csproj"
+           "D:/projects/github.com/JSdotNet/Project-Guidelines-MCP/src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj"
          ]
        }
      }
    }
    ```
 
-4. **Restart VS Code** - The MCP server will run directly from your local source code
+3. **Restart VS Code** - The MCP server will run directly from your local source code
 
 **How it works**: When running from source with `dotnet run`, the server automatically discovers and reads documents from your local `docs/` folder. This allows you to test changes immediately without publishing.
 
@@ -209,10 +229,10 @@ If you want to test the packaged tool locally before publishing to NuGet.org:
 
 ```powershell
 # Pack the project
-dotnet pack src/HexMaster.CodingGuidelines.McpServer/HexMaster.CodingGuidelines.McpServer.csproj -o ./local-packages
+dotnet pack src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj -o ./local-packages
 
 # Install from local package
-dotnet tool install --global --add-source ./local-packages HexMaster.CodingGuidelines.McpServer
+dotnet tool install --global --add-source ./local-packages JSdotNet.Project.Guidelines.McpServer
 ```
 
 ---
@@ -220,17 +240,20 @@ dotnet tool install --global --add-source ./local-packages HexMaster.CodingGuide
 #### Troubleshooting
 
 **Server doesn't appear in Copilot**
+
 - Check Output panel (View → Output) and select "MCP" from dropdown
 - Verify the command path is correct (use full path if needed)
 - Ensure .NET 10 SDK is installed: `dotnet --version`
 - Try restarting VS Code
 
 **Documents not loading**
+
 - For NuGet installation: Check internet connectivity (docs fetched from GitHub)
-- For local development: Verify `HEXMASTER_REPO_ROOT` points to repository root
+- For local development: Verify `JSDOTNET_REPO_ROOT` points to repository root
 - Check server logs in MCP Output panel
 
 **Global tool not found**
+
 - Verify installation: `dotnet tool list --global`
 - Check PATH includes .NET tools directory
   - Windows: `%USERPROFILE%\.dotnet\tools`
@@ -239,40 +262,66 @@ dotnet tool install --global --add-source ./local-packages HexMaster.CodingGuide
 ---
 
 ### Registering new documents
-This repository intentionally keeps an explicit registry. When you add a file anywhere under `docs/`, register it in:
 
-`src/Hexmaster.DesignGuidelines.Core/Services/DocumentRegistry.cs`
+This repository uses `docs/index.json` as the canonical registry for MCP document discovery.
 
-Add a new entry with an `Id`, `Title`, `RelativePath` (from repo root) and the correct category type. This ensures the MCP Server “knows” about the document and it will appear in `/docs` and be retrievable via `/docs/{id}`.
+When you add, rename, edit, or remove markdown files in `docs/`, also update `docs/index.json` so metadata and paths stay in sync.
 
 ## Repo structure
 
 ```
 docs/
-	adrs/
-	designs/
-	recommendations/
-	structures/
+ adrs/
+ designs/
+ recommendations/
+ structures/
 src/
-	Hexmaster.DesignGuidelines.Core/
-	Hexmaster.DesignGuidelines.Server/
-	hexmaster-design-guidelines.sln
+ Project.Guidelines.Docs/
+ Project.Guidelines.McpServer/
+tests/
+ Project.Guidelines.McpServer.Tests/
+JSdotNet.Project.Guidelines.slnx
 .github/
-	copilot-instructions.md
+ copilot-instructions.md
 ```
 
 ## ADRs
- - 0001: Adopt .NET 10 as Target Framework (Accepted)
- - 0002: Modular Monolith Project Structure (Proposed)
- - 0003: .NET Aspire Recommendation for ASP.NET Services (Proposed)
- - 0004: CQRS Recommendation for ASP.NET API (Proposed)
- - 0005: Minimal APIs Over Controller-Based APIs (Proposed)
+
+- [0001: Adopt .NET 10 as Target Framework](docs/adrs/0001-adopt-dotnet-10.md) (Accepted)
+- [0002: Central Package Management for .NET Solutions](docs/adrs/0002-central-package-management.md) (Accepted)
+- [0003: .NET Aspire Recommendation for ASP.NET Services](docs/adrs/0003-recommend-aspire-for-aspnet-projects.md) (Accepted)
+- [0004: Standardize Result Objects for Expected Application Outcomes](docs/adrs/0004-standardize-result-objects-for-expected-failures.md) (Accepted)
+- [0005: Modular Monolith Project Structure](docs/adrs/0005-modular-monolith-structure.md) (Accepted)
+- [0006: CQRS Recommendation for ASP.NET API](docs/adrs/0006-cqrs-recommendation-for-aspnet-api.md) (Accepted)
+- [0007: Minimal APIs Over Controller-Based APIs](docs/adrs/0007-minimal-apis-over-controllers.md) (Accepted)
+- [0008: Adopt Vertical Slice Architecture for Feature Organization](docs/adrs/0008-vertical-slice-architecture.md) (Accepted)
+- [0009: Feature Slices Within Module Projects](docs/adrs/0009-feature-slices-module-structure.md) (Accepted)
+- [0010: Adopt OpenTelemetry for Comprehensive Observability](docs/adrs/0010-adopt-opentelemetry-for-observability.md) (Accepted)
+- [0011: Centralized Frontend Styling Variables](docs/adrs/0011-centralized-frontend-styling-variables.md) (Accepted)
+
+## Designs
+
+- [Modular Monolith Architecture Design](docs/designs/modular-monolith-architecture-design.md)
+- [Pragmatic Domain-Driven Design Approach](docs/designs/pragmatic-domain-driven-design.md)
 
 ## Recommendations
-- Unit Testing with xUnit, Moq, Bogus (`docs/recommendations/unit-testing-xunit-moq-bogus.md`)
+
+- [Blazor Frontend Framework Guidance](docs/recommendations/blazor-frontend-framework-guidance.md)
+- [C# Coding Style](docs/recommendations/csharp-coding-style.md)
+- [Object Calisthenics for Domain Code](docs/recommendations/object-calisthenics-for-domain.md)
+- [Specification Pattern for Business Rules](docs/recommendations/specification-pattern-usage.md)
+- [Architecture Testing for Layer and Module Boundaries](docs/recommendations/testing-architecture-layer-dependency-validation.md)
+- [End-to-End Testing](docs/recommendations/testing-end-to-end.md)
+- [Integration Testing](docs/recommendations/testing-integration.md)
+- [Unit Testing with xUnit, Moq, and Bogus](docs/recommendations/testing-unit-xunit-moq-bogus.md)
 
 ## Structures
-- Minimal API Endpoint Organization (`docs/structures/minimal-api-endpoint-organization.md`)
+
+- [Feature Slices Module Structure](docs/structures/feature-slices-module-structure.md)
+- [Folder Structure Reference](docs/structures/folder-structure-reference.md)
+- [Minimal API Endpoint Organization](docs/structures/minimal-api-endpoint-organization.md)
+- [Modular Solution Structure Template](docs/structures/modular-solution-structure.md)
+- [Simple Solution Structure Design](docs/structures/simple-solution-structure.md)
 
 ---
 
@@ -282,20 +331,21 @@ src/
 
 ```bash
 # Build the solution
-dotnet build src/
+dotnet build JSdotNet.Project.Guidelines.slnx
 
 # Run all tests
-dotnet test src/
+dotnet test tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj
 
 # Run tests with coverage
-dotnet test src/ --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+dotnet test tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
 
 # Generate coverage report
 reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
 ```
 
 ### Code Coverage Requirements
-- **Core Library** (`HexMaster.CodingGuidelines.Docs`): ≥80% line coverage
+
+- **Core Library** (`JSdotNet.Project.Guidelines.Docs`): ≥80% line coverage
 - **Tests**: All tests must pass
 - Coverage reports are automatically generated in CI/CD
 
@@ -304,11 +354,13 @@ reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"covera
 ## CI/CD Workflows
 
 ### Build and Publish Workflow
+
 **Workflow**: `.github/workflows/publish-nuget.yml`
 
 Triggers on push to `main` branch when files in `src/` change.
 
 Steps:
+
 1. **Versioning** – GitVersion generates semantic version
 2. **Build** – Compiles solution in Release configuration with version info
 3. **Test** – Runs all unit tests with 80% coverage enforcement
@@ -318,6 +370,7 @@ Steps:
 7. **Release** – Creates GitHub release with version tag and artifacts
 
 Semantic Versioning Strategy (GitHubFlow):
+
 - **Main branch**: 1.0.0, 1.0.1, 1.0.2... (patch increments)
 - **Feature branches** (`feature/*`): 1.1.0-alpha.1, 1.1.0-alpha.2... (minor with alpha pre-release)
 - **Release branches** (`release/*`): 1.0.0-beta.1, 1.0.0-beta.2... (beta pre-release)
@@ -325,22 +378,28 @@ Semantic Versioning Strategy (GitHubFlow):
 Configuration: `GitVersion.yml` at repository root.
 
 ### NuGet Package
+
 Published to NuGet.org:
-- **HexMaster.CodingGuidelines.McpServer** – MCP Server .NET global tool
+
+- **JSdotNet.Project.Guidelines.McpServer** – MCP Server .NET global tool
 
 Package features:
+
 - .NET 10 global tool
 - Automatic document discovery from filesystem or GitHub
 - ModelContextProtocol SDK integration
 - MIT license
 
 ### Setup Requirements
+
 To enable automated publishing, add the following GitHub secret:
+
 - `NUGET_API_KEY` – NuGet.org API key with push permissions
 
 Navigate to: Repository Settings → Secrets and variables → Actions → New repository secret
 
 ### Local Version Testing
+
 To check what version GitVersion would generate locally:
 
 ```bash
@@ -352,6 +411,7 @@ dotnet-gitversion
 ```
 
 ## Notes
+
 - All code and examples target `.NET 10`.
 - The MCP Server uses the `FileSystemDocumentCatalog` for local development and `GitHubDocumentCatalog` for published scenarios.
 - Coverage threshold is enforced at 80% for core library code.

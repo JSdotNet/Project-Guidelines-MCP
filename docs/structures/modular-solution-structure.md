@@ -1,31 +1,45 @@
 ---
-title: "Modular Solution Structure Design"
-date: 2026-06-02
+title: "Modular Solution Structure Template"
+date: 2025-11-12
 status: Accepted
-tags: [design, modular, architecture, aspire]
+tags: [structure, modular, architecture, aspire, template]
 ---
-# Modular Solution Structure Design
+# Modular Solution Structure Template
 
 **Status**: Accepted  
-**Date**: 2026-06-02  
+**Date**: 2025-11-12  
 **Author**: Design Guidelines Team
 
 ## Overview
 
-This document defines the recommended solution and filesystem structure for .NET projects, particularly for web-enabled applications (Web APIs, Web Apps). The structure emphasizes modularity, domain-driven organization, and clear separation of concerns.
+This document defines the canonical solution and filesystem scaffold for .NET modular monolith projects, especially web-enabled applications (Web APIs, Web Apps).
 
-## Problem Statement
+## Scope
 
-Teams need consistent guidance on:
-- How to organize solutions with multiple modules or domains
-- Where to place Aspire orchestration projects
-- How to structure domain-specific code and dependencies
-- Naming conventions for projects across different layers
-- When and how to split modules into independent services
+This template is intentionally prescriptive about placement and naming.
 
-Without clear structure, solutions become difficult to navigate, maintain, and scale as the codebase grows.
+Included here:
+
+- Folder and project layout
+- Naming conventions
+- Per-project responsibilities
+- Copy/paste examples
+
+Intentionally not covered in depth here:
+
+- Architectural rationale and trade-offs
+- Boundary and consistency strategy
+- Evolution and extraction strategy
+
+For those concerns, see `designs/modular-monolith-architecture-design.md`.
 
 ## Proposed Solution Structure
+
+This template covers the **multi-module** solution profile.
+
+For single-module solutions, use `structures/simple-solution-structure.md`.
+
+All test projects are placed under `solution-root/tests/`.
 
 ### High-Level Organization
 
@@ -34,54 +48,63 @@ solution-root/
 ├── src/
 │   ├── App/                                       # Frontend application (Angular, Blazor, React)
 │   ├── Aspire/                                    # Orchestration projects (web-enabled only)
-│   │   ├── Company.Product.Aspire.AppHost/
-│   │   └── Company.Product.Aspire.ServiceDefaults/
+│   │   ├── Company.Webshop.Aspire.AppHost/
+│   │   └── Company.Webshop.Aspire.ServiceDefaults/
 │   ├── Core/                                      # Shared CQRS interfaces (ICommandHandler, IQueryHandler, IClock)
 │   ├── ModuleName/                                # Domain/Module folders (short name: Orders, Conferences)
-│   │   ├── Company.Product.ModuleName/
-│   │   ├── Company.Product.ModuleName.Abstractions/
-│   │   ├── Company.Product.ModuleName.Api/        # Every web-exposed module has its own API
-│   │   ├── Company.Product.ModuleName.Data.{StorageType}/
-│   │   └── Company.Product.ModuleName.Tests/
+│   │   ├── Company.Webshop.ModuleName/
+│   │   ├── Company.Webshop.ModuleName.Abstractions/
+│   │   ├── Company.Webshop.ModuleName.Api/        # Every web-exposed module has its own API
+│   │   ├── Company.Webshop.ModuleName.Data.{StorageType}/
 │   └── Shared/                                    # Optional: Cross-module integration events
-│       └── Company.Product.IntegrationEvents/
-├── tests/                                         # Optional: Integration/E2E tests
-│   └── Company.Product.IntegrationTests/
-└── Company.Product.sln
+│       └── Company.Webshop.IntegrationEvents/
+├── tests/
+│   ├── Company.Webshop.ModuleName.UnitTests/
+│   ├── Company.Webshop.IntegrationTests/
+│   ├── Company.Webshop.ArchitectureTests/
+│   └── Company.Webshop.E2ETests/
+└── Company.Webshop.sln
 ```
 
 ### Example: Multi-Module Solution
 
-For a product called "Webshop" by company "Contoso" with Inventory, Users, and Catalog modules:
+For a product called "Webshop" by company "Company" with Inventory, Users, and Catalog modules:
 
 ```
-Contoso.Webshop/
+Company.Webshop/
 ├── src/
 │   ├── App/                                           (Angular / Blazor frontend)
 │   ├── Aspire/
-│   │   ├── Contoso.Webshop.Aspire.AppHost/
-│   │   └── Contoso.Webshop.Aspire.ServiceDefaults/
+│   │   ├── Company.Webshop.Aspire.AppHost/
+│   │   └── Company.Webshop.Aspire.ServiceDefaults/
 │   ├── Core/
-│   │   └── Contoso.Webshop.Core/                    (ICommandHandler, IQueryHandler, IClock)
+│   │   └── Company.Webshop.Core/                    (ICommandHandler, IQueryHandler, IClock)
 │   ├── Inventory/
-│   │   ├── Contoso.Webshop.Inventory/
-│   │   ├── Contoso.Webshop.Inventory.Abstractions/
-│   │   ├── Contoso.Webshop.Inventory.Api/
-│   │   ├── Contoso.Webshop.Inventory.Data.SqlServer/
-│   │   └── Contoso.Webshop.Inventory.Tests/
+│   │   ├── Company.Webshop.Inventory/
+│   │   ├── Company.Webshop.Inventory.Abstractions/
+│   │   ├── Company.Webshop.Inventory.Api/
+│   │   ├── Company.Webshop.Inventory.Data.SqlServer/
+│   │   └── README.md
 │   ├── Users/
-│   │   ├── Contoso.Webshop.Users/
-│   │   ├── Contoso.Webshop.Users.Abstractions/
-│   │   ├── Contoso.Webshop.Users.Api/
-│   │   ├── Contoso.Webshop.Users.Data.CosmosDb/
-│   │   └── Contoso.Webshop.Users.Tests/
+│   │   ├── Company.Webshop.Users/
+│   │   ├── Company.Webshop.Users.Abstractions/
+│   │   ├── Company.Webshop.Users.Api/
+│   │   ├── Company.Webshop.Users.Data.CosmosDb/
+│   │   └── README.md
 │   └── Catalog/
-│       ├── Contoso.Webshop.Catalog/
-│       ├── Contoso.Webshop.Catalog.Abstractions/
-│       ├── Contoso.Webshop.Catalog.Api/
-│       ├── Contoso.Webshop.Catalog.Data.MongoDb/
-│       └── Contoso.Webshop.Catalog.Tests/
-└── Contoso.Webshop.sln
+│       ├── Company.Webshop.Catalog/
+│       ├── Company.Webshop.Catalog.Abstractions/
+│       ├── Company.Webshop.Catalog.Api/
+│       ├── Company.Webshop.Catalog.Data.MongoDb/
+│       └── README.md
+├── tests/
+│   ├── Company.Webshop.Inventory.UnitTests/
+│   ├── Company.Webshop.Users.UnitTests/
+│   ├── Company.Webshop.Catalog.UnitTests/
+│   ├── Company.Webshop.IntegrationTests/
+│   ├── Company.Webshop.ArchitectureTests/
+│   └── Company.Webshop.E2ETests/
+└── Company.Webshop.sln
 ```
 
 ## Detailed Component Guidelines
@@ -91,8 +114,9 @@ Contoso.Webshop/
 **When to use**: Projects exposing HTTP endpoints (Web APIs, Web Apps, gRPC services)
 
 **Contents**:
-- **`Company.Product.Aspire.AppHost`**: Aspire orchestration project that defines service topology, dependencies, and local development environment
-- **`Company.Product.Aspire.ServiceDefaults`**: Shared configurations for observability, health checks, service discovery, and common middleware
+
+- **`Company.Webshop.Aspire.AppHost`**: Aspire orchestration project that defines service topology, dependencies, and local development environment
+- **`Company.Webshop.Aspire.ServiceDefaults`**: Shared configurations for observability, health checks, service discovery, and common middleware
 
 **Purpose**: Centralizes distributed application orchestration and shared service configurations.
 
@@ -102,24 +126,27 @@ Contoso.Webshop/
 
 Each business domain or bounded context gets its own folder containing related projects.
 
-#### Core Library: `Company.Product.ModuleName`
+#### Core Library: `Company.Webshop.ModuleName`
 
 **Purpose**: Contains domain logic, business rules, and application services.
 
 **Contents**:
+
 - Domain entities and value objects
 - Domain services
 - Application use cases/handlers (CQRS commands/queries)
 - Validators and business rules
 - Internal implementations
 
-**Dependencies**: 
-- May reference `Company.Product.ModuleName.Abstractions`
+**Dependencies**:
+
+- May reference `Company.Webshop.ModuleName.Abstractions`
 - Should NOT reference other modules directly (use abstractions)
 
 **Example**:
+
 ```
-Contoso.Webshop.Persons/
+Company.Webshop.Persons/
 ├── Entities/
 │   ├── Person.cs
 │   └── Address.cs
@@ -131,11 +158,12 @@ Contoso.Webshop.Persons/
     └── PersonValidator.cs
 ```
 
-#### Abstractions Library: `Company.Product.ModuleName.Abstractions`
+#### Abstractions Library: `Company.Webshop.ModuleName.Abstractions`
 
 **Purpose**: Defines contracts that other modules can depend on without circular references.
 
 **Contents**:
+
 - DTOs as C# `record` types
 - Repository interfaces (`IPersonRepository`)
 - Service interfaces (`IPersonService`)
@@ -145,14 +173,16 @@ Contoso.Webshop.Persons/
 **Dependencies**: Minimal - only framework dependencies and shared kernel abstractions
 
 **Why separate abstractions**:
+
 - Enables other modules to depend on contracts without implementation
 - Reduces coupling between modules
 - Facilitates testing with mocks/stubs
 - Supports plugin architectures
 
 **Example**:
+
 ```csharp
-namespace Contoso.Webshop.Persons.Abstractions;
+namespace Company.Webshop.Persons.Abstractions;
 
 // DTO
 public record PersonDto(Guid Id, string FirstName, string LastName, string Email);
@@ -172,11 +202,12 @@ public interface IPersonService
 }
 ```
 
-#### Data Access: `Company.Product.ModuleName.Data.{StorageType}`
+#### Data Access: `Company.Webshop.ModuleName.Data.{StorageType}`
 
 **When to use**: Module requires persistent storage
 
 **Naming convention**: `{StorageType}` replaced with actual storage technology:
+
 - `SqlServer`
 - `PostgreSQL`
 - `MongoDb`
@@ -186,6 +217,7 @@ public interface IPersonService
 - `Blob` (for blob/file storage)
 
 **Contents**:
+
 - Repository implementations
 - Entity configurations (EF Core)
 - Database context
@@ -193,12 +225,14 @@ public interface IPersonService
 - Data access utilities
 
 **Dependencies**:
-- References `Company.Product.ModuleName.Abstractions` (implements interfaces)
+
+- References `Company.Webshop.ModuleName.Abstractions` (implements interfaces)
 - Storage-specific NuGet packages (Npgsql, MongoDB.Driver, etc.)
 
 **Example**:
+
 ```csharp
-namespace Contoso.Webshop.Persons.Data.SqlServer;
+namespace Company.Webshop.Persons.Data.SqlServer;
 
 public class PersonRepository : IPersonRepository
 {
@@ -217,13 +251,14 @@ public class PersonRepository : IPersonRepository
 }
 ```
 
-#### Tests: `Company.Product.ModuleName.Tests`
+#### Tests (Root-Level): `tests/Company.Webshop.*Tests`
 
 **Mandatory**: Every module MUST have unit tests
 
-**Framework**: xUnit (see recommendations/unit-testing-xunit-moq-bogus.md)
+**Framework**: xUnit (see recommendations/testing-unit-xunit-moq-bogus.md)
 
 **Contents**:
+
 - Unit tests for domain logic
 - Service tests
 - Validator tests
@@ -233,9 +268,30 @@ public class PersonRepository : IPersonRepository
 
 **Coverage requirement**: Minimum 80% line coverage (see ADR 0001)
 
+### Testing Project Layout Options
+
+All test projects are placed under `solution-root/tests/`.
+
+Recommended test project set:
+
+- `tests/Company.Webshop.{Module}.UnitTests/`
+- `tests/Company.Webshop.IntegrationTests/` (single shared integration project)
+- `tests/Company.Webshop.ArchitectureTests/` (shared) or `tests/Company.Webshop.{Module}.ArchitectureTests/` (module-specific)
+- `tests/Company.Webshop.E2ETests/`
+
+Why this policy:
+
+- Improves discoverability and onboarding.
+- Simplifies CI pipeline targeting by test category.
+- Keeps production code and test code physically separated.
+- Supports cross-module end-to-end tests without coupling them to one module folder.
+
+For architecture tests, each production assembly should provide a marker type (for example `AssemblyReference.cs`) so tests can reference assemblies safely.
+
 **Example**:
+
 ```csharp
-namespace Contoso.Webshop.Persons.Tests;
+namespace Company.Webshop.Persons.Tests;
 
 public class PersonServiceTests
 {
@@ -256,11 +312,12 @@ public class PersonServiceTests
 }
 ```
 
-#### Per-Module API: `Company.Product.ModuleName.Api`
+#### Per-Module API: `Company.Webshop.ModuleName.Api`
 
 **Purpose**: Every web-exposed module has its own independently deployable API project.
 
 **Contents**:
+
 - Minimal API endpoints
 - Authorization policies
 - Background services
@@ -268,8 +325,9 @@ public class PersonServiceTests
 - Program.cs
 
 **Example structure**:
+
 ```
-Contoso.Webshop.Users.Api/
+Company.Webshop.Users.Api/
 ├── Endpoints/
 │   ├── UserEndpoints.cs
 │   └── AuthEndpoints.cs
@@ -280,6 +338,7 @@ Contoso.Webshop.Users.Api/
 ```
 
 **Program.cs** wires Aspire service defaults and the module:
+
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
@@ -294,6 +353,7 @@ app.Run();
 ```
 
 **Example endpoint**:
+
 ```csharp
 public static class UserEndpoints
 {
@@ -320,28 +380,33 @@ public static class UserEndpoints
 **Pattern**: `{Company}.{Product}.{Module}[.{Layer}][.{Technology}]`
 
 **Components**:
-- `Company`: Organization name (e.g., Contoso, Contoso, Contoso)
+
+- `Company`: Organization name (e.g., Company, Contoso, Fabrikam)
 - `Product`: Product/solution name (e.g., Webshop, Ordering, Catalog)
 - `Module`: Domain/module name (e.g., Persons, Inventory, Shipping)
 - `Layer`: Optional layer designation (Abstractions, Data, Api)
 - `Technology`: For data projects, the storage type (SqlServer, MongoDb)
 
 **Examples**:
-- ✅ `Contoso.Webshop.Persons`
-- ✅ `Contoso.Webshop.Persons.Abstractions`
-- ✅ `Contoso.Webshop.Persons.Data.PostgreSQL`
-- ✅ `Contoso.Webshop.Persons.Api`
-- ✅ `Contoso.Webshop.Persons.Tests`
+
+- ✅ `Company.Webshop.Persons`
+- ✅ `Company.Webshop.Persons.Abstractions`
+- ✅ `Company.Webshop.Persons.Data.PostgreSQL`
+- ✅ `Company.Webshop.Persons.Api`
+- ✅ `Company.Webshop.Persons.UnitTests`
+- ✅ `Company.Webshop.IntegrationTests`
+- ✅ `Company.Webshop.E2ETests`
 - ❌ `Persons` (too generic)
-- ❌ `Contoso.Webshop.PersonsAbstractions` (missing dot separator)
-- ❌ `Contoso.Webshop.Persons.Postgres` (use PostgreSQL for consistency)
+- ❌ `Company.Webshop.PersonsAbstractions` (missing dot separator)
+- ❌ `Company.Webshop.Persons.Postgres` (use PostgreSQL for consistency)
 
 ### Folder Names
 
 **Pattern**: Use module name without company/product prefix
 
 **Examples**:
-- ✅ `Persons/` (not `Contoso.Webshop.Persons/`)
+
+- ✅ `Persons/` (not `Company.Webshop.Persons/`)
 - ✅ `Inventory/`
 - ✅ `Aspire/`
 - ✅ `SharedKernel/`
@@ -374,6 +439,7 @@ Shared Kernel
 ### When to Create a Separate Module
 
 Create a new module folder when:
+
 - ✅ Represents a distinct bounded context or domain
 - ✅ Has its own data model and business rules
 - ✅ Could potentially become an independent service
@@ -383,18 +449,21 @@ Create a new module folder when:
 ### When to Use Abstractions Project
 
 Create a separate abstractions project when:
+
 - ✅ Other modules need to call your module's services
 - ✅ You want to enable testing without concrete implementations
 - ✅ You're building a plugin/extensibility system
 - ✅ Multiple data implementations exist (e.g., SQL + NoSQL)
 
 Skip abstractions if:
+
 - ❌ Module is completely isolated with no external consumers
 - ❌ Only used internally within a single bounded context
 
 ### When to Create Independent API
 
 Create a separate API project when:
+
 - ✅ Module needs to scale independently
 - ✅ Module deployed to different infrastructure
 - ✅ Module owned by separate team with independent release cycle
@@ -402,6 +471,7 @@ Create a separate API project when:
 - ✅ Building microservices architecture
 
 Use modular monolith (single API) when:
+
 - ❌ Modules share the same deployment cadence
 - ❌ Team is small or just starting
 - ❌ No clear need for independent scaling
@@ -432,20 +502,23 @@ Use modular monolith (single API) when:
 Use solution folders to organize projects:
 
 ```
-Solution 'Contoso.Webshop'
+Solution 'Company.Webshop'
 ├── src
 │   ├── Aspire
-│   │   ├── Contoso.Webshop.Aspire.AppHost
-│   │   └── Contoso.Webshop.Aspire.ServiceDefaults
+│   │   ├── Company.Webshop.Aspire.AppHost
+│   │   └── Company.Webshop.Aspire.ServiceDefaults
 │   ├── Inventory
-│   │   ├── Contoso.Webshop.Inventory
-│   │   ├── Contoso.Webshop.Inventory.Abstractions
-│   │   └── Contoso.Webshop.Inventory.Tests
+│   │   ├── Company.Webshop.Inventory
+│   │   ├── Company.Webshop.Inventory.Abstractions
+│   │   └── Company.Webshop.Inventory.Data.SqlServer
 │   └── Users
-│       ├── Contoso.Webshop.Users
-│       └── Contoso.Webshop.Users.Tests
+│       ├── Company.Webshop.Users
+│       └── Company.Webshop.Users.Data.CosmosDb
 └── tests
-    └── Contoso.Webshop.IntegrationTests
+  ├── Company.Webshop.Inventory.UnitTests
+  ├── Company.Webshop.Users.UnitTests
+  ├── Company.Webshop.Catalog.UnitTests
+    └── Company.Webshop.IntegrationTests
 ```
 
 ### Directory.Build.props
@@ -463,9 +536,9 @@ Place at solution root to enforce consistency:
   </PropertyGroup>
   
   <PropertyGroup>
-    <Company>Contoso</Company>
+    <Company>Company</Company>
     <Product>Webshop</Product>
-    <Copyright>Copyright © Contoso 2025</Copyright>
+    <Copyright>Copyright © Company 2025</Copyright>
   </PropertyGroup>
 </Project>
 ```
@@ -494,12 +567,18 @@ Contoso.Shop/
 │   │   ├── Contoso.Shop.Catalog/
 │   │   ├── Contoso.Shop.Catalog.Abstractions/
 │   │   ├── Contoso.Shop.Catalog.Data.SqlServer/
-│   │   └── Contoso.Shop.Catalog.Tests/
+│   │   └── README.md
 │   └── Orders/
 │       ├── Contoso.Shop.Orders/
 │       ├── Contoso.Shop.Orders.Abstractions/
 │       ├── Contoso.Shop.Orders.Data.SqlServer/
-│       └── Contoso.Shop.Orders.Tests/
+│       └── README.md
+├── tests/
+│   ├── Contoso.Shop.Catalog.UnitTests/
+│   ├── Contoso.Shop.Orders.UnitTests/
+│   ├── Contoso.Shop.IntegrationTests/
+│   ├── Contoso.Shop.ArchitectureTests/
+│   └── Contoso.Shop.E2ETests/
 └── Contoso.Shop.sln
 ```
 
@@ -516,23 +595,27 @@ Contoso.Ecommerce/
 │   │   ├── Contoso.Ecommerce.Catalog.Abstractions/
 │   │   ├── Contoso.Ecommerce.Catalog.Data.MongoDb/
 │   │   ├── Contoso.Ecommerce.Catalog.Api/
-│   │   └── Contoso.Ecommerce.Catalog.Tests/
+│   │   └── README.md
 │   ├── Orders/
 │   │   ├── Contoso.Ecommerce.Orders/
 │   │   ├── Contoso.Ecommerce.Orders.Abstractions/
 │   │   ├── Contoso.Ecommerce.Orders.Data.SqlServer/
 │   │   ├── Contoso.Ecommerce.Orders.Api/
-│   │   └── Contoso.Ecommerce.Orders.Tests/
+│   │   └── README.md
 │   ├── Payments/
 │   │   ├── Contoso.Ecommerce.Payments/
 │   │   ├── Contoso.Ecommerce.Payments.Abstractions/
 │   │   ├── Contoso.Ecommerce.Payments.Data.CosmosDb/
 │   │   ├── Contoso.Ecommerce.Payments.Api/
-│   │   └── Contoso.Ecommerce.Payments.Tests/
+│   │   └── README.md
 │   └── SharedKernel/
 │       ├── Contoso.Ecommerce.SharedKernel/
 │       └── Contoso.Ecommerce.SharedKernel.Abstractions/
 ├── tests/
+│   ├── Contoso.Ecommerce.Catalog.UnitTests/
+│   ├── Contoso.Ecommerce.Orders.UnitTests/
+│   ├── Contoso.Ecommerce.Payments.UnitTests/
+│   ├── Contoso.Ecommerce.ArchitectureTests/
 │   ├── Contoso.Ecommerce.IntegrationTests/
 │   └── Contoso.Ecommerce.E2ETests/
 └── Contoso.Ecommerce.sln
@@ -540,14 +623,18 @@ Contoso.Ecommerce/
 
 ## Related Documents
 
-- **ADR 0002**: Modular Monolith Project Structure
+- **ADR 0005**: Modular Monolith Project Structure
 - **ADR 0003**: Recommend Aspire for ASP.NET Projects
-- **ADR 0004**: CQRS Recommendation for ASP.NET API
+- **ADR 0006**: CQRS Recommendation for ASP.NET API
+- **Design**: Simple Solution Structure
 - **Recommendation**: Unit Testing with xUnit, Moq, Bogus
+- **Recommendation**: Integration Testing
+- **Recommendation**: End-to-End Testing
 
 ## Summary
 
 This structure provides:
+
 - ✅ Clear separation of concerns
 - ✅ Explicit dependencies via abstractions
 - ✅ Testability with xUnit

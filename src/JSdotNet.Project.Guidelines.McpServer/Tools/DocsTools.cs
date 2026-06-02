@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Text.Json;
-using HexMaster.CodingGuidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.Docs.Abstractions;
 using ModelContextProtocol.Server;
 
-namespace HexMaster.CodingGuidelines.McpServer.Tools;
+namespace JSdotNet.Project.Guidelines.McpServer.Tools;
 
 [McpServerToolType]
 public static class DocsTools

@@ -1,10 +1,12 @@
 {
   "mcpServers": {
-    "hexmaster-design-guidelines": {
+    "jsdotnet-coding-guidelines": {
       "type": "stdio",
-      "command": "hexmaster-codingguidelines-mcpserver",
+      "command": "jsdotnet-project-guidelines-mcpserver",
       "args": [],
-      "tools": ["*"]
+      "tools": [
+        "*"
+      ]
     }
   }
 }

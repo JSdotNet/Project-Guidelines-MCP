@@ -1,4 +1,4 @@
-# Copilot Repository Instructions: hexmaster-design-guidelines
+# Copilot Repository Instructions: project-coding-guidelines
 
 > Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects using Hexagonal and Clean Architecture, supported by Architecture Decision Records (ADRs), design notes, recommendations and structure templates. An MCP Server (under `src/`) will expose these documents so AI agents/tools can consult them when making technical decisions.
 
@@ -21,18 +21,19 @@ The MCP Server should enable agents to query: "What is the recommended way to st
 /README.md                     – High-level name; expand later.
 /docs/
   index.json                   – Document metadata index (MUST be updated when docs change)
-  adrs/                        – Each ADR: `NNNN-title.md` (sequential 0001, 0002 ...)
+  adrs/                        – Each ADR: `NNNN-title.md` (sequential 0001, 0005 ...)
   designs/                     – Deeper design explorations & diagrams
   recommendations/             – Prescriptive guidance & best practices
   structures/                  – Example folder/file scaffolds & templates
-/src/                          – MCP Server solution & supporting code
-  hexmaster-design-guidelines.sln
+/src/                          – MCP Server production code
+/tests/                        – MCP Server test projects
+/JSdotNet.Project.Guidelines.slnx
 /.github/copilot-instructions.md – This file (guides Copilot behaviors)
 ```
 Future expansions may add: `scripts/`, `examples/`, `reference-implementations/`.
 
 ### Important: index.json Maintenance
-The `docs/index.json` file serves as the authoritative document registry for the MCP Server (see ADR 0006). 
+The `docs/index.json` file serves as the authoritative document registry for the MCP Server.
 
 **CRITICAL REQUIREMENT**: Whenever you add, modify, or remove documentation files in `docs/`, you MUST regenerate `docs/index.json` to reflect those changes.
 
@@ -91,6 +92,10 @@ Rules:
 ### Structures (`docs/structures`)
 - Provide canonical directory/file scaffolds (e.g., API service, background worker, library pack).
 - Show minimal code shells with comments for where domain logic goes.
+
+### Markdown Date Maintenance
+- When a markdown document is updated with meaningful content changes, update its date metadata (for example, `Date:` fields in ADRs or equivalent front matter dates).
+- Do not update document dates for minor editorial-only changes such as typo fixes, grammar cleanup, or formatting-only edits.
 
 ---
 ## 4. Architectural Principles
@@ -238,7 +243,7 @@ When asking for guidance:
 - Ask for rationale referencing ADR numbers (e.g., "Explain per ADR 0003").
 If implementing new code:
 - Request scaffolds from `structures` folder; adapt rather than invent.
-- Cite decisions with inline comments `// ADR-0005: Using circuit breaker at adapter layer`.
+- Cite decisions with inline comments `// ADR-0007: Using circuit breaker at adapter layer`.
 
 ---
 ## 19. Example Snippets
@@ -320,8 +325,7 @@ Version History:
 Until directories are populated, treat this file as canonical baseline. Populate ADRs starting from `0001` for foundational stack choices (e.g., .NET version, logging strategy, testing approach).
 
 ---
-## 25. Contact / Stewardship
-Primary maintainer: GitHub user `nikneem`. Community contributions welcome via Issues + PRs.
-
----
 End of Copilot repository instructions.
+
+
+

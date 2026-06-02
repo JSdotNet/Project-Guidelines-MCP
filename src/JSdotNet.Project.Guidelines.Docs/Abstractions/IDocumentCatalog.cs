@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HexMaster.CodingGuidelines.Docs.Abstractions;
+namespace JSdotNet.Project.Guidelines.Docs.Abstractions;
 
 /// <summary>
 /// Provides access to coding guidelines, standards, recommendations and ADRs.
