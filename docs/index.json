@@ -619,6 +619,24 @@
                                        "single-module",
                                        "structure"
                                    ]
+                      },
+                      {
+                          "id":  "config-github-app-yml",
+                          "title":  "GitHub Copilot Agent Configuration (github-app.yml)",
+                          "description":  "Standard configuration guideline for github-app.yml: mandatory pre-PR validation steps (restore, build, test), post-PR CI monitoring with auto-fix loop, review comment handling, PR conventions, and agent safety boundaries.",
+                          "category":  "config",
+                          "relativePath":  "config/github-app.yml.md",
+                          "tags":  [
+                                       "github",
+                                       "copilot-agent",
+                                       "ci-cd",
+                                       "pr-workflow",
+                                       "automation",
+                                       "config",
+                                       "testing",
+                                       "branch-naming",
+                                       "conventional-commits"
+                                   ]
                       }
                   ]
 }
