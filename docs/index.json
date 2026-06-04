@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-06-02T21:24:20Z",
+    "generated": "2026-06-04T13:28:00Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -164,6 +164,39 @@
                 "svelte",
                 "blazor",
                 "design-system"
+            ]
+        },
+        {
+            "id": "0012-authentication-external-identity-providers",
+            "title": "ADR 0012: Authentication with External Identity Providers",
+            "description": "Mandates OpenID Connect (OIDC) as the protocol for all external IdP integrations (Google, Microsoft Entra ID, Facebook). Covers JWT Bearer API auth, Microsoft.Identity.Web, refresh token strategy, PKCE for public clients, claims mapping, and a dedicated identity layer.",
+            "category": "adrs",
+            "relativePath": "adrs/0012-authentication-external-identity-providers.md",
+            "tags": [
+                "authentication",
+                "identity",
+                "oidc",
+                "jwt",
+                "oauth2",
+                "security",
+                "aspnet"
+            ]
+        },
+        {
+            "id": "0013-authorization-zero-trust",
+            "title": "ADR 0013: Authorization & Zero Trust Security Model",
+            "description": "Adopts Zero Trust principles (verify explicitly, least privilege, assume breach). Defines claims-based authorization with centrally registered policies, resource-based per-record access control, no implicit module trust, audit logging for sensitive operations, and strict JWT validation requirements.",
+            "category": "adrs",
+            "relativePath": "adrs/0013-authorization-zero-trust.md",
+            "tags": [
+                "authorization",
+                "zero-trust",
+                "security",
+                "claims",
+                "policies",
+                "audit",
+                "aspnet",
+                "identity"
             ]
         },
         {
