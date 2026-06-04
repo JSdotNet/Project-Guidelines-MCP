@@ -354,8 +354,25 @@ $color-text-primary: #f8f9fa;
 - Design system updates MUST be reflected in the central variables file before component implementation.
 - Quarterly audit RECOMMENDED to identify and refactor any violations that slipped through review.
 
+## Style Guide
+
+The canonical, technology-independent design token reference is maintained in **[docs/style-guide/README.md](../style-guide/README.md)**.
+
+The style guide is the **source of truth** for what each token is, what it means, and what values it carries in both light and dark mode. This ADR governs **how** those tokens are declared and consumed in code.
+
+| Style Guide Document | Contents |
+|---|---|
+| [01 — Color Palette](../style-guide/01-color-palette.md) | All color tokens with light/dark hex values, semantic names, usage rules |
+| [02 — Typography](../style-guide/02-typography.md) | Font families, sizes, weights, line heights |
+| [03 — Spacing & Layout](../style-guide/03-spacing-and-layout.md) | Spacing scale, border radius, shadows, z-index |
+| [04 — Motion & Interaction](../style-guide/04-motion-and-interaction.md) | Transitions, easing, focus states |
+| [05 — Customization Guide](../style-guide/05-customization-guide.md) | How a project overrides ONLY the color scheme tokens |
+
+> Only color scheme tokens (brand and semantic colors) may be overridden per project. Typography, spacing, motion, and layout tokens are fixed. See the customization guide for the override contract.
+
 ## References
 
+- Style Guide: [docs/style-guide/README.md](../style-guide/README.md)
 - Design Tokens specification: <https://design-tokens.github.io/community-group/format/>
 - SASS documentation: <https://sass-lang.com/documentation/variables>
 - CSS Custom Properties: <https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties>

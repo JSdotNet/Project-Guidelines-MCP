@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" width="960" height="720" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <!-- Background -->
+  <rect width="960" height="720" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <text x="32" y="44" font-size="22" font-weight="700" fill="#212529">Color Palette — Light Mode</text>
+  <text x="32" y="68" font-size="13" fill="#6C757D">All tokens as defined in docs/style-guide/01-color-palette.md</text>
+
+  <!-- === Brand Colors === -->
+  <text x="32" y="104" font-size="13" font-weight="600" fill="#212529" letter-spacing="0.05em">BRAND</text>
+
+  <!-- color-primary -->
+  <rect x="32" y="114" width="160" height="64" rx="8" fill="#0066CC"/>
+  <text x="40" y="147" font-size="12" font-weight="600" fill="#FFFFFF">color-primary</text>
+  <text x="40" y="165" font-size="11" fill="#D0E4F7">#0066CC</text>
+
+  <!-- color-primary-light -->
+  <rect x="204" y="114" width="160" height="64" rx="8" fill="#3385DB"/>
+  <text x="212" y="147" font-size="12" font-weight="600" fill="#FFFFFF">color-primary-light</text>
+  <text x="212" y="165" font-size="11" fill="#D0E4F7">#3385DB</text>
+
+  <!-- color-primary-dark -->
+  <rect x="376" y="114" width="160" height="64" rx="8" fill="#004999"/>
+  <text x="384" y="147" font-size="12" font-weight="600" fill="#FFFFFF">color-primary-dark</text>
+  <text x="384" y="165" font-size="11" fill="#B0CFEE">#004999</text>
+
+  <!-- color-secondary -->
+  <rect x="548" y="114" width="160" height="64" rx="8" fill="#6C757D"/>
+  <text x="556" y="147" font-size="12" font-weight="600" fill="#FFFFFF">color-secondary</text>
+  <text x="556" y="165" font-size="11" fill="#D0D4D8">#6C757D</text>
+
+  <!-- color-accent -->
+  <rect x="720" y="114" width="160" height="64" rx="8" fill="#FF6B35"/>
+  <text x="728" y="147" font-size="12" font-weight="600" fill="#FFFFFF">color-accent</text>
+  <text x="728" y="165" font-size="11" fill="#FFD0C0">#FF6B35</text>
+
+  <!-- === Semantic Colors === -->
+  <text x="32" y="208" font-size="13" font-weight="600" fill="#212529" letter-spacing="0.05em">SEMANTIC</text>
+
+  <!-- success -->
+  <rect x="32" y="218" width="110" height="56" rx="8" fill="#28A745"/>
+  <text x="40" y="246" font-size="11" font-weight="600" fill="#FFFFFF">color-success</text>
+  <text x="40" y="262" font-size="10" fill="#C3E6CB">#28A745</text>
+
+  <!-- success-subtle -->
+  <rect x="154" y="218" width="110" height="56" rx="8" fill="#D4EDDA" stroke="#28A745" stroke-width="1"/>
+  <text x="162" y="246" font-size="11" font-weight="600" fill="#155724">success-subtle</text>
+  <text x="162" y="262" font-size="10" fill="#155724">#D4EDDA</text>
+
+  <!-- warning -->
+  <rect x="276" y="218" width="110" height="56" rx="8" fill="#FFC107"/>
+  <text x="284" y="246" font-size="11" font-weight="600" fill="#212529">color-warning</text>
+  <text x="284" y="262" font-size="10" fill="#4D3A00">#FFC107</text>
+
+  <!-- warning-subtle -->
+  <rect x="398" y="218" width="110" height="56" rx="8" fill="#FFF3CD" stroke="#FFC107" stroke-width="1"/>
+  <text x="406" y="246" font-size="11" font-weight="600" fill="#856404">warning-subtle</text>
+  <text x="406" y="262" font-size="10" fill="#856404">#FFF3CD</text>
+
+  <!-- error -->
+  <rect x="520" y="218" width="110" height="56" rx="8" fill="#DC3545"/>
+  <text x="528" y="246" font-size="11" font-weight="600" fill="#FFFFFF">color-error</text>
+  <text x="528" y="262" font-size="10" fill="#F8C0C5">#DC3545</text>
+
+  <!-- error-subtle -->
+  <rect x="642" y="218" width="110" height="56" rx="8" fill="#F8D7DA" stroke="#DC3545" stroke-width="1"/>
+  <text x="650" y="246" font-size="11" font-weight="600" fill="#721C24">error-subtle</text>
+  <text x="650" y="262" font-size="10" fill="#721C24">#F8D7DA</text>
+
+  <!-- info -->
+  <rect x="764" y="218" width="80" height="56" rx="8" fill="#17A2B8"/>
+  <text x="772" y="246" font-size="11" font-weight="600" fill="#FFFFFF">color-info</text>
+  <text x="772" y="262" font-size="10" fill="#B8EDF4">#17A2B8</text>
+
+  <!-- info-subtle next row -->
+  <rect x="32" y="286" width="110" height="56" rx="8" fill="#D1ECF1" stroke="#17A2B8" stroke-width="1"/>
+  <text x="40" y="314" font-size="11" font-weight="600" fill="#0C5460">info-subtle</text>
+  <text x="40" y="330" font-size="10" fill="#0C5460">#D1ECF1</text>
+
+  <!-- === Text Colors === -->
+  <text x="32" y="372" font-size="13" font-weight="600" fill="#212529" letter-spacing="0.05em">NEUTRAL / TEXT</text>
+
+  <rect x="32" y="382" width="160" height="56" rx="8" fill="#212529"/>
+  <text x="40" y="410" font-size="11" font-weight="600" fill="#FFFFFF">color-text-primary</text>
+  <text x="40" y="426" font-size="10" fill="#ADB5BD">#212529</text>
+
+  <rect x="204" y="382" width="160" height="56" rx="8" fill="#6C757D"/>
+  <text x="212" y="410" font-size="11" font-weight="600" fill="#FFFFFF">color-text-secondary</text>
+  <text x="212" y="426" font-size="10" fill="#D0D4D8">#6C757D</text>
+
+  <rect x="376" y="382" width="160" height="56" rx="8" fill="#ADB5BD"/>
+  <text x="384" y="410" font-size="11" font-weight="600" fill="#212529">color-text-disabled</text>
+  <text x="384" y="426" font-size="10" fill="#495057">#ADB5BD</text>
+
+  <rect x="548" y="382" width="160" height="56" rx="8" fill="#212529" stroke="#DEE2E6" stroke-width="1"/>
+  <text x="556" y="410" font-size="11" font-weight="600" fill="#FFFFFF">color-text-inverse</text>
+  <text x="556" y="426" font-size="10" fill="#ADB5BD">#FFFFFF (on dark)</text>
+
+  <rect x="720" y="382" width="160" height="56" rx="8" fill="#0066CC"/>
+  <text x="728" y="410" font-size="11" font-weight="600" fill="#FFFFFF">color-text-link</text>
+  <text x="728" y="426" font-size="10" fill="#D0E4F7">#0066CC</text>
+
+  <!-- === Background Colors === -->
+  <text x="32" y="466" font-size="13" font-weight="600" fill="#212529" letter-spacing="0.05em">BACKGROUND</text>
+
+  <rect x="32" y="476" width="160" height="56" rx="8" fill="#FFFFFF" stroke="#DEE2E6" stroke-width="1.5"/>
+  <text x="40" y="504" font-size="11" font-weight="600" fill="#212529">color-background</text>
+  <text x="40" y="520" font-size="10" fill="#6C757D">#FFFFFF</text>
+
+  <rect x="204" y="476" width="160" height="56" rx="8" fill="#F8F9FA" stroke="#DEE2E6" stroke-width="1"/>
+  <text x="212" y="504" font-size="11" font-weight="600" fill="#212529">background-alt</text>
+  <text x="212" y="520" font-size="10" fill="#6C757D">#F8F9FA</text>
+
+  <rect x="376" y="476" width="160" height="56" rx="8" fill="#FFFFFF" stroke="#0066CC" stroke-width="1.5"/>
+  <text x="384" y="504" font-size="11" font-weight="600" fill="#212529">background-raised</text>
+  <text x="384" y="520" font-size="10" fill="#6C757D">#FFFFFF</text>
+
+  <!-- === Border Colors === -->
+  <text x="32" y="560" font-size="13" font-weight="600" fill="#212529" letter-spacing="0.05em">BORDER</text>
+
+  <rect x="32" y="570" width="160" height="56" rx="8" fill="#FFFFFF" stroke="#DEE2E6" stroke-width="3"/>
+  <text x="40" y="598" font-size="11" font-weight="600" fill="#212529">color-border</text>
+  <text x="40" y="614" font-size="10" fill="#6C757D">#DEE2E6</text>
+
+  <rect x="204" y="570" width="160" height="56" rx="8" fill="#FFFFFF" stroke="#ADB5BD" stroke-width="3"/>
+  <text x="212" y="598" font-size="11" font-weight="600" fill="#212529">color-border-strong</text>
+  <text x="212" y="614" font-size="10" fill="#6C757D">#ADB5BD</text>
+
+  <rect x="376" y="570" width="160" height="56" rx="8" fill="#FFFFFF" stroke="#0066CC" stroke-width="3"/>
+  <text x="384" y="598" font-size="11" font-weight="600" fill="#212529">color-border-focus</text>
+  <text x="384" y="614" font-size="10" fill="#6C757D">#0066CC</text>
+
+  <!-- Footer -->
+  <text x="32" y="700" font-size="11" fill="#ADB5BD">docs/style-guide/assets/color-palette-light.svg — generated from docs/style-guide/01-color-palette.md</text>
+</svg>

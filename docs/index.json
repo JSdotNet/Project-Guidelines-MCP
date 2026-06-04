@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-06-02T21:24:20Z",
+    "generated": "2026-06-04T13:28:00Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -383,6 +383,89 @@
                 "templates",
                 "modular-monolith",
                 "feature-slices"
+            ]
+        },
+        {
+            "id": "style-guide-overview",
+            "title": "Style Guide: Overview",
+            "description": "Technology-agnostic UX style guide overview. Defines what is and isn't customizable per project, and maps to the five style guide documents (color, typography, spacing, motion, customization).",
+            "category": "style-guide",
+            "relativePath": "style-guide/README.md",
+            "tags": [
+                "style-guide",
+                "design-tokens",
+                "ux",
+                "frontend"
+            ]
+        },
+        {
+            "id": "style-guide-color-palette",
+            "title": "Style Guide: Color Palette",
+            "description": "All color tokens for light and dark mode: brand, semantic, neutral/text, background, and border groups. Includes hex values, semantic names, usage rules, and contrast requirements. The only aspect projects may customize.",
+            "category": "style-guide",
+            "relativePath": "style-guide/01-color-palette.md",
+            "tags": [
+                "style-guide",
+                "color",
+                "design-tokens",
+                "dark-mode",
+                "light-mode",
+                "accessibility"
+            ]
+        },
+        {
+            "id": "style-guide-typography",
+            "title": "Style Guide: Typography",
+            "description": "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xs–5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
+            "category": "style-guide",
+            "relativePath": "style-guide/02-typography.md",
+            "tags": [
+                "style-guide",
+                "typography",
+                "fonts",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "style-guide-spacing-and-layout",
+            "title": "Style Guide: Spacing and Layout",
+            "description": "Fixed spacing scale (4px base unit), layout grid, border radius, border width, shadows, and z-index scale. Covers usage rules for each token category.",
+            "category": "style-guide",
+            "relativePath": "style-guide/03-spacing-and-layout.md",
+            "tags": [
+                "style-guide",
+                "spacing",
+                "layout",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "style-guide-motion-and-interaction",
+            "title": "Style Guide: Motion and Interaction",
+            "description": "Fixed motion tokens: transition durations, easing curves, standard interaction patterns, focus state rules, reduced-motion guidance, and loading indicator patterns.",
+            "category": "style-guide",
+            "relativePath": "style-guide/04-motion-and-interaction.md",
+            "tags": [
+                "style-guide",
+                "motion",
+                "animation",
+                "interaction",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "style-guide-customization-guide",
+            "title": "Style Guide: Customization Guide",
+            "description": "Defines which color tokens may be overridden per project (brand and semantic only), the override contract (contrast requirements, both modes, documentation), the step-by-step process, and what happens if non-color tokens are overridden.",
+            "category": "style-guide",
+            "relativePath": "style-guide/05-customization-guide.md",
+            "tags": [
+                "style-guide",
+                "customization",
+                "color",
+                "design-tokens",
+                "branding"
             ]
         }
     ]
