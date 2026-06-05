@@ -6,10 +6,6 @@ tags: [ddd, domain-driven-design, value-objects, design]
 ---
 # Pragmatic Domain-Driven Design Approach
 
-**Status**: Proposed  
-**Date**: 2025-11-12  
-**Author**: Design Guidelines Team
-
 ## Overview
 
 This document provides guidance on applying Domain-Driven Design (DDD) principles pragmatically in .NET applications. The focus is on maintaining domain validity through rich domain models while avoiding over-engineering with excessive value objects for primitive types.
