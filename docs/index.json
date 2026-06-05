@@ -1,6 +1,6 @@
 {
     "version":  "1.0",
-    "generated":  "2026-06-04T19:56:51Z",
+    "generated":  "2026-06-05T17:30:00Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -636,6 +636,23 @@
                                        "testing",
                                        "branch-naming",
                                        "conventional-commits"
+                                   ]
+                      },
+                      {
+                          "id":  "0019-csharp-script-files",
+                          "title":  "ADR 0019: C# Standalone Script Files",
+                          "description":  "Adopts .NET 10 file-based apps (#: directives, dotnet run script.cs) as the standard for project automation scripts. Scripts are fully standalone .cs files in /scripts/ with no project file. NuGet packages declared via #:package align with Directory.Packages.props for version consistency. A scripts/Directory.Build.props isolates scripts from solution-level MSBuild settings.",
+                          "category":  "adrs",
+                          "relativePath":  "adrs/0019-csharp-script-files.md",
+                          "tags":  [
+                                       "scripts",
+                                       "csharp",
+                                       "dotnet",
+                                       "dotnet-10",
+                                       "automation",
+                                       "tooling",
+                                       "devops",
+                                       "file-based-apps"
                                    ]
                       }
                   ]
