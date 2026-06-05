@@ -1,0 +1,62 @@
+{
+  "name": "jsdotnet-guidelines",
+  "displayName": "JSdotNet Project Guidelines",
+  "version": "1.0.0",
+  "description": "Three complementary skills for using the JSdotNet Project Guidelines MCP server: learn MCP tools, analyze project gaps, and propose documentation improvements.",
+  "publisher": "JSdotNet",
+  "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JSdotNet/Project-Guidelines-MCP.git"
+  },
+  "icon": "docs/images/guidelines-icon.png",
+  "license": "MIT",
+  "skills": [
+    {
+      "id": "guidelines-mcp",
+      "path": ".github/skills/guidelines-mcp.md",
+      "title": "JSdotNet Project Guidelines MCP",
+      "description": "Learn how to use the MCP server: tool reference, quick decision guide, common tags, and example workflows."
+    },
+    {
+      "id": "gap-analysis",
+      "path": ".github/skills/gap-analysis.md",
+      "title": "Project Guidelines Gap Analysis",
+      "description": "Analyze your .NET project structure against established guidelines. Identify missing layers, conventions, and create an improvement plan."
+    },
+    {
+      "id": "feedback-loop",
+      "path": ".github/skills/feedback-loop.md",
+      "title": "Guidelines Feedback Loop",
+      "description": "Analyze MCP usage logs, identify improvement opportunities, and propose new ADRs or documentation enhancements as GitHub issues."
+    }
+  ],
+  "extensions": [
+    {
+      "id": "guidelines-feedback",
+      "path": ".github/extensions/guidelines-feedback",
+      "type": "nodejs",
+      "description": "Provides tools for analyzing MCP logs and creating GitHub issues: analyze_guidelines_usage, draft_guidelines_issue, submit_guidelines_issue."
+    }
+  ],
+  "installation": {
+    "windows": "Run `.github/install-plugin.ps1` from PowerShell",
+    "macos": "Run `.github/install-plugin.sh` from Terminal",
+    "linux": "Run `.github/install-plugin.sh` from Terminal",
+    "instructions": "See .github/PLUGIN_README.md"
+  },
+  "keywords": [
+    "guidelines",
+    "architecture",
+    "ddd",
+    "hexagonal",
+    "adr",
+    "mcp",
+    "copilot-skills"
+  ],
+  "categories": [
+    "Documentation",
+    "Architecture",
+    "Guidelines"
+  ]
+}
