@@ -1,6 +1,6 @@
 ---
 title: "GitHub Copilot Agent Configuration (github-app.yml)"
-date: 2026-06-04
+date: 2026-06-05
 status: Accepted
 tags: [github, copilot-agent, ci-cd, pr-workflow, automation, config]
 ---
@@ -139,6 +139,47 @@ The agent **must** populate the PR description with:
 ## Related
 <!-- Issue refs, ADR refs, or links -->
 ```
+
+---
+
+## GitHub & Git Account Management
+
+When the agent executes GitHub operations (PR creation, issue updates, API calls) and git
+operations (push, pull, fetch), it **must** authenticate and operate under the correct account
+context.
+
+### Configuration
+
+```yaml
+automation:
+  auto_issue_session: false
+  remote_control: false
+
+instructions:
+  github_account: "Use the repository account for all GitHub operations in this repo."
+  gh_cli: "Before running gh commands such as pr create, pr merge, issue create, or api calls, switch to the git_transport."
+  git_transport: "Use the repository SSH remote/account for push, pull, fetch, and clone operations."
+```
+
+Alternatively, if the platform supports natural-language instructions:
+
+```yaml
+instructions: |
+  Use the repository account for all GitHub operations in this repository.
+  When running gh commands, authenticate as the repo account, not the Copilot subscription account.
+  Use the repo SSH identity for git push/pull/fetch.
+```
+
+### Rules
+
+- **GitHub operations (`gh` CLI):** Switch to the repository account (not the Copilot subscription
+  account) before executing `gh pr create`, `gh pr merge`, `gh issue create`, or any GitHub API calls.
+- **Git operations (push/pull/fetch):** Use the repository's SSH remote and SSH key/identity to avoid
+  credential conflicts. This ensures pushes are attributed to the repo account.
+- **No account switching mid-operation:** Once an operation begins, do not switch accounts. Complete
+  the entire workflow (e.g., create PR, check CI, comment) under a single account context.
+- **Clarify failures:** If a push is denied with a 403 error, explicitly report the account name and
+  request that the user verify access rights or re-authenticate.
 
 ---
 
