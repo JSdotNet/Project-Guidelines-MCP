@@ -12,14 +12,13 @@ Plus one extension that enables gap analysis and feedback loop tools.
 
 ## What You Get
 
-### Seven Skills
+### Six Skills
 
 - **guidelines-mcp** — Reference guide for MCP tools, decision guide, common tags
 - **gap-analysis** — Analyze project structure against guidelines, identify gaps
 - **code-review** — Validate code for architectural and style compliance
-- **adr-creation** — Create well-structured Architecture Decision Records
-- **error-handling** — Design consistent error handling across layers
-- **testing-strategy** — Organize tests, achieve meaningful coverage
+- **decision-validation** — Validate decisions before implementation, ensure alignment
+- **migration-planning** — Plan and execute incremental refactoring to align with guidelines
 - **feedback-loop** — Analyze usage logs and propose improvements
 
 All skills are pure markdown with workflows, examples, and integration patterns. No dependencies or setup required.
@@ -141,68 +140,58 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 | Skill | Best Used When | Pairs With |
 |-------|---|---|
 | **guidelines-mcp** | Starting out; learning MCP tools | Any other skill |
-| **gap-analysis** | Analyzing project structure | guidelines-mcp, code-review, feedback-loop |
-| **code-review** | Reviewing PRs or new code | guidelines-mcp, error-handling, testing-strategy |
-| **adr-creation** | Making significant technical decisions | guidelines-mcp, feedback-loop |
-| **error-handling** | Designing error strategy | code-review, testing-strategy, adr-creation |
-| **testing-strategy** | Organizing tests, planning coverage | error-handling, code-review |
+| **gap-analysis** | Analyzing project structure | guidelines-mcp, code-review, migration-planning |
+| **code-review** | Reviewing PRs or new code | guidelines-mcp, decision-validation |
+| **decision-validation** | Making significant technical decisions | guidelines-mcp, migration-planning |
+| **migration-planning** | Planning refactoring to align with guidelines | gap-analysis, decision-validation, code-review |
 | **feedback-loop** | Analyzing usage, proposing improvements | guidelines-mcp, gap-analysis |
 
 ### Example Combined Workflows
 
-#### Workflow 1: Code Review → Improvement Plan
-
-```
-1. Invoke: code-review
-   → Review code for compliance
-   → Find inconsistent error handling
-
-2. Invoke: error-handling
-   → Design error strategy
-   → Get clarity on how to fix
-
-3. Invoke: adr-creation
-   → Document error handling decision for team
-
-4. Invoke: feedback-loop
-   → If pattern is common: propose doc improvement
-```
-
-#### Workflow 2: Project Assessment → Improvement Plan
+#### Workflow 1: Gap → Validation → Migration
 
 ```
 1. Invoke: gap-analysis
-   → Scan project structure
-   → Identify missing layers/patterns
+   → Identify architectural gaps (e.g., missing application layer)
 
-2. Invoke: guidelines-mcp
-   → search_docs for each gap
-   → Read full ADRs
+2. Invoke: decision-validation
+   → Validate approach before implementation
+   → Check guidelines alignment
 
-3. Invoke: testing-strategy
-   → Plan tests for gaps you're filling
+3. Invoke: migration-planning
+   → Plan phases and timeline
+   → Break into manageable chunks
 
-4. Invoke: feedback-loop
-   → Track improvements over time
+4. Execute plan with code-review for each phase
 ```
 
-#### Workflow 3: Feature Design → Implementation
+#### Workflow 2: Code Review → Validation → Migration
 
 ```
-1. Invoke: guidelines-mcp
-   → Search for patterns relevant to feature
+1. Invoke: code-review
+   → Review code for compliance issues
 
-2. Invoke: code-review
-   → Validate design approach before coding
+2. Invoke: decision-validation
+   → Validate approach to fix issues
 
-3. Invoke: adr-creation (if new decision needed)
-   → Document trade-offs you considered
+3. Invoke: migration-planning
+   → Plan incremental refactoring
 
-4. Invoke: testing-strategy
-   → Plan test coverage for feature
+4. Execute with guidelines-mcp for reference
+```
 
-5. Invoke: error-handling
-   → Design error paths
+#### Workflow 3: Decision → Validation → Review
+
+```
+1. Have a design idea
+2. Invoke: decision-validation
+   → Validate against guidelines
+   → Check alternatives
+
+3. Invoke: code-review
+   → Validate approach before coding
+
+4. Implement with guidelines-mcp for reference
 ```
 
 ---
@@ -317,6 +306,11 @@ If you have questions or find bugs:
 ---
 
 ## Version History
+
+- **2.1** (2026-06-05): Replaced ADR/error/testing skills with decision/migration skills
+  - Added decision-validation: Validate decisions before implementation
+  - Added migration-planning: Plan and execute incremental refactoring
+  - Removed adr-creation, error-handling, testing-strategy
 
 - **2.0** (2026-06-05): Added code review, ADR creation, error handling, and testing skills
   - code-review: Validate code against guidelines

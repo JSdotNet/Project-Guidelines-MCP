@@ -37,22 +37,16 @@
       "description": "Validate code changes against architectural patterns, coding standards, and documented decisions. Review PRs and designs for compliance."
     },
     {
-      "id": "adr-creation",
-      "path": "skills/adr-creation.md",
-      "title": "ADR Creation Assistant",
-      "description": "Create well-structured Architecture Decision Records that capture decisions, rationale, and consequences with proper linking to related ADRs."
+      "id": "decision-validation",
+      "path": "skills/decision-validation.md",
+      "title": "Decision Validation",
+      "description": "Validate architectural and technical decisions before implementation. Ensure decisions align with guidelines and have proper rationale."
     },
     {
-      "id": "error-handling",
-      "path": "skills/error-handling.md",
-      "title": "Error & Exception Handling Strategy",
-      "description": "Design consistent error handling across layers. Learn when to throw, use Result types, translate at boundaries, and maintain domain purity."
-    },
-    {
-      "id": "testing-strategy",
-      "path": "skills/testing-strategy.md",
-      "title": "Testing Strategy & Coverage",
-      "description": "Design effective tests across layers (unit, integration, contract). Organize for maintainability, achieve meaningful coverage, validate critical paths."
+      "id": "migration-planning",
+      "path": "skills/migration-planning.md",
+      "title": "Migration Planning",
+      "description": "Plan and execute incremental refactoring to align code with guidelines. Break into phases, manage dependencies, and track progress."
     }
   ],
   "extensions": [
