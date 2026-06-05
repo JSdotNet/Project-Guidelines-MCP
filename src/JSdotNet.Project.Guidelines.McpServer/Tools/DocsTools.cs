@@ -10,7 +10,7 @@ namespace JSdotNet.Project.Guidelines.McpServer.Tools;
 [McpServerToolType]
 public sealed class DocsTools(IDocumentCatalog catalog, IUsageLog usageLog, ILogger<DocsTools> logger)
 {
-    [McpServerTool(Name = "list_docs"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, recommendations, and structures. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
+    [McpServerTool(Name = "list_docs"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, recommendations, structures, and config guidelines. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
     public async Task<string> ListDocsAsync(CancellationToken ct)
     {
         string[] ids = [];
@@ -36,7 +36,7 @@ public sealed class DocsTools(IDocumentCatalog catalog, IUsageLog usageLog, ILog
         }
     }
 
-    [McpServerTool(Name = "list_docs_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), and 'structures' (canonical project scaffolds and templates). Use this when you know the type of guidance you need rather than searching by keyword.")]
+    [McpServerTool(Name = "list_docs_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), 'structures' (canonical project scaffolds and templates), and 'config' (configuration file guidelines, e.g. github-app.yml). Use this when you know the type of guidance you need rather than searching by keyword.")]
     public async Task<string> ListDocsByTypeAsync([Description("Category to filter by")] string category, CancellationToken ct)
     {
         string[] ids = [];
