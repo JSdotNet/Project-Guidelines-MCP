@@ -12,52 +12,33 @@ Plus one extension that enables gap analysis and feedback loop tools.
 
 ## What You Get
 
-### Skills (Available to Copilot agents)
+### Three Skills
 
 - **guidelines-mcp** — How to use the six MCP tools for guided decisions
 - **gap-analysis** — Workflow for identifying architectural gaps and solutions
 - **feedback-loop** — Process for analyzing usage logs and creating improvement issues
 
-### Extension (Provides tools)
-
-- **guidelines-feedback** — Node.js extension that provides `analyze_guidelines_usage`, `draft_guidelines_issue`, and `submit_guidelines_issue` tools
-  - Reads MCP server JSONL logs
-  - Aggregates usage statistics
-  - Drafts and submits GitHub issues
+All skills are pure markdown with workflows, examples, and integration patterns. No dependencies or setup required.
 
 ---
 
 ## Installation
 
-### Option 1: Copy to Your User Extensions (Global)
+### Option 1: Copy to Your User Skills Directory (Global)
 
 Recommended if you want to use these skills across multiple repositories.
 
-1. Clone or download this plugin folder
-2. Copy the skills to your Copilot skills directory:
-   ```bash
-   cp -r .github/skills/* ~/.copilot/skills/
-   ```
-3. Copy the extension to your user extensions directory:
-   ```bash
-   cp -r .github/extensions/guidelines-feedback ~/.copilot/extensions/
-   ```
-4. Restart your Copilot CLI session
+```bash
+# Windows PowerShell
+Copy-Item plugins/guidelines/skills/* $env:USERPROFILE/.copilot/skills/
+
+# macOS/Linux
+cp plugins/guidelines/skills/* ~/.copilot/skills/
+```
 
 ### Option 2: Keep Project-Scoped (This Repository Only)
 
-The plugin is already in `.github/` — no installation needed. Skills and extensions auto-load when you open a session in this repo.
-
-### Option 3: Install via Copilot CLI Tool
-
-If you have the `install_extension` tool available:
-
-```bash
-# Install the feedback extension from this repo
-install_extension url="https://github.com/JSdotNet/Project-Guidelines-MCP/tree/main/.github/extensions/guidelines-feedback"
-
-# Manually copy skills to ~/.copilot/skills/ (or this repo's .github/skills/)
-```
+Skills in `plugins/guidelines/skills/` auto-load as project-scoped skills when you open a Copilot session in this repository.
 
 ---
 
@@ -115,19 +96,19 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 ### Example Combined Workflow
 
 ```
-1. guidelines-mcp skill
+1. Invoke: guidelines-mcp
    → Learn the tools
 
-2. gap-analysis skill  
+2. Invoke: gap-analysis
    → Run project scan
    → Identify gaps (e.g., missing Domain layer)
 
-3. guidelines-mcp skill
+3. Invoke: guidelines-mcp again
    → search_docs("domain layer")
    → get_doc("adr-NNNN")
    → Understand recommended structure
 
-4. feedback-loop skill
+4. Invoke: feedback-loop
    → analyze_guidelines_usage()
    → If gap is common: draft_guidelines_issue(...)
    → submit_guidelines_issue(...)
@@ -141,7 +122,7 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 
 ## The Three Skills Explained
 
-### Skill 1: guidelines-mcp
+### The Skill 1: guidelines-mcp
 
 **What it teaches**: How to use the MCP server.
 
@@ -183,17 +164,14 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 ## File Structure
 
 ```
-.github/
+plugins/guidelines/
   skills/
     guidelines-mcp.md          ← Skill 1: MCP reference
     gap-analysis.md            ← Skill 2: Gap analysis workflow
     feedback-loop.md           ← Skill 3: Feedback loop process
-  extensions/
-    guidelines-feedback/
-      extension.mjs            ← Provides tools for skills 2 & 3
-  plugin-manifest.json         ← This plugin's metadata (optional)
-
-README.md                       ← This file
+  .github/
+  plugin-manifest.json         ← Plugin metadata
+  README.md                     ← This file
 ```
 
 ---
@@ -204,34 +182,13 @@ README.md                       ← This file
 
 **Check**: Are you in a Copilot session in this repository or have you installed them globally?
 
-- Project-scoped: Skills auto-load from `.github/skills/` when you start a session
+- Project-scoped: Skills auto-load from `plugins/guidelines/skills/` when you start a session
 - Global: Skills must be copied to `~/.copilot/skills/` and your session restarted
 
 **Fix**: Restart your Copilot CLI session or run:
 ```bash
 extensions_reload
 ```
-
-### Extension tools are not available
-
-**Check**: Is the `guidelines-feedback` extension loaded?
-
-**Fix**: Ensure the extension is in `.github/extensions/guidelines-feedback/` (project) or `~/.copilot/extensions/guidelines-feedback/` (global), then restart your session.
-
-**Verify**: Run:
-```bash
-extensions_manage operation=list
-```
-
-Look for `guidelines-feedback` in the list.
-
-### `analyze_guidelines_usage` returns no logs
-
-**Check**: Has the MCP server been used yet? Usage logs are only created when tools are called.
-
-**Fix**: Open the guidelines repository and call MCP tools (e.g., `search_docs("ADR")`), then try the feedback loop again.
-
-**Note**: Logs are stored in `%LOCALAPPDATA%\JSdotNet\MCPServer` (Windows) or `~/.jsdotnet/mcp-server` (macOS/Linux). Set `JSDOTNET_LOG_PATH` to override.
 
 ---
 
@@ -256,24 +213,9 @@ Look for `guidelines-feedback` in the list.
 
 ## Configuration
 
-### Environment Variables
+### Configuration
 
-The **guidelines-feedback** extension respects:
-
-- `JSDOTNET_LOG_PATH` — Where to read/write MCP logs (default: `%LOCALAPPDATA%\JSdotNet\MCPServer`)
-- `GH_TOKEN` — GitHub token for issue creation (defaults to `gh auth` credentials)
-
-### Log Directory
-
-MCP logs are written to per-process JSONL files:
-```
-%LOCALAPPDATA%\JSdotNet\MCPServer\
-  usage-12345.jsonl
-  usage-12346.jsonl
-  ...
-```
-
-Each entry is a JSON object with: `toolName`, `parameters`, `result`, `timestamp`, `success`.
+The skills only use MCP tools that are already available. No environment setup required beyond having the MCP server running.
 
 ---
 
@@ -289,8 +231,7 @@ If you have questions or find bugs:
 
 ## Version History
 
-- **1.0** (2026-06-05): Initial release with three skills + feedback extension
+- **1.0** (2026-06-05): Initial release with three skills
   - guidelines-mcp: MCP reference guide
   - gap-analysis: Project structure audit workflow
   - feedback-loop: Usage analysis + issue creation workflow
-  - guidelines-feedback extension: JSONL parsing + GitHub issue tools
