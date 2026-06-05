@@ -14,21 +14,45 @@
   "skills": [
     {
       "id": "guidelines-mcp",
-      "path": ".github/skills/guidelines-mcp.md",
+      "path": "skills/guidelines-mcp.md",
       "title": "JSdotNet Project Guidelines MCP",
       "description": "Learn how to use the MCP server: tool reference, quick decision guide, common tags, and example workflows."
     },
     {
       "id": "gap-analysis",
-      "path": ".github/skills/gap-analysis.md",
+      "path": "skills/gap-analysis.md",
       "title": "Project Guidelines Gap Analysis",
       "description": "Analyze your .NET project structure against established guidelines. Identify missing layers, conventions, and create an improvement plan."
     },
     {
       "id": "feedback-loop",
-      "path": ".github/skills/feedback-loop.md",
+      "path": "skills/feedback-loop.md",
       "title": "Guidelines Feedback Loop",
       "description": "Analyze MCP usage logs, identify improvement opportunities, and propose new ADRs or documentation enhancements as GitHub issues."
+    },
+    {
+      "id": "code-review",
+      "path": "skills/code-review.md",
+      "title": "Code Review Against Guidelines",
+      "description": "Validate code changes against architectural patterns, coding standards, and documented decisions. Review PRs and designs for compliance."
+    },
+    {
+      "id": "adr-creation",
+      "path": "skills/adr-creation.md",
+      "title": "ADR Creation Assistant",
+      "description": "Create well-structured Architecture Decision Records that capture decisions, rationale, and consequences with proper linking to related ADRs."
+    },
+    {
+      "id": "error-handling",
+      "path": "skills/error-handling.md",
+      "title": "Error & Exception Handling Strategy",
+      "description": "Design consistent error handling across layers. Learn when to throw, use Result types, translate at boundaries, and maintain domain purity."
+    },
+    {
+      "id": "testing-strategy",
+      "path": "skills/testing-strategy.md",
+      "title": "Testing Strategy & Coverage",
+      "description": "Design effective tests across layers (unit, integration, contract). Organize for maintainability, achieve meaningful coverage, validate critical paths."
     }
   ],
   "extensions": [

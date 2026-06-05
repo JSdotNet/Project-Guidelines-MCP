@@ -12,11 +12,15 @@ Plus one extension that enables gap analysis and feedback loop tools.
 
 ## What You Get
 
-### Three Skills
+### Seven Skills
 
-- **guidelines-mcp** — How to use the six MCP tools for guided decisions
-- **gap-analysis** — Workflow for identifying architectural gaps and solutions
-- **feedback-loop** — Process for analyzing usage logs and creating improvement issues
+- **guidelines-mcp** — Reference guide for MCP tools, decision guide, common tags
+- **gap-analysis** — Analyze project structure against guidelines, identify gaps
+- **code-review** — Validate code for architectural and style compliance
+- **adr-creation** — Create well-structured Architecture Decision Records
+- **error-handling** — Design consistent error handling across layers
+- **testing-strategy** — Organize tests, achieve meaningful coverage
+- **feedback-loop** — Analyze usage logs and propose improvements
 
 All skills are pure markdown with workflows, examples, and integration patterns. No dependencies or setup required.
 
@@ -59,26 +63,73 @@ This teaches you:
 ### 2. Analyze Your Project
 
 ```
-If start_gap_analysis tool is available (from guidelines-feedback extension):
-  Call: start_gap_analysis(projectPath: "/path/to/MyProject")
+Invoke skill: gap-analysis
 
-Then follow the returned workflow to:
-- Use search_docs and get_doc to find relevant ADRs
+This guides you to:
+- Scan project structure
 - Identify architectural gaps
+- Find relevant ADRs
 - Plan improvements
 ```
 
-### 3. Track Improvement Opportunities
+### 3. Review Code for Compliance
 
 ```
-Call: analyze_guidelines_usage()
-  → Identify patterns in MCP tool usage
+Invoke skill: code-review
 
-Call: draft_guidelines_issue(title, body, labels)
-  → Prepare a GitHub issue with evidence
+This helps you:
+- Validate architectural alignment
+- Check coding standards
+- Identify pattern violations
+- Find relevant guidance
+```
 
-Call: submit_guidelines_issue(draftId)
-  → Create the issue in the guidelines repo
+### 4. Create Architecture Decisions
+
+```
+Invoke skill: adr-creation
+
+This helps you:
+- Structure ADRs properly
+- Capture trade-offs
+- Link related decisions
+- Get team consensus
+```
+
+### 5. Design Error Handling
+
+```
+Invoke skill: error-handling
+
+This guides you on:
+- Choosing error strategies
+- Translating at boundaries
+- Logging effectively
+- Testing error paths
+```
+
+### 6. Organize Tests
+
+```
+Invoke skill: testing-strategy
+
+This teaches you:
+- Organizing by layer
+- Unit vs. integration tests
+- Meaningful coverage
+- Error path testing
+```
+
+### 7. Track Improvement Opportunities
+
+```
+Invoke skill: feedback-loop
+
+This helps you:
+- Analyze usage logs
+- Identify doc gaps
+- Draft improvement issues
+- Propose enhancements
 ```
 
 ---
@@ -90,32 +141,68 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 | Skill | Best Used When | Pairs With |
 |-------|---|---|
 | **guidelines-mcp** | Starting out; learning MCP tools | Any other skill |
-| **gap-analysis** | Analyzing project structure | guidelines-mcp, feedback-loop |
-| **feedback-loop** | Proposing improvements to guidelines | guidelines-mcp, gap-analysis |
+| **gap-analysis** | Analyzing project structure | guidelines-mcp, code-review, feedback-loop |
+| **code-review** | Reviewing PRs or new code | guidelines-mcp, error-handling, testing-strategy |
+| **adr-creation** | Making significant technical decisions | guidelines-mcp, feedback-loop |
+| **error-handling** | Designing error strategy | code-review, testing-strategy, adr-creation |
+| **testing-strategy** | Organizing tests, planning coverage | error-handling, code-review |
+| **feedback-loop** | Analyzing usage, proposing improvements | guidelines-mcp, gap-analysis |
 
-### Example Combined Workflow
+### Example Combined Workflows
+
+#### Workflow 1: Code Review → Improvement Plan
+
+```
+1. Invoke: code-review
+   → Review code for compliance
+   → Find inconsistent error handling
+
+2. Invoke: error-handling
+   → Design error strategy
+   → Get clarity on how to fix
+
+3. Invoke: adr-creation
+   → Document error handling decision for team
+
+4. Invoke: feedback-loop
+   → If pattern is common: propose doc improvement
+```
+
+#### Workflow 2: Project Assessment → Improvement Plan
+
+```
+1. Invoke: gap-analysis
+   → Scan project structure
+   → Identify missing layers/patterns
+
+2. Invoke: guidelines-mcp
+   → search_docs for each gap
+   → Read full ADRs
+
+3. Invoke: testing-strategy
+   → Plan tests for gaps you're filling
+
+4. Invoke: feedback-loop
+   → Track improvements over time
+```
+
+#### Workflow 3: Feature Design → Implementation
 
 ```
 1. Invoke: guidelines-mcp
-   → Learn the tools
+   → Search for patterns relevant to feature
 
-2. Invoke: gap-analysis
-   → Run project scan
-   → Identify gaps (e.g., missing Domain layer)
+2. Invoke: code-review
+   → Validate design approach before coding
 
-3. Invoke: guidelines-mcp again
-   → search_docs("domain layer")
-   → get_doc("adr-NNNN")
-   → Understand recommended structure
+3. Invoke: adr-creation (if new decision needed)
+   → Document trade-offs you considered
 
-4. Invoke: feedback-loop
-   → analyze_guidelines_usage()
-   → If gap is common: draft_guidelines_issue(...)
-   → submit_guidelines_issue(...)
+4. Invoke: testing-strategy
+   → Plan test coverage for feature
 
-5. Back to gap-analysis
-   → Plan implementation based on ADRs
-   → Reference ADR numbers in code
+5. Invoke: error-handling
+   → Design error paths
 ```
 
 ---
@@ -231,7 +318,13 @@ If you have questions or find bugs:
 
 ## Version History
 
-- **1.0** (2026-06-05): Initial release with three skills
+- **2.0** (2026-06-05): Added code review, ADR creation, error handling, and testing skills
+  - code-review: Validate code against guidelines
+  - adr-creation: Create Architecture Decision Records
+  - error-handling: Design consistent error handling
+  - testing-strategy: Organize tests and coverage
+
+- **1.0** (2026-06-05): Initial release with three core skills
   - guidelines-mcp: MCP reference guide
   - gap-analysis: Project structure audit workflow
   - feedback-loop: Usage analysis + issue creation workflow
