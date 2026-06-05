@@ -6,10 +6,6 @@ tags: [design, modular, architecture, aspire]
 ---
 # Modular Solution Structure Design
 
-**Status**: Accepted  
-**Date**: 2026-06-02  
-**Author**: Design Guidelines Team
-
 ## Overview
 
 This document defines the recommended solution and filesystem structure for .NET projects, particularly for web-enabled applications (Web APIs, Web Apps). The structure emphasizes modularity, domain-driven organization, and clear separation of concerns.
@@ -221,7 +217,7 @@ public class PersonRepository : IPersonRepository
 
 **Mandatory**: Every module MUST have unit tests
 
-**Framework**: xUnit (see recommendations/unit-testing-xunit-moq-bogus.md)
+**Framework**: xUnit (see recommendations/testing-unit-xunit-moq-bogus.md)
 
 **Contents**:
 - Unit tests for domain logic

@@ -6,10 +6,6 @@ tags: [structure, modular, architecture, aspire, template]
 ---
 # Modular Solution Structure Template
 
-**Status**: Accepted  
-**Date**: 2025-11-12  
-**Author**: Design Guidelines Team
-
 ## Overview
 
 This document defines the canonical solution and filesystem scaffold for .NET modular monolith projects, especially web-enabled applications (Web APIs, Web Apps).
