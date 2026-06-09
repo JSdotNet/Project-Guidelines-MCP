@@ -1,6 +1,6 @@
-{
+﻿{
     "version":  "1.0",
-    "generated":  "2026-06-05T17:30:00Z",
+    "generated":  "2026-06-09T10:33:48Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -593,20 +593,6 @@
                                    ]
                       },
                       {
-                          "id":  "modular-solution-structure",
-                          "title":  "Modular Solution Structure Template",
-                          "description":  "Canonical scaffold for the multi-module solution profile: App/, Aspire/, Core/, per-domain module folders for production code, and centralized test projects under root tests/ with naming and placement conventions.",
-                          "category":  "structures",
-                          "relativePath":  "structures/modular-solution-structure.md",
-                          "tags":  [
-                                       "structure",
-                                       "modular",
-                                       "architecture",
-                                       "aspire",
-                                       "template"
-                                   ]
-                      },
-                      {
                           "id":  "simple-solution-structure",
                           "title":  "Simple Solution Structure Design",
                           "description":  "Visual blueprint of a non-modular single-solution profile: core/api/data projects without module folders. Aspire is optional; test topology is flexible with Unit plus optional Integration and/or E2E tests (or Unit only for very small solutions).",
@@ -653,6 +639,89 @@
                                        "tooling",
                                        "devops",
                                        "file-based-apps"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-overview",
+                          "title":  "Style Guide: Overview",
+                          "description":  "Technology-agnostic UX style guide overview. Defines what is and isn\u0027t customizable per project, and maps to the five style guide documents (color, typography, spacing, motion, customization).",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/README.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "design-tokens",
+                                       "ux",
+                                       "frontend"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-color-palette",
+                          "title":  "Style Guide: Color Palette",
+                          "description":  "All color tokens for light and dark mode: brand, semantic, neutral/text, background, and border groups. Includes hex values, semantic names, usage rules, and contrast requirements. The only aspect projects may customize.",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/01-color-palette.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "color",
+                                       "design-tokens",
+                                       "dark-mode",
+                                       "light-mode",
+                                       "accessibility"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-typography",
+                          "title":  "Style Guide: Typography",
+                          "description":  "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xsΓÇô5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/02-typography.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "typography",
+                                       "fonts",
+                                       "design-tokens"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-spacing-and-layout",
+                          "title":  "Style Guide: Spacing and Layout",
+                          "description":  "Fixed spacing scale (4px base unit), layout grid, border radius, border width, shadows, and z-index scale. Covers usage rules for each token category.",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/03-spacing-and-layout.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "spacing",
+                                       "layout",
+                                       "design-tokens"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-motion-and-interaction",
+                          "title":  "Style Guide: Motion and Interaction",
+                          "description":  "Fixed motion tokens: transition durations, easing curves, standard interaction patterns, focus state rules, reduced-motion guidance, and loading indicator patterns.",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/04-motion-and-interaction.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "motion",
+                                       "animation",
+                                       "interaction",
+                                       "accessibility",
+                                       "design-tokens"
+                                   ]
+                      },
+                      {
+                          "id":  "style-guide-customization-guide",
+                          "title":  "Style Guide: Customization Guide",
+                          "description":  "Defines which color tokens may be overridden per project (brand and semantic only), the override contract (contrast requirements, both modes, documentation), the step-by-step process, and what happens if non-color tokens are overridden.",
+                          "category":  "style-guide",
+                          "relativePath":  "style-guide/05-customization-guide.md",
+                          "tags":  [
+                                       "style-guide",
+                                       "customization",
+                                       "color",
+                                       "design-tokens",
+                                       "branding"
                                    ]
                       }
                   ]

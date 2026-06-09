@@ -1,6 +1,6 @@
 ---
 title: "ADR 0011: Centralized Frontend Styling Variables"
-date: 2026-06-02
+date: 2026-06-05
 status: Accepted
 tags: [frontend, styling, sass, css, angular, react, vue, svelte, blazor, design-system]
 ---
@@ -30,17 +30,16 @@ Create a central `_variables.scss` (or `variables.scss`) file containing ALL des
 
 ```scss
 // Brand Colors
-$color-primary: #0066cc;
-$color-primary-light: #3385db;
-$color-primary-dark: #004999;
+$color-primary: #a16207;
+$color-primary-light: #d4a72c;
+$color-primary-dark: #7c4a03;
 $color-secondary: #6c757d;
-$color-accent: #ff6b35;
 
-// Semantic Colors
-$color-success: #28a745;
-$color-warning: #ffc107;
-$color-error: #dc3545;
-$color-info: #17a2b8;
+// Semantic Colors (surface-first)
+$color-success: #d4edda;
+$color-warning: #fff3cd;
+$color-error: #f8d7da;
+$color-info: #d1ecf1;
 
 // Neutral Colors
 $color-text-primary: #212529;
@@ -131,7 +130,7 @@ Then use: `color: var(--color-primary);` in styles.
 ```css
 /* wwwroot/css/variables.css */
 :root {
-  --color-primary: #0066cc;
+  --color-primary: #a16207;
   --color-text-primary: #212529;
   --spacing-md: 1rem;
   --font-size-base: 1rem;
@@ -158,7 +157,7 @@ $color-background: #ffffff;
 $color-text-primary: #212529;
 
 // _variables-dark.scss
-$color-background: #1a1a1a;
+$color-background: #0f172a;
 $color-text-primary: #f8f9fa;
 
 // Convert to CSS custom properties dynamically
@@ -168,7 +167,7 @@ $color-text-primary: #f8f9fa;
 }
 
 [data-theme='dark'] {
-  --color-background: #1a1a1a;
+  --color-background: #0f172a;
   --color-text-primary: #f8f9fa;
 }
 ```
@@ -316,15 +315,15 @@ $color-text-primary: #f8f9fa;
   margin-bottom: $spacing-sm;
 
   &.success {
-    background-color: lighten($color-success, 45%);
-    color: darken($color-success, 20%);
-    border-left: 4px solid $color-success;
+    background-color: $color-success;
+    color: $color-text-primary;
+    border-left: 4px solid $color-border-strong;
   }
 
   &.error {
-    background-color: lighten($color-error, 45%);
-    color: darken($color-error, 20%);
-    border-left: 4px solid $color-error;
+    background-color: $color-error;
+    color: $color-text-primary;
+    border-left: 4px solid $color-border-strong;
   }
 }
 </style>
@@ -354,8 +353,25 @@ $color-text-primary: #f8f9fa;
 - Design system updates MUST be reflected in the central variables file before component implementation.
 - Quarterly audit RECOMMENDED to identify and refactor any violations that slipped through review.
 
+## Style Guide
+
+The canonical, technology-independent design token reference is maintained in **[docs/style-guide/README.md](../style-guide/README.md)**.
+
+The style guide is the **source of truth** for what each token is, what it means, and what values it carries in both light and dark mode. This ADR governs **how** those tokens are declared and consumed in code.
+
+| Style Guide Document | Contents |
+|---|---|
+| [01 — Color Palette](../style-guide/01-color-palette.md) | All color tokens with light/dark hex values, semantic names, usage rules |
+| [02 — Typography](../style-guide/02-typography.md) | Font families, sizes, weights, line heights |
+| [03 — Spacing & Layout](../style-guide/03-spacing-and-layout.md) | Spacing scale, border radius, shadows, z-index |
+| [04 — Motion & Interaction](../style-guide/04-motion-and-interaction.md) | Transitions, easing, focus states |
+| [05 — Customization Guide](../style-guide/05-customization-guide.md) | How a project overrides ONLY the color scheme tokens |
+
+> Only color scheme tokens (brand and semantic colors) may be overridden per project. Typography, spacing, motion, and layout tokens are fixed. See the customization guide for the override contract.
+
 ## References
 
+- Style Guide: [docs/style-guide/README.md](../style-guide/README.md)
 - Design Tokens specification: <https://design-tokens.github.io/community-group/format/>
 - SASS documentation: <https://sass-lang.com/documentation/variables>
 - CSS Custom Properties: <https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties>
