@@ -6,10 +6,6 @@ tags: [design, modular-monolith, architecture, boundaries, integration]
 ---
 # Modular Monolith Architecture Design
 
-**Status**: Proposed  
-**Date**: 2026-06-01  
-**Author**: Design Guidelines Team
-
 ## Overview
 
 This document explains the architectural intent behind a modular monolith, including module boundaries, communication rules, consistency choices, and operational concerns. It complements structure templates by describing why the structure exists and what rules make it effective.

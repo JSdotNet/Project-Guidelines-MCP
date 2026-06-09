@@ -1,0 +1,22 @@
+<Project>
+  <!--
+    Import the solution-level Directory.Build.props to inherit TargetFramework,
+    LangVersion, Nullable, and ImplicitUsings for file-based app scripts.
+    Directory.Packages.props is also inherited from the solution root, enabling
+    version-less #:package directives for packages already declared there.
+
+    See ADR 0014: C# Standalone Script Files.
+  -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!-- Scripts use top-level statements; a namespace root is not meaningful. -->
+    <RootNamespace>Scripts</RootNamespace>
+    <!--
+      Restore lock files are enforced for production projects to ensure
+      reproducible builds. Standalone file-based scripts manage their own
+      transient restore cache and do not benefit from lock-file enforcement.
+    -->
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JSdotNet.Project.Guidelines.Docs\JSdotNet.Project.Guidelines.Docs.csproj" />
+    <ProjectReference Include="..\..\src\JSdotNet.Project.Guidelines.McpServer\JSdotNet.Project.Guidelines.McpServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 using JSdotNet.Project.Guidelines.Docs.Abstractions;
 using JSdotNet.Project.Guidelines.Docs.Infrastructure;
+using JSdotNet.Project.Guidelines.McpServer.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +21,17 @@ builder.Logging.AddConsole(consoleLogOptions =>
 
 // Register HttpClient factory manually to avoid optional extensions
 builder.Services.AddSingleton(new HttpClient());
+
+// Register usage logger – one file per process so concurrent server instances don't collide.
+builder.Services.AddSingleton<IUsageLog>(_ =>
+{
+    var baseDir = Environment.GetEnvironmentVariable("JSDOTNET_LOG_PATH")
+        ?? Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
+            "JSdotNet", "MCPServer");
+    var logFile = Path.Combine(baseDir, $"usage-{Environment.ProcessId}.jsonl");
+    return new JsonFileUsageLog(logFile);
+});
 
 // Add memory cache for document index caching
 builder.Services.AddMemoryCache();

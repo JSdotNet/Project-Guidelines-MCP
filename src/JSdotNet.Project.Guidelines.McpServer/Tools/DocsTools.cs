@@ -1,44 +1,172 @@
 using System.ComponentModel;
 using System.Text.Json;
 using JSdotNet.Project.Guidelines.Docs.Abstractions;
+using JSdotNet.Project.Guidelines.McpServer.Logging;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
 namespace JSdotNet.Project.Guidelines.McpServer.Tools;
 
 [McpServerToolType]
-public static class DocsTools
+public sealed class DocsTools(IDocumentCatalog catalog, IUsageLog usageLog, ILogger<DocsTools> logger)
 {
-    [McpServerTool(Name = "list_docs"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, recommendations, and structures. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
-    public static string ListDocs(IDocumentCatalog catalog)
+    [McpServerTool(Name = "list_docs"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, recommendations, structures, and config guidelines. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
+    public async Task<string> ListDocsAsync(CancellationToken ct)
     {
-        var docs = catalog.ListDocuments().Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags });
-        return JsonSerializer.Serialize(docs);
+        string[] ids = [];
+        var succeeded = false;
+        string? errorMessage = null;
+        try
+        {
+            var docs = catalog.ListDocuments()
+                .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
+                .ToList();
+            ids = docs.Select(d => d.Id).ToArray();
+            succeeded = true;
+            return JsonSerializer.Serialize(docs);
+        }
+        catch (Exception ex) when (Capture(ex, out errorMessage))
+        {
+            logger.LogError(ex, "Error in list_docs");
+            throw;
+        }
+        finally
+        {
+            await TryRecordAsync("list_docs", [], ids, succeeded, errorMessage, ct);
+        }
     }
 
-    [McpServerTool(Name = "list_docs_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), and 'structures' (canonical project scaffolds and templates). Use this when you know the type of guidance you need rather than searching by keyword.")]
-    public static string ListDocsByType(IDocumentCatalog catalog, [Description("Category to filter by")] string category)
+    [McpServerTool(Name = "list_docs_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), 'structures' (canonical project scaffolds and templates), and 'config' (configuration file guidelines, e.g. github-app.yml). Use this when you know the type of guidance you need rather than searching by keyword.")]
+    public async Task<string> ListDocsByTypeAsync([Description("Category to filter by")] string category, CancellationToken ct)
     {
-        var docs = catalog.ListDocuments()
-            .Where(d => string.Equals(d.Category.Split('/')?.FirstOrDefault() ?? string.Empty, category, StringComparison.OrdinalIgnoreCase))
-            .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags });
-        return JsonSerializer.Serialize(docs);
+        string[] ids = [];
+        var succeeded = false;
+        string? errorMessage = null;
+        try
+        {
+            var docs = catalog.ListDocuments()
+                .Where(d => string.Equals(d.Category.Split('/')?.FirstOrDefault() ?? string.Empty, category, StringComparison.OrdinalIgnoreCase))
+                .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
+                .ToList();
+            ids = docs.Select(d => d.Id).ToArray();
+            succeeded = true;
+            return JsonSerializer.Serialize(docs);
+        }
+        catch (Exception ex) when (Capture(ex, out errorMessage))
+        {
+            logger.LogError(ex, "Error in list_docs_by_type for category {Category}", category);
+            throw;
+        }
+        finally
+        {
+            await TryRecordAsync("list_docs_by_type", new() { ["category"] = category }, ids, succeeded, errorMessage, ct);
+        }
     }
 
     [McpServerTool(Name = "search_docs"), Description("Searches the document catalog by matching a query against document titles, IDs, paths, and descriptions (case-insensitive). Returns all matching documents with full metadata. Use this when you have a keyword or concept in mind (e.g. 'logging', 'persistence', 'value object') and want to discover all relevant guidance without knowing exact document IDs or categories.")]
-    public static string SearchDocs(IDocumentCatalog catalog, [Description("Search query")] string query)
+    public async Task<string> SearchDocsAsync([Description("Search query")] string query, CancellationToken ct)
     {
-        var docs = catalog.Search(query).Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags });
-        return JsonSerializer.Serialize(docs);
+        string[] ids = [];
+        var succeeded = false;
+        string? errorMessage = null;
+        try
+        {
+            var docs = catalog.Search(query)
+                .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
+                .ToList();
+            ids = docs.Select(d => d.Id).ToArray();
+            succeeded = true;
+            return JsonSerializer.Serialize(docs);
+        }
+        catch (Exception ex) when (Capture(ex, out errorMessage))
+        {
+            logger.LogError(ex, "Error in search_docs for query {Query}", query);
+            throw;
+        }
+        finally
+        {
+            await TryRecordAsync("search_docs", new() { ["query"] = query }, ids, succeeded, errorMessage, ct);
+        }
     }
 
     [McpServerTool(Name = "search_docs_by_tag"), Description("Finds all documents annotated with a specific tag (e.g. 'persistence', 'resilience', 'domain', 'testing', 'cqrs'). Tag-based search is more precise than text search and maps directly to architectural concerns and cross-cutting topics. Use this when you need all guidance related to a specific architectural area or concern rather than a free-text keyword.")]
-    public static string SearchDocsByTag(IDocumentCatalog catalog, [Description("Tag to filter by")] string tag)
+    public async Task<string> SearchDocsByTagAsync([Description("Tag to filter by")] string tag, CancellationToken ct)
     {
-        var docs = catalog.SearchByTag(tag).Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags });
-        return JsonSerializer.Serialize(docs);
+        string[] ids = [];
+        var succeeded = false;
+        string? errorMessage = null;
+        try
+        {
+            var docs = catalog.SearchByTag(tag)
+                .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
+                .ToList();
+            ids = docs.Select(d => d.Id).ToArray();
+            succeeded = true;
+            return JsonSerializer.Serialize(docs);
+        }
+        catch (Exception ex) when (Capture(ex, out errorMessage))
+        {
+            logger.LogError(ex, "Error in search_docs_by_tag for tag {Tag}", tag);
+            throw;
+        }
+        finally
+        {
+            await TryRecordAsync("search_docs_by_tag", new() { ["tag"] = tag }, ids, succeeded, errorMessage, ct);
+        }
     }
 
     [McpServerTool(Name = "get_doc"), Description("Fetches the complete Markdown content of a specific document by its ID. Use this after listing or searching to read the full text of an ADR (including decision rationale and consequences), a recommendation, a design document, or a project structure template. Always call this before implementing anything that may be governed by an existing ADR or recommendation.")]
-    public static async Task<string> GetDocAsync(IDocumentCatalog catalog, [Description("Document id")] string id, CancellationToken ct)
-        => await catalog.GetContentAsync(id, ct);
+    public async Task<string> GetDocAsync([Description("Document id")] string id, CancellationToken ct)
+    {
+        var succeeded = false;
+        string? errorMessage = null;
+        try
+        {
+            var content = await catalog.GetContentAsync(id, ct);
+            succeeded = true;
+            return content;
+        }
+        catch (Exception ex) when (Capture(ex, out errorMessage))
+        {
+            logger.LogError(ex, "Error in get_doc for id {Id}", id);
+            throw;
+        }
+        finally
+        {
+            await TryRecordAsync("get_doc", new() { ["id"] = id }, succeeded ? [id] : [], succeeded, errorMessage, ct);
+        }
+    }
+
+    private async ValueTask TryRecordAsync(
+        string toolName,
+        Dictionary<string, string> parameters,
+        string[] resultDocumentIds,
+        bool succeeded,
+        string? errorMessage,
+        CancellationToken ct)
+    {
+        try
+        {
+            await usageLog.RecordAsync(new UsageLogEntry(
+                DateTimeOffset.UtcNow,
+                toolName,
+                parameters,
+                resultDocumentIds,
+                resultDocumentIds.Length,
+                succeeded,
+                errorMessage), ct);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to write usage log entry for {ToolName}", toolName);
+        }
+    }
+
+    // Exception filter that always returns false: captures the message without swallowing the exception.
+    private static bool Capture(Exception ex, out string? message)
+    {
+        message = ex.Message;
+        return false;
+    }
 }
+

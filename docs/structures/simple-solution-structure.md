@@ -6,10 +6,6 @@ tags: [design, architecture, aspire, single-module, structure]
 ---
 ## Simple Solution Structure Design
 
-**Status**: Accepted  
-**Date**: 2026-06-01  
-**Author**: Design Guidelines Team
-
 ## Overview
 
 This document defines the recommended structure for **simple single-solution** projects.
