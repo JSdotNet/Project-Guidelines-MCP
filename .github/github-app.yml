@@ -10,22 +10,15 @@ instructions: |-
   Full repository guidance is in `.github/copilot-instructions.md`; apply it in full.
   The notes below are specific to this App and supplement that file.
 
-  ### MCP Server — Local Docs
+  ### MCP Server
 
-  The session setup script installs the `jsdotnet-coding-guidelines` MCP server tool.
-  Set JSDOTNET_DOCS_PATH to the absolute path of the `docs/` folder in the current
-  worktree so the server reads local docs instead of fetching from GitHub.
+  The `jsdotnet-coding-guidelines` MCP server is available in this session.
+  Always use it to query guidelines before answering any architectural or coding question.
 
   ### Pull Requests
 
-  This App creates PRs autonomously. Every PR must be opened against the
-  **JSdotNet** GitHub organization account. Never push directly to `main`.
-
-scripts:
-  - name: Install JSdotNet Guidelines MCP Server
-    command: dotnet tool install -g JSdotNet.Project.Guidelines.McpServer || dotnet tool update -g JSdotNet.Project.Guidelines.McpServer
-    triggers:
-      - session.create
+  PRs are created only when the user explicitly requests it (via the "Create PR" button).
+  When creating a PR, always use the **JSdotNet** GitHub organization account.
 
 automation:
   auto_issue_session: true
