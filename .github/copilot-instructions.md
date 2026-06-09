@@ -145,6 +145,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 
 ## 6. Contribution Workflow
 
+- All pull requests must be opened under the **JSdotNet** GitHub organization account. Never push directly to `main`.
 - Branch naming: `feature/<short-phrase>`, `fix/<issue-id>`, `docs/<topic>`, `adr/<NNNN-title>`.
 - ADR process: Open PR with ADR in `adrs/` as `NNNN-title.md` (reserve number sequentially). Review ensures clarity of consequences.
 - Commit messages: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:` etc.).
@@ -188,6 +189,7 @@ Review this file after major ADR shifts or when the MCP server toolset changes s
 Version History:
 - 2025-11-10: Initial creation.
 - 2026-06-05: Refactored — inline guidance removed; MCP server now live as authoritative source.
+- 2026-06-09: Added JSdotNet PR account rule to Section 6.
 
 ---
 
