@@ -1,0 +1,56 @@
+# GitHub Copilot App configuration for Project-Guidelines-MCP
+# See: https://github.com/JSdotNet/Project-Guidelines-MCP
+
+instructions: |-
+  ## Guidance Authority
+
+  This repository is the single source of truth for JSdotNet .NET project guidelines.
+  All content lives in `docs/` and is served via the `jsdotnet-coding-guidelines` MCP server.
+
+  ### MCP Server — Mandatory Usage
+
+  Before answering ANY question about architecture, C# style, patterns, testing,
+  observability, or any technical decision, always query the MCP server first:
+
+  - `SearchDocuments("<keyword>")` — full-text search across all guidelines
+  - `ListDocuments` — list all available docs with their IDs, categories, and tags
+  - `GetDocument("<id>")` — fetch the full content of a specific document
+
+  The MCP server is installed as a .NET global tool:
+    dotnet tool install -g JSdotNet.Project.Guidelines.McpServer
+
+  When running inside the repository the server uses the local `docs/` folder
+  (set JSDOTNET_DOCS_PATH to the absolute path of the `docs/` directory). Otherwise
+  it fetches docs from GitHub automatically.
+
+  Always cite the source document in your answer (ADR number, doc ID, or relative path).
+  If the MCP server is unreachable, fall back to reading `docs/index.json` and the
+  referenced markdown files directly. Never invent guidance from memory alone.
+
+  If a question has no existing document, suggest creating a new ADR or recommendation
+  rather than answering from first principles.
+
+  ### Pull Requests — Account & Conventions
+
+  - Always create pull requests under the **JSdotNet** GitHub organization account.
+  - Target branch: `main` (never commit directly to `main`).
+  - Branch naming: `feature/<short-phrase>`, `fix/<issue-id>`, `docs/<topic>`, `adr/<NNNN-title>`.
+  - Commit messages follow Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`.
+  - Merge requires a passing CI build and at least one maintainer review.
+
+  ### Repository Conventions
+
+  - Whenever docs in `docs/` are added, modified, or removed, regenerate `docs/index.json`.
+  - ADR files: `docs/adrs/NNNN-title.md` (sequential numbering, MADR-ish simplified format).
+  - Maintain ≥ 80 % line coverage for `JSdotNet.Project.Guidelines.Docs` and
+    `JSdotNet.Project.Guidelines.McpServer` (enforced in CI via coverlet).
+
+scripts:
+  - name: Install JSdotNet Guidelines MCP Server
+    command: dotnet tool install -g JSdotNet.Project.Guidelines.McpServer || dotnet tool update -g JSdotNet.Project.Guidelines.McpServer
+    triggers:
+      - session.create
+
+automation:
+  auto_issue_session: true
+  remote_control: false
