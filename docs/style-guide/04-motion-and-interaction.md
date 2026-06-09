@@ -1,6 +1,6 @@
 ---
 title: "Style Guide: Motion and Interaction"
-date: 2026-06-04
+date: 2026-06-05
 tags: [style-guide, motion, animation, interaction, accessibility, design-tokens]
 ---
 # Motion and Interaction
@@ -83,7 +83,7 @@ Keyboard focus must always be **clearly visible** and must never be removed with
 
 | Property | Value |
 |---|---|
-| Focus ring color | `color-border-focus` (`#0066CC` / `#3385DB` dark) |
+| Focus ring color | `color-border-focus` (`#A16207` / `#F2C14E` dark) |
 | Focus ring width | `2px` |
 | Focus ring offset | `2px` (outside the element boundary) |
 | Focus ring style | `outline` (not `box-shadow` — `outline` is visible in Windows High Contrast mode) |

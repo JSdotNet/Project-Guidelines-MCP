@@ -1,6 +1,6 @@
 ---
 title: "ADR 0011: Centralized Frontend Styling Variables"
-date: 2026-06-02
+date: 2026-06-05
 status: Accepted
 tags: [frontend, styling, sass, css, angular, react, vue, svelte, blazor, design-system]
 ---
@@ -30,17 +30,16 @@ Create a central `_variables.scss` (or `variables.scss`) file containing ALL des
 
 ```scss
 // Brand Colors
-$color-primary: #0066cc;
-$color-primary-light: #3385db;
-$color-primary-dark: #004999;
+$color-primary: #a16207;
+$color-primary-light: #d4a72c;
+$color-primary-dark: #7c4a03;
 $color-secondary: #6c757d;
-$color-accent: #ff6b35;
 
-// Semantic Colors
-$color-success: #28a745;
-$color-warning: #ffc107;
-$color-error: #dc3545;
-$color-info: #17a2b8;
+// Semantic Colors (surface-first)
+$color-success: #d4edda;
+$color-warning: #fff3cd;
+$color-error: #f8d7da;
+$color-info: #d1ecf1;
 
 // Neutral Colors
 $color-text-primary: #212529;
@@ -131,7 +130,7 @@ Then use: `color: var(--color-primary);` in styles.
 ```css
 /* wwwroot/css/variables.css */
 :root {
-  --color-primary: #0066cc;
+  --color-primary: #a16207;
   --color-text-primary: #212529;
   --spacing-md: 1rem;
   --font-size-base: 1rem;
@@ -158,7 +157,7 @@ $color-background: #ffffff;
 $color-text-primary: #212529;
 
 // _variables-dark.scss
-$color-background: #1a1a1a;
+$color-background: #0f172a;
 $color-text-primary: #f8f9fa;
 
 // Convert to CSS custom properties dynamically
@@ -168,7 +167,7 @@ $color-text-primary: #f8f9fa;
 }
 
 [data-theme='dark'] {
-  --color-background: #1a1a1a;
+  --color-background: #0f172a;
   --color-text-primary: #f8f9fa;
 }
 ```
@@ -316,15 +315,15 @@ $color-text-primary: #f8f9fa;
   margin-bottom: $spacing-sm;
 
   &.success {
-    background-color: lighten($color-success, 45%);
-    color: darken($color-success, 20%);
-    border-left: 4px solid $color-success;
+    background-color: $color-success;
+    color: $color-text-primary;
+    border-left: 4px solid $color-border-strong;
   }
 
   &.error {
-    background-color: lighten($color-error, 45%);
-    color: darken($color-error, 20%);
-    border-left: 4px solid $color-error;
+    background-color: $color-error;
+    color: $color-text-primary;
+    border-left: 4px solid $color-border-strong;
   }
 }
 </style>

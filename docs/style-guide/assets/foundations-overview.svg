@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="960" height="640" fill="#F8F9FA"/>
+  <text x="32" y="40" font-size="24" font-weight="700" fill="#212529">Style Guide Foundations Overview</text>
+  <text x="32" y="64" font-size="13" fill="#6C757D">Typography, spacing, surfaces, motion, and the rule that only colors may vary by project.</text>
+
+  <rect x="32" y="92" width="430" height="220" rx="16" fill="#FFFFFF" stroke="#DEE2E6"/>
+  <text x="56" y="124" font-size="14" font-weight="700" fill="#212529" letter-spacing="0.04em">TYPOGRAPHY</text>
+  <text x="56" y="164" font-size="36" font-weight="700" fill="#212529">Heading scale</text>
+  <text x="56" y="196" font-size="16" fill="#212529">Body text uses Inter at 16 px with 1.5 line height for readable default content.</text>
+  <text x="56" y="226" font-size="14" fill="#6C757D">Secondary text supports metadata, hints, and supporting information.</text>
+  <rect x="56" y="248" width="150" height="36" rx="8" fill="#F8F9FA" stroke="#DEE2E6"/>
+  <text x="70" y="271" font-size="13" font-family="'Fira Code', 'Courier New', monospace" fill="#A16207">font-family-mono</text>
+  <text x="230" y="271" font-size="12" fill="#6C757D">Inter / Poppins / Fira Code</text>
+
+  <rect x="494" y="92" width="434" height="220" rx="16" fill="#FFFFFF" stroke="#DEE2E6"/>
+  <text x="518" y="124" font-size="14" font-weight="700" fill="#212529" letter-spacing="0.04em">SPACING AND LAYOUT</text>
+  <text x="518" y="156" font-size="14" fill="#6C757D">4 px base unit with fixed rhythm across all projects.</text>
+  <rect x="518" y="184" width="16" height="16" rx="4" fill="#D4A72C"/><text x="542" y="196" font-size="12" fill="#212529">xs - 4 px</text>
+  <rect x="518" y="212" width="24" height="16" rx="4" fill="#D4A72C"/><text x="550" y="224" font-size="12" fill="#212529">sm - 8 px</text>
+  <rect x="518" y="240" width="40" height="16" rx="4" fill="#D4A72C"/><text x="566" y="252" font-size="12" fill="#212529">md - 16 px</text>
+  <rect x="518" y="268" width="56" height="16" rx="4" fill="#D4A72C"/><text x="582" y="280" font-size="12" fill="#212529">lg - 24 px</text>
+  <rect x="700" y="184" width="180" height="96" rx="16" fill="#FFFFFF" stroke="#ADB5BD"/>
+  <rect x="718" y="202" width="144" height="60" rx="12" fill="#F8F9FA" stroke="#DEE2E6"/>
+  <text x="733" y="226" font-size="13" font-weight="600" fill="#212529">Default card</text>
+  <text x="733" y="246" font-size="12" fill="#6C757D">8 px radius, md shadow</text>
+
+  <rect x="32" y="340" width="430" height="236" rx="16" fill="#0F172A" stroke="#475569"/>
+  <text x="56" y="372" font-size="14" font-weight="700" fill="#F8F9FA" letter-spacing="0.04em">SURFACES AND STATES</text>
+  <rect x="56" y="396" width="164" height="136" rx="14" fill="#1E293B" stroke="#475569"/>
+  <text x="76" y="424" font-size="13" font-weight="600" fill="#F8F9FA">Page surface</text>
+  <text x="76" y="446" font-size="12" fill="#CED4DA">background-alt</text>
+  <rect x="246" y="396" width="182" height="136" rx="16" fill="#334155" stroke="#F2C14E" stroke-width="2"/>
+  <text x="266" y="424" font-size="13" font-weight="600" fill="#F8F9FA">Raised surface</text>
+  <text x="266" y="446" font-size="12" fill="#CED4DA">Dialogs and popovers</text>
+  <rect x="266" y="468" width="110" height="36" rx="10" fill="#F2C14E"/>
+  <text x="294" y="491" font-size="13" font-weight="700" fill="#212529">Primary</text>
+
+  <rect x="494" y="340" width="434" height="236" rx="16" fill="#FFFFFF" stroke="#DEE2E6"/>
+  <text x="518" y="372" font-size="14" font-weight="700" fill="#212529" letter-spacing="0.04em">MOTION AND CUSTOMIZATION</text>
+  <text x="518" y="402" font-size="12" fill="#6C757D">Fast</text>
+  <line x1="560" y1="398" x2="642" y2="398" stroke="#A16207" stroke-width="4" stroke-linecap="round"/>
+  <text x="654" y="402" font-size="12" fill="#6C757D">150 ms</text>
+  <text x="518" y="432" font-size="12" fill="#6C757D">Base</text>
+  <line x1="560" y1="428" x2="688" y2="428" stroke="#A16207" stroke-width="4" stroke-linecap="round"/>
+  <text x="700" y="432" font-size="12" fill="#6C757D">250 ms</text>
+  <text x="518" y="462" font-size="12" fill="#6C757D">Slow</text>
+  <line x1="560" y1="458" x2="732" y2="458" stroke="#A16207" stroke-width="4" stroke-linecap="round"/>
+  <text x="744" y="462" font-size="12" fill="#6C757D">350 ms</text>
+  <rect x="518" y="494" width="126" height="46" rx="10" fill="#FFFFFF" stroke="#A16207" stroke-width="2"/>
+  <text x="548" y="522" font-size="13" font-weight="600" fill="#212529">Focus ring</text>
+  <rect x="682" y="492" width="218" height="50" rx="12" fill="#F8F9FA" stroke="#DEE2E6"/>
+  <text x="704" y="513" font-size="12" fill="#6C757D">Project-customizable:</text>
+  <text x="704" y="531" font-size="13" font-weight="700" fill="#A16207">Colors only</text>
+  <text x="56" y="606" font-size="11" fill="#ADB5BD">docs/style-guide/assets/foundations-overview.svg</text>
+</svg>

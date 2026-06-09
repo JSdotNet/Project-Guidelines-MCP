@@ -1,6 +1,6 @@
 ---
 title: "Style Guide: Overview"
-date: 2026-06-04
+date: 2026-06-05
 tags: [style-guide, design-tokens, ux, frontend]
 ---
 # UX Style Guide
@@ -59,7 +59,8 @@ The style guide is the source of truth. ADR 0011 is the implementation contract.
 
 ## Visual References
 
-Sample SVG files in [`assets/`](assets/) let you verify the color scheme at a glance without running any build:
+Sample SVG files in [`assets/`](assets/) let you verify the style guide visually without running any build:
 
 - [`color-palette-light.svg`](assets/color-palette-light.svg) — all color tokens in light mode
 - [`color-palette-dark.svg`](assets/color-palette-dark.svg) — all color tokens in dark mode
+- [`foundations-overview.svg`](assets/foundations-overview.svg) — typography, spacing, surfaces, motion, and the "colors-only" customization boundary
