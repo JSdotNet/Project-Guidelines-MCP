@@ -10,10 +10,19 @@ instructions: |-
   Full repository guidance is in `.github/copilot-instructions.md`; apply it in full.
   The notes below are specific to this App and supplement that file.
 
-  ### MCP Server
+  ### MCP Server — When and How to Use It
 
-  The `jsdotnet-coding-guidelines` MCP server is available in this session.
-  Always use it to query guidelines before answering any architectural or coding question.
+  The MCP server is installed globally as `jsdotnet-project-guidelines-mcpserver`.
+  It exposes three tools: `ListDocuments`, `SearchDocuments`, `GetDocument`.
+
+  **Use the MCP server when working on code in `src/`:**
+  Before implementing or changing any logic, query the server to verify the guideline
+  or ADR you are implementing. For example: `SearchDocuments("error handling")` or
+  `GetDocument("0004-standardize-result-objects-for-expected-failures")`.
+
+  **Do NOT use the MCP server when working on `docs/`:**
+  You are editing the source content directly — querying the server would only reflect
+  the previously published version, not your in-progress changes.
 
   ### Pull Requests
 
