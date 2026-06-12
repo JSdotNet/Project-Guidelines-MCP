@@ -188,7 +188,6 @@ Review this file after major ADR shifts or when the MCP server toolset changes s
 Version History:
 - 2025-11-10: Initial creation.
 - 2026-06-05: Refactored — inline guidance removed; MCP server now live as authoritative source.
-- 2026-06-09: Added JSdotNet PR account rule to Section 6.
 
 ---
 
