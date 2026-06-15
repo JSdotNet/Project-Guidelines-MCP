@@ -176,10 +176,10 @@ Content here.
         var repoRoot = FindRepoRoot();
         Assert.NotNull(repoRoot);
 
-        var indexPath = Path.Combine(repoRoot, "docs", "index.json");
+        var indexPath = Path.Combine(repoRoot, "guide", "index.json");
 
         // Assert index exists
-        Assert.True(File.Exists(indexPath), "docs/index.json should exist");
+        Assert.True(File.Exists(indexPath), "guide/index.json should exist");
 
         // Assert index is valid JSON
         var content = File.ReadAllText(indexPath);
@@ -196,7 +196,7 @@ Content here.
         var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir != null)
         {
-            if (File.Exists(Path.Combine(dir.FullName, "docs", "index.json")))
+            if (File.Exists(Path.Combine(dir.FullName, "guide", "index.json")))
                 return dir.FullName;
 
             if (File.Exists(Path.Combine(dir.FullName, "JSdotNet.Project.Guidelines.slnx")))

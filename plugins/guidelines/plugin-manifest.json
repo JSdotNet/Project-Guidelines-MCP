@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/JSdotNet/Project-Guidelines-MCP.git"
   },
-  "icon": "docs/images/guidelines-icon.png",
+  "icon": "guide/images/guidelines-icon.png",
   "license": "MIT",
   "skills": [
     {

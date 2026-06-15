@@ -186,7 +186,7 @@ public class DocumentCatalogTests
         var current = AppContext.BaseDirectory;
         while (current != null)
         {
-            var docsPath = System.IO.Path.Combine(current, "docs");
+            var docsPath = System.IO.Path.Combine(current, "guide");
             if (System.IO.Directory.Exists(docsPath))
                 return docsPath;
             current = System.IO.Directory.GetParent(current)?.FullName;

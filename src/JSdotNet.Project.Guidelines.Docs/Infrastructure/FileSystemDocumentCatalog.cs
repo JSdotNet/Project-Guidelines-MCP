@@ -12,7 +12,7 @@ namespace JSdotNet.Project.Guidelines.Docs.Infrastructure;
 
 /// <summary>
 /// Loads markdown documents from a local filesystem folder structure.
-/// Prefers docs/index.json if available; falls back to directory scanning.
+/// Prefers guide/index.json if available; falls back to directory scanning.
 /// </summary>
 public sealed class FileSystemDocumentCatalog : IDocumentCatalog
 {
@@ -29,7 +29,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
 
     private static string ResolveDefaultRoot()
     {
-        // Search upwards from multiple starting points for a 'docs' folder with markdown files
+        // Search upwards from multiple starting points for a 'guide' folder with markdown files
         foreach (var start in new[] { AppContext.BaseDirectory, Directory.GetCurrentDirectory(), Path.GetDirectoryName(typeof(FileSystemDocumentCatalog).Assembly.Location) ?? AppContext.BaseDirectory })
         {
             var candidate = FindUpForDocs(start);
@@ -38,8 +38,8 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
                 return candidate;
             }
         }
-        // Fallback: app base/docs (may be empty)
-        return Path.Combine(AppContext.BaseDirectory, "docs");
+        // Fallback: app base/guide (may be empty)
+        return Path.Combine(AppContext.BaseDirectory, "guide");
     }
 
     private static string? FindUpForDocs(string startDir)
@@ -47,7 +47,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var dir = new DirectoryInfo(startDir);
         while (dir is not null)
         {
-            var docs = Path.Combine(dir.FullName, "docs");
+            var docs = Path.Combine(dir.FullName, "guide");
             if (Directory.Exists(docs) && Directory.GetFiles(docs, "*.md", SearchOption.AllDirectories).Length > 0)
             {
                 return docs;

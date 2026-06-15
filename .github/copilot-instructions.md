@@ -1,6 +1,6 @@
-ï»¿# Copilot Repository Instructions: project-coding-guidelines
+# Copilot Repository Instructions: project-coding-guidelines
 
-> Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects. Guidance lives in `docs/` and is served programmatically via the `jsdotnet-coding-guidelines` MCP server. This file governs how to maintain **this repository** â€” not how to write .NET code.
+> Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects. Guidance lives in `guide/` and is served programmatically via the `jsdotnet-coding-guidelines` MCP server. This file governs how to maintain **this repository** — not how to write .NET code.
 
 ---
 
@@ -10,9 +10,9 @@
 
 When answering questions about architecture, patterns, C# style, testing, observability, or any technical decision:
 
-1. **MCP server first** â€” call `jsdotnet-coding-guidelines` tools (`SearchDocuments`, `ListDocuments`, `GetDocument`) to retrieve authoritative content from `docs/`.
-2. **Local docs second** â€” if MCP is unavailable, read `docs/index.json` and the referenced markdown files directly.
-3. **Disclose uncertainty** â€” if neither source is reachable, say so explicitly. Do not invent or recall guidance from memory alone.
+1. **MCP server first** — call `jsdotnet-coding-guidelines` tools (`SearchDocuments`, `ListDocuments`, `GetDocument`) to retrieve authoritative content from `guide/`.
+2. **Local docs second** — if MCP is unavailable, read `guide/index.json` and the referenced markdown files directly.
+3. **Disclose uncertainty** — if neither source is reachable, say so explicitly. Do not invent or recall guidance from memory alone.
 
 When giving architectural advice, always cite the source document (ADR number, doc ID, or relative path).
 
@@ -22,7 +22,7 @@ If a question touches an area with no existing document, suggest creating a new 
 
 ## 1. Scope & Mission
 
-This repo is the single source of truth for JSdotNet project guidelines. Content is organized under `docs/` and exposed via an MCP server so AI agents can consult it during code generation and review.
+This repo is the single source of truth for JSdotNet project guidelines. Content is organized under `guide/` and exposed via an MCP server so AI agents can consult it during code generation and review.
 
 This instructions file covers only **repository-operational** concerns: structure, contribution workflow, doc conventions, and how to maintain the MCP server codebase.
 
@@ -32,7 +32,7 @@ This instructions file covers only **repository-operational** concerns: structur
 
 ```
 /README.md
-/docs/
+/guide/
   index.json                   - Document metadata index (MUST be updated when docs change)
   adrs/                        - Each ADR: `NNNN-title.md` (sequential 0001, 0002 ...)
   designs/                     - Deeper design explorations & diagrams
@@ -46,16 +46,16 @@ This instructions file covers only **repository-operational** concerns: structur
 
 ### Important: index.json Maintenance
 
-The `docs/index.json` file is the authoritative document registry for the MCP Server.
+The `guide/index.json` file is the authoritative document registry for the MCP Server.
 
-**CRITICAL REQUIREMENT**: Whenever you add, modify, or remove documentation files in `docs/`, you MUST regenerate `docs/index.json` to reflect those changes.
+**CRITICAL REQUIREMENT**: Whenever you add, modify, or remove documentation files in `guide/`, you MUST regenerate `guide/index.json` to reflect those changes.
 
 To regenerate the index:
-1. Run through all markdown files in `docs/` subdirectories
+1. Run through all markdown files in `guide/` subdirectories
 2. Extract metadata from front matter (title, tags)
 3. Generate entries with: id, title, category, relativePath, tags
 4. Update the `generated` timestamp
-5. Save to `docs/index.json`
+5. Save to `guide/index.json`
 
 Example structure:
 ```json
@@ -80,7 +80,7 @@ Without an up-to-date index.json, the MCP Server falls back to expensive directo
 
 ## 3. Document Taxonomy & Conventions
 
-### ADRs (`docs/adrs`)
+### ADRs (`guide/adrs`)
 Format (MADR-ish simplified):
 ```
 # ADR NNNN: Concise Title
@@ -96,15 +96,15 @@ Rules:
 - Use present tense in the decision section.
 - Provide justification, not restatement of context.
 
-### Designs (`docs/designs`)
+### Designs (`guide/designs`)
 - Exploratory or future-facing. Can evolve freely.
 - Use diagrams (Mermaid preferred) and clearly labeled sections: Problem, Forces, Proposed Solution, Variants, Risks.
 
-### Recommendations (`docs/recommendations`)
+### Recommendations (`guide/recommendations`)
 - Prescriptive, stable guidance (e.g., "Error handling approach").
 - Keep narrowly scoped; link back to the originating ADR where applicable.
 
-### Structures (`docs/structures`)
+### Structures (`guide/structures`)
 - Canonical directory/file scaffolds (e.g., API service, background worker, library pack).
 - Show minimal code shells with comments for where domain logic goes.
 
@@ -137,7 +137,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 
 - Serve guidance only; do not embed business logic in the server.
 - Always include source doc IDs in responses for traceability.
-- `FileSystemDocumentCatalog` is used when running locally (local `docs/`); `GitHubDocumentCatalog` is used when installed as a global tool (fetches from GitHub).
+- `FileSystemDocumentCatalog` is used when running locally (local `guide/`); `GitHubDocumentCatalog` is used when installed as a global tool (fetches from GitHub).
 - Cache results; avoid redundant GitHub API calls.
 - Rate limits & caching strategy to be documented in a future ADR.
 
@@ -145,7 +145,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 
 ## 6. Contribution Workflow
 
-- Branch naming: `feature/<short-phrase>`, `fix/<issue-id>`, `docs/<topic>`, `adr/<NNNN-title>`.
+- Branch naming: `feature/<short-phrase>`, `fix/<issue-id>`, `guide/<topic>`, `adr/<NNNN-title>`.
 - ADR process: Open PR with ADR in `adrs/` as `NNNN-title.md` (reserve number sequentially). Review ensures clarity of consequences.
 - Commit messages: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:` etc.).
 - Merge requires: passing CI build + review from at least 1 maintainer.
@@ -155,7 +155,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 
 ## 7. Dependency Management
 
-- Pin versions for critical libraries (logging, DI, resilience) â€” update via a dedicated `chore:` PR.
+- Pin versions for critical libraries (logging, DI, resilience) — update via a dedicated `chore:` PR.
 - Prefer BCL over third-party packages where equivalent.
 - All package versions managed centrally (see ADR 0002).
 
@@ -173,11 +173,11 @@ Tooling decisions to be established via ADR. Candidates:
 ## 9. How Copilot Should Behave in This Repo
 
 1. **Always query the MCP server first** for architectural or coding guidance before answering from memory.
-2. **Cite sources** â€” reference ADR numbers or doc IDs when giving architectural advice (e.g., `// ADR-0007: circuit breaker at adapter layer`).
-3. **Flag conflicts** â€” if a request conflicts with established guidance, highlight the conflict and offer the compliant alternative.
-4. **Suggest new docs** â€” if guidance is missing, recommend creating an ADR or recommendation rather than improvising.
-5. **Never expose secrets** â€” remind users to externalize configuration; never commit credentials.
-6. **On MCP unavailable** â€” say "I cannot verify this against the guidelines (MCP server unreachable)" rather than guessing.
+2. **Cite sources** — reference ADR numbers or doc IDs when giving architectural advice (e.g., `// ADR-0007: circuit breaker at adapter layer`).
+3. **Flag conflicts** — if a request conflicts with established guidance, highlight the conflict and offer the compliant alternative.
+4. **Suggest new docs** — if guidance is missing, recommend creating an ADR or recommendation rather than improvising.
+5. **Never expose secrets** — remind users to externalize configuration; never commit credentials.
+6. **On MCP unavailable** — say "I cannot verify this against the guidelines (MCP server unreachable)" rather than guessing.
 
 ---
 
@@ -187,7 +187,7 @@ Review this file after major ADR shifts or when the MCP server toolset changes s
 
 Version History:
 - 2025-11-10: Initial creation.
-- 2026-06-05: Refactored â€” inline guidance removed; MCP server now live as authoritative source.
+- 2026-06-05: Refactored — inline guidance removed; MCP server now live as authoritative source.
 
 ---
 
