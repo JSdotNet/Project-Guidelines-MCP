@@ -1,6 +1,6 @@
-# Copilot Repository Instructions: project-coding-guidelines
+ï»¿# Copilot Repository Instructions: project-coding-guidelines
 
-> Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects. Guidance lives in `guide/` and is served programmatically via the `jsdotnet-coding-guidelines` MCP server. This file governs how to maintain **this repository** — not how to write .NET code.
+> Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects. Guidance lives in `guide/` and is served programmatically via the `jsdotnet-coding-guidelines` MCP server. This file governs how to maintain **this repository** ï¿½ not how to write .NET code.
 
 ---
 
@@ -10,9 +10,9 @@
 
 When answering questions about architecture, patterns, C# style, testing, observability, or any technical decision:
 
-1. **MCP server first** — call `jsdotnet-coding-guidelines` tools (`SearchDocuments`, `ListDocuments`, `GetDocument`) to retrieve authoritative content from `guide/`.
-2. **Local docs second** — if MCP is unavailable, read `guide/index.json` and the referenced markdown files directly.
-3. **Disclose uncertainty** — if neither source is reachable, say so explicitly. Do not invent or recall guidance from memory alone.
+1. **MCP server first** ï¿½ call `jsdotnet-coding-guidelines` tools (`SearchDocuments`, `ListDocuments`, `GetDocument`) to retrieve authoritative content from `guide/`.
+2. **Local docs second** ï¿½ if MCP is unavailable, read `guide/index.json` and the referenced markdown files directly.
+3. **Disclose uncertainty** ï¿½ if neither source is reachable, say so explicitly. Do not invent or recall guidance from memory alone.
 
 When giving architectural advice, always cite the source document (ADR number, doc ID, or relative path).
 
@@ -155,7 +155,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 
 ## 7. Dependency Management
 
-- Pin versions for critical libraries (logging, DI, resilience) — update via a dedicated `chore:` PR.
+- Pin versions for critical libraries (logging, DI, resilience) ï¿½ update via a dedicated `chore:` PR.
 - Prefer BCL over third-party packages where equivalent.
 - All package versions managed centrally (see ADR 0002).
 
@@ -173,11 +173,11 @@ Tooling decisions to be established via ADR. Candidates:
 ## 9. How Copilot Should Behave in This Repo
 
 1. **Always query the MCP server first** for architectural or coding guidance before answering from memory.
-2. **Cite sources** — reference ADR numbers or doc IDs when giving architectural advice (e.g., `// ADR-0007: circuit breaker at adapter layer`).
-3. **Flag conflicts** — if a request conflicts with established guidance, highlight the conflict and offer the compliant alternative.
-4. **Suggest new docs** — if guidance is missing, recommend creating an ADR or recommendation rather than improvising.
-5. **Never expose secrets** — remind users to externalize configuration; never commit credentials.
-6. **On MCP unavailable** — say "I cannot verify this against the guidelines (MCP server unreachable)" rather than guessing.
+2. **Cite sources** ï¿½ reference ADR numbers or doc IDs when giving architectural advice (e.g., `// ADR-0007: circuit breaker at adapter layer`).
+3. **Flag conflicts** ï¿½ if a request conflicts with established guidance, highlight the conflict and offer the compliant alternative.
+4. **Suggest new docs** ï¿½ if guidance is missing, recommend creating an ADR or recommendation rather than improvising.
+5. **Never expose secrets** ï¿½ remind users to externalize configuration; never commit credentials.
+6. **On MCP unavailable** ï¿½ say "I cannot verify this against the guidelines (MCP server unreachable)" rather than guessing.
 
 ---
 
@@ -187,7 +187,7 @@ Review this file after major ADR shifts or when the MCP server toolset changes s
 
 Version History:
 - 2025-11-10: Initial creation.
-- 2026-06-05: Refactored — inline guidance removed; MCP server now live as authoritative source.
+- 2026-06-05: Refactored ï¿½ inline guidance removed; MCP server now live as authoritative source.
 
 ---
 

@@ -56,7 +56,12 @@ automation:
 
 instructions:
   github_account: "Use the JSdotNet repository account for all GitHub operations in this repo."
-  gh_cli: "Before running gh commands such as pr create, pr merge, issue create, or api calls, switch to the git_transport."
+  gh_cli: |
+    The correct gh account for this repo is JSdotNet (stored in the keyring).
+    GH_TOKEN may be set in the environment and will override the keyring account, causing all GitHub API operations to fail with 403.
+    Before running ANY gh command (pr create, pr merge, issue create, api calls, etc.), execute these two steps in order:
+      1. Remove-Item Env:GH_TOKEN -ErrorAction SilentlyContinue
+      2. gh auth switch --user JSdotNet
   git_transport: "Use the repository SSH remote/account for push, pull, fetch, and clone operations."
   mcp_server: "Use jsdotnet-project-guidelines-mcpserver when working on code in src/. Do not query it when editing docs/ — those files are the source content the server serves."
 
