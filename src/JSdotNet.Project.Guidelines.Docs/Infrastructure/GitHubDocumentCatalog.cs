@@ -11,8 +11,8 @@ using Microsoft.Extensions.Caching.Memory;
 namespace JSdotNet.Project.Guidelines.Docs.Infrastructure;
 
 /// <summary>
-/// Loads Markdown documents from the GitHub repository's docs/ folder.
-/// Prefers docs/index.json with 30-minute cache; falls back to directory traversal if index is missing.
+/// Loads Markdown documents from the GitHub repository's guide/ folder.
+/// Prefers guide/index.json with 30-minute cache; falls back to directory traversal if index is missing.
 /// Default repo: JSdotNet/Project-Guidelines-MCP (branch: main).
 /// </summary>
 public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
@@ -80,7 +80,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         {
             if (string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase))
             {
-                var rawUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/docs/{d.RelativePath.Replace("\\", "/")}";
+                var rawUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/guide/{d.RelativePath.Replace("\\", "/")}";
                 return await _http.GetStringAsync(rawUrl, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -100,7 +100,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         // Try loading from index.json
         try
         {
-            var indexUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/docs/index.json";
+            var indexUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/guide/index.json";
             var indexJson = await _http.GetStringAsync(indexUrl).ConfigureAwait(false);
             var indexData = JsonSerializer.Deserialize<DocumentIndexFile>(indexJson, new JsonSerializerOptions
             {
@@ -148,20 +148,20 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
     private async Task<IReadOnlyList<DocumentInfo>> LoadIndexViaDirTraversalAsync()
     {
         var list = new List<DocumentInfo>();
-        await foreach (var file in EnumerateDocsAsync("docs").ConfigureAwait(false))
+        await foreach (var file in EnumerateDocsAsync("guide").ConfigureAwait(false))
         {
             // Titles are derived from file name here; content fetch is deferred to GetContentAsync
             var title = file.name.EndsWith(".md", StringComparison.OrdinalIgnoreCase)
                 ? file.name[..^3].Replace('-', ' ')
                 : file.name;
-            var relative = file.path.Length > 5 ? file.path.Substring(5) : file.path; // strip leading "docs/"
+            var relative = file.path.Length > 6 ? file.path.Substring(6) : file.path; // strip leading "guide/"
             var category = relative.Contains('/') ? relative[..relative.LastIndexOf('/')] : string.Empty;
             var id = GenerateId(relative);
             // Try to fetch the raw content to parse front matter for title and tags
             string raw = string.Empty;
             try
             {
-                var rawUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/docs/{relative}";
+                var rawUrl = $"https://raw.githubusercontent.com/{_owner}/{_repo}/{_branch}/guide/{relative}";
                 raw = await _http.GetStringAsync(rawUrl).ConfigureAwait(false);
             }
             catch

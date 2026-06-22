@@ -1,6 +1,6 @@
 # JSdotNet Project Guidelines
 
-Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, designs, recommendations and structures under `docs/`. An MCP Server in `src/` exposes these documents for tools/agents.
+Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, designs, recommendations and structures under `guide/`. An MCP Server in `src/` exposes these documents for tools/agents.
 
 > Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
 > Original repository: https://github.com/nikneem/hexmaster-design-guidelines
@@ -221,7 +221,7 @@ For contributors testing local changes before publishing to NuGet. This allows y
 
 3. **Restart VS Code** - The MCP server will run directly from your local source code
 
-**How it works**: When running from source with `dotnet run`, the server automatically discovers and reads documents from your local `docs/` folder. This allows you to test changes immediately without publishing.
+**How it works**: When running from source with `dotnet run`, the server automatically discovers and reads documents from your local `guide/` folder. This allows you to test changes immediately without publishing.
 
 **Testing Local NuGet Packages (Advanced)**
 
@@ -263,20 +263,20 @@ dotnet tool install --global --add-source ./local-packages JSdotNet.Project.Guid
 
 ### Registering new documents
 
-This repository uses `docs/index.json` as the canonical registry for MCP document discovery.
+This repository uses `guide/index.json` as the canonical registry for MCP document discovery.
 
-When you add, rename, edit, or remove markdown files in `docs/`, also update `docs/index.json` so metadata and paths stay in sync.
+When you add, rename, edit, or remove markdown files in `guide/`, also update `guide/index.json` so metadata and paths stay in sync.
 
 ## Repo structure
 
 ```
-docs/
+guide/
  adrs/
  designs/
  recommendations/
  structures/
 src/
- Project.Guidelines.Docs/
+ Project.Guidelines.guide/
  Project.Guidelines.McpServer/
 tests/
  Project.Guidelines.McpServer.Tests/
@@ -287,41 +287,41 @@ JSdotNet.Project.Guidelines.slnx
 
 ## ADRs
 
-- [0001: Adopt .NET 10 as Target Framework](docs/adrs/0001-adopt-dotnet-10.md) (Accepted)
-- [0002: Central Package Management for .NET Solutions](docs/adrs/0002-central-package-management.md) (Accepted)
-- [0003: .NET Aspire Recommendation for ASP.NET Services](docs/adrs/0003-recommend-aspire-for-aspnet-projects.md) (Accepted)
-- [0004: Standardize Result Objects for Expected Application Outcomes](docs/adrs/0004-standardize-result-objects-for-expected-failures.md) (Accepted)
-- [0005: Modular Monolith Project Structure](docs/adrs/0005-modular-monolith-structure.md) (Accepted)
-- [0006: CQRS Recommendation for ASP.NET API](docs/adrs/0006-cqrs-recommendation-for-aspnet-api.md) (Accepted)
-- [0007: Minimal APIs Over Controller-Based APIs](docs/adrs/0007-minimal-apis-over-controllers.md) (Accepted)
-- [0008: Adopt Vertical Slice Architecture for Feature Organization](docs/adrs/0008-vertical-slice-architecture.md) (Accepted)
-- [0009: Feature Slices Within Module Projects](docs/adrs/0009-feature-slices-module-structure.md) (Accepted)
-- [0010: Adopt OpenTelemetry for Comprehensive Observability](docs/adrs/0010-adopt-opentelemetry-for-observability.md) (Accepted)
-- [0011: Centralized Frontend Styling Variables](docs/adrs/0011-centralized-frontend-styling-variables.md) (Accepted)
+- [0001: Adopt .NET 10 as Target Framework](guide/adrs/0001-adopt-dotnet-10.md) (Accepted)
+- [0002: Central Package Management for .NET Solutions](guide/adrs/0002-central-package-management.md) (Accepted)
+- [0003: .NET Aspire Recommendation for ASP.NET Services](guide/adrs/0003-recommend-aspire-for-aspnet-projects.md) (Accepted)
+- [0004: Standardize Result Objects for Expected Application Outcomes](guide/adrs/0004-standardize-result-objects-for-expected-failures.md) (Accepted)
+- [0005: Modular Monolith Project Structure](guide/adrs/0005-modular-monolith-structure.md) (Accepted)
+- [0006: CQRS Recommendation for ASP.NET API](guide/adrs/0006-cqrs-recommendation-for-aspnet-api.md) (Accepted)
+- [0007: Minimal APIs Over Controller-Based APIs](guide/adrs/0007-minimal-apis-over-controllers.md) (Accepted)
+- [0008: Adopt Vertical Slice Architecture for Feature Organization](guide/adrs/0008-vertical-slice-architecture.md) (Accepted)
+- [0009: Feature Slices Within Module Projects](guide/adrs/0009-feature-slices-module-structure.md) (Accepted)
+- [0010: Adopt OpenTelemetry for Comprehensive Observability](guide/adrs/0010-adopt-opentelemetry-for-observability.md) (Accepted)
+- [0011: Centralized Frontend Styling Variables](guide/adrs/0011-centralized-frontend-styling-variables.md) (Accepted)
 
 ## Designs
 
-- [Modular Monolith Architecture Design](docs/designs/modular-monolith-architecture-design.md)
-- [Pragmatic Domain-Driven Design Approach](docs/designs/pragmatic-domain-driven-design.md)
+- [Modular Monolith Architecture Design](guide/designs/modular-monolith-architecture-design.md)
+- [Pragmatic Domain-Driven Design Approach](guide/designs/pragmatic-domain-driven-design.md)
 
 ## Recommendations
 
-- [Blazor Frontend Framework Guidance](docs/recommendations/blazor-frontend-framework-guidance.md)
-- [C# Coding Style](docs/recommendations/csharp-coding-style.md)
-- [Object Calisthenics for Domain Code](docs/recommendations/object-calisthenics-for-domain.md)
-- [Specification Pattern for Business Rules](docs/recommendations/specification-pattern-usage.md)
-- [Architecture Testing for Layer and Module Boundaries](docs/recommendations/testing-architecture-layer-dependency-validation.md)
-- [End-to-End Testing](docs/recommendations/testing-end-to-end.md)
-- [Integration Testing](docs/recommendations/testing-integration.md)
-- [Unit Testing with xUnit, Moq, and Bogus](docs/recommendations/testing-unit-xunit-moq-bogus.md)
+- [Blazor Frontend Framework Guidance](guide/recommendations/blazor-frontend-framework-guidance.md)
+- [C# Coding Style](guide/recommendations/csharp-coding-style.md)
+- [Object Calisthenics for Domain Code](guide/recommendations/object-calisthenics-for-domain.md)
+- [Specification Pattern for Business Rules](guide/recommendations/specification-pattern-usage.md)
+- [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture-layer-dependency-validation.md)
+- [End-to-End Testing](guide/recommendations/testing-end-to-end.md)
+- [Integration Testing](guide/recommendations/testing-integration.md)
+- [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit-xunit-moq-bogus.md)
 
 ## Structures
 
-- [Feature Slices Module Structure](docs/structures/feature-slices-module-structure.md)
-- [Folder Structure Reference](docs/structures/folder-structure-reference.md)
-- [Minimal API Endpoint Organization](docs/structures/minimal-api-endpoint-organization.md)
-- [Modular Solution Structure Template](docs/structures/modular-solution-structure.md)
-- [Simple Solution Structure Design](docs/structures/simple-solution-structure.md)
+- [Feature Slices Module Structure](guide/structures/feature-slices-module-structure.md)
+- [Folder Structure Reference](guide/structures/folder-structure-reference.md)
+- [Minimal API Endpoint Organization](guide/structures/minimal-api-endpoint-organization.md)
+- [Modular Solution Structure Template](guide/structures/modular-solution-structure.md)
+- [Simple Solution Structure Design](guide/structures/simple-solution-structure.md)
 
 ---
 
