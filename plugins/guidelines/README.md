@@ -241,13 +241,13 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 
 ```
 plugins/guidelines/
+  .github/plugin/plugin.json   ← Canonical plugin metadata
   skills/
     guidelines-mcp.md          ← Skill 1: MCP reference
     gap-analysis.md            ← Skill 2: Gap analysis workflow
     feedback-loop.md           ← Skill 3: Feedback loop process
   .github/
-  plugin-manifest.json         ← Plugin metadata
-  README.md                     ← This file
+  README.md                    ← This file
 ```
 
 ---
