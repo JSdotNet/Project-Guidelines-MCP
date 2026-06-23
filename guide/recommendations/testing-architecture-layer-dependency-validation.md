@@ -1,6 +1,6 @@
 ---
 title: "Architecture Testing for Layer and Module Boundaries"
-date: 2026-06-01
+date: 2026-06-22
 status: Accepted
 tags: [architecture, testing, clean-architecture, netarchtest, boundaries, modular-monolith]
 ---
@@ -12,6 +12,7 @@ Define a repeatable approach for automated architecture tests that enforce depen
 
 ## Recommendation
 
+- Shared guidance for all test types is defined in **Recommendation: Testing Shared Instructions**.
 - Add architecture tests to every solution that follows modular monolith and feature-slice guidance.
 - Use NetArchTest for dependency and namespace-level rules.
 - Run architecture tests in CI on every pull request.
@@ -131,6 +132,7 @@ Rule changes should be made in the same pull request as the architecture decisio
 - ADR 0006: Recommendation to Implement CQRS for ASP.NET API Projects
 - ADR 0008: Adopt Vertical Slice Architecture for Feature Organization
 - ADR 0009: Feature Slices Within Module Projects
+- Recommendation: Testing Shared Instructions
 - Recommendation: Unit testing with xUnit, Moq and Bogus
 - Structure: Feature Slices Module Structure
 - NetArchTest: <https://github.com/BenMorris/NetArchTest>
