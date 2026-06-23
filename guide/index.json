@@ -1,6 +1,6 @@
 ﻿{
     "version":  "1.0",
-    "generated":  "2026-06-09T10:33:48Z",
+    "generated":  "2026-06-23T10:15:00Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -479,11 +479,11 @@
                                    ]
                       },
                       {
-                          "id":  "testing-architecture-layer-dependency-validation",
+                          "id":  "testing-architecture",
                           "title":  "Architecture Testing for Layer and Module Boundaries",
                           "description":  "Defines automated architecture tests for dependency direction, forbidden dependencies, and module boundary integrity using NetArchTest, including CI enforcement guidance.",
                           "category":  "recommendations",
-                          "relativePath":  "recommendations/testing-architecture-layer-dependency-validation.md",
+                          "relativePath":  "recommendations/testing-architecture.md",
                           "tags":  [
                                        "architecture",
                                        "testing",
@@ -521,11 +521,26 @@
                                    ]
                       },
                       {
-                          "id":  "testing-unit-xunit-moq-bogus",
-                          "title":  "Unit testing with xUnit, Moq and Bogus",
-                          "description":  "Prescribes xUnit + Moq + Bogus as the standard test stack, with AwesomeAssertions-style fluent domain assertions. Covers test scope (one feature/public method per class), behavior-first method naming (Should_ExpectedBehavior_When_StateUnderTest), and builder/TestDataHelper-based arrangement.",
+                          "id":  "testing-shared",
+                          "title":  "Testing Shared Instructions",
+                          "description":  "Defines shared testing guidance across unit, integration, end-to-end, and architecture tests, including project layout, default test project structure, and CI execution order.",
                           "category":  "recommendations",
-                          "relativePath":  "recommendations/testing-unit-xunit-moq-bogus.md",
+                          "relativePath":  "recommendations/testing-shared.md",
+                          "tags":  [
+                                       "testing",
+                                       "unit-testing",
+                                       "integration-testing",
+                                       "e2e",
+                                       "architecture",
+                                       "recommendations"
+                                   ]
+                      },
+                      {
+                          "id":  "testing-unit",
+                          "title":  "Unit Testing with xUnit, Moq and Bogus",
+                          "description":  "Defines unit-test–specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
+                          "category":  "recommendations",
+                          "relativePath":  "recommendations/testing-unit.md",
                           "tags":  [
                                        "testing",
                                        "xunit",

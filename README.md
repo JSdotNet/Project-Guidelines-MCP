@@ -310,10 +310,11 @@ JSdotNet.Project.Guidelines.slnx
 - [C# Coding Style](guide/recommendations/csharp-coding-style.md)
 - [Object Calisthenics for Domain Code](guide/recommendations/object-calisthenics-for-domain.md)
 - [Specification Pattern for Business Rules](guide/recommendations/specification-pattern-usage.md)
-- [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture-layer-dependency-validation.md)
+- [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture.md)
 - [End-to-End Testing](guide/recommendations/testing-end-to-end.md)
 - [Integration Testing](guide/recommendations/testing-integration.md)
-- [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit-xunit-moq-bogus.md)
+- [Testing Shared Instructions](guide/recommendations/testing-shared.md)
+- [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit.md)
 
 ## Structures
 
