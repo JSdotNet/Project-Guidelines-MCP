@@ -12,7 +12,7 @@ Define how to validate complete user and system journeys with one shared end-to-
 
 ## Recommendation
 
-- Shared guidance for all test types is defined in **Recommendation: Testing Shared Instructions**.
+- Shared guidance for all test types is defined in **Recommendation: Testing Shared**.
 - Use one E2E test project per solution: `tests/Company.Product.E2ETests`.
 - Validate critical end-user workflows across API, persistence, messaging, and integrations.
 - Keep E2E suites smaller than unit and integration suites; prioritize highest business risk scenarios.
@@ -88,6 +88,6 @@ tests/
 ## References
 
 - ADR 0003: Strong Recommendation to Adopt .NET Aspire for ASP.NET Web Services
-- Recommendation: Testing Shared Instructions
-- Recommendation: Unit testing with xUnit, Moq and Bogus
+- Recommendation: Testing Shared
+- Recommendation: Unit Testing with xUnit, Moq and Bogus
 - Recommendation: Integration Testing

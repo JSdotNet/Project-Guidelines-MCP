@@ -1,6 +1,6 @@
 ﻿{
     "version":  "1.0",
-    "generated":  "2026-06-23T09:30:00Z",
+    "generated":  "2026-06-23T10:15:00Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -521,11 +521,11 @@
                                    ]
                       },
                       {
-                          "id":  "testing-shared-instructions",
+                          "id":  "testing-shared",
                           "title":  "Testing Shared Instructions",
                           "description":  "Defines shared testing guidance across unit, integration, end-to-end, and architecture tests, including project layout, default test project structure, and CI execution order.",
                           "category":  "recommendations",
-                          "relativePath":  "recommendations/testing-shared-instructions.md",
+                          "relativePath":  "recommendations/testing-shared.md",
                           "tags":  [
                                        "testing",
                                        "unit-testing",

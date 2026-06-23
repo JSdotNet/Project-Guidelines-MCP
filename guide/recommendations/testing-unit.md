@@ -14,7 +14,7 @@ Provide consistent, lightweight, and capable unit testing guidance for .NET 10 C
 
 ## Recommendation
 
-Shared guidance for all test types is defined in **Recommendation: Testing Shared Instructions**. The following are unit-test–specific practices:
+Shared guidance for all test types is defined in **Recommendation: Testing Shared**. The following are unit-test–specific practices:
 
 - Process: Follow TDD for unit behavior changes (write failing test first, implement minimal fix, then refactor).
 - Test scope: Keep each test class focused on one feature or public method/command.
@@ -106,7 +106,7 @@ Dependency hygiene rules are defined in **Recommendation: Testing Shared Instruc
 
 - ADR 0001: Adopt .NET 10
 - Testing Strategy in `.github/copilot-instructions.md`
-- Recommendation: Testing Shared Instructions
+- Recommendation: Testing Shared
 - Moq: <https://github.com/moq/moq>
 - Bogus: <https://github.com/bchavez/Bogus>
 - xUnit: <https://xunit.net/>

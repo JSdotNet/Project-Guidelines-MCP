@@ -12,7 +12,7 @@ Define a consistent approach for integration testing in .NET solutions using one
 
 ## Recommendation
 
-- Shared guidance for all test types is defined in **Recommendation: Testing Shared Instructions**.
+- Shared guidance for all test types is defined in **Recommendation: Testing Shared**.
 - Prefer one shared integration test project per solution: `tests/Company.Product.IntegrationTests`.
 - Cover service collaboration, persistence adapters, messaging adapters, and HTTP boundaries.
 - Keep test setup close to runtime wiring (database, message broker, cache, external service stubs).
@@ -80,7 +80,7 @@ tests/
 ## References
 
 - ADR 0003: Strong Recommendation to Adopt .NET Aspire for ASP.NET Web Services
-- Recommendation: Testing Shared Instructions
-- Recommendation: Unit testing with xUnit, Moq and Bogus
+- Recommendation: Testing Shared
+- Recommendation: Unit Testing with xUnit, Moq and Bogus
 - Recommendation: End-to-End Testing
 - Recommendation: Architecture Testing for Layer and Module Boundaries

@@ -313,7 +313,7 @@ JSdotNet.Project.Guidelines.slnx
 - [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture.md)
 - [End-to-End Testing](guide/recommendations/testing-end-to-end.md)
 - [Integration Testing](guide/recommendations/testing-integration.md)
-- [Testing Shared Instructions](guide/recommendations/testing-shared-instructions.md)
+- [Testing Shared Instructions](guide/recommendations/testing-shared.md)
 - [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit.md)
 
 ## Structures
