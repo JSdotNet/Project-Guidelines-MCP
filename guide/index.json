@@ -1,6 +1,6 @@
-ï»¿{
+{
     "version":  "1.0",
-    "generated":  "2026-06-23T16:43:32Z",
+"generated":  "2026-06-23T16:43:32Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -553,7 +553,7 @@
                       {
                           "id":  "testing-unit",
                           "title":  "Unit Testing with xUnit, Moq and Bogus",
-                          "description":  "Defines unit-testâ€“specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
+                          "description":  "Defines unit-test–specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
                           "category":  "recommendations",
                           "relativePath":  "recommendations/testing-unit.md",
                           "tags":  [
@@ -655,6 +655,22 @@
                                    ]
                       },
                       {
+                          "id":  "config-mcp-json",
+                          "title":  "MCP Server Configuration (.mcp.json)",
+                          "description":  "Standard .mcp.json setup for GitHub Copilot CLI, including required fields, baseline server entries for Microsoft Learn, JSdotNet Guidelines, and Aspire, plus maintenance best practices.",
+                          "category":  "config",
+                          "relativePath":  "config/.mcp.json.md",
+                          "tags":  [
+                                       "mcp",
+                                       "configuration",
+                                       "copilot-cli",
+                                       "microsoft-learn",
+                                       "aspire",
+                                       "guidelines",
+                                       "config"
+                                   ]
+                      },
+                      {
                           "id":  "0019-csharp-script-files",
                           "title":  "ADR 0019: C# Standalone Script Files",
                           "description":  "Adopts .NET 10 file-based apps (#: directives, dotnet run script.cs) as the standard for project automation scripts. Scripts are fully standalone .cs files in /scripts/ with no project file. NuGet packages declared via #:package align with Directory.Packages.props for version consistency. A scripts/Directory.Build.props isolates scripts from solution-level MSBuild settings.",
@@ -702,7 +718,7 @@
                       {
                           "id":  "style-guide-typography",
                           "title":  "Style Guide: Typography",
-                          "description":  "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xsÎ“Ã‡Ã´5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
+                          "description":  "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xsGÇô5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
                           "category":  "style-guide",
                           "relativePath":  "style-guide/02-typography.md",
                           "tags":  [
@@ -756,3 +772,5 @@
                       }
                   ]
 }
+
+
