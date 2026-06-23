@@ -1,6 +1,6 @@
 ﻿{
     "version":  "1.0",
-    "generated":  "2026-06-23T10:15:00Z",
+    "generated":  "2026-06-23T16:43:32Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -418,6 +418,21 @@
                                        "migrations",
                                        "ef-core",
                                        "deployment",
+                                       "recommendations"
+                                   ]
+                      },
+                      {
+                          "id":  "ci-cd-pipeline-for-continuous-deployment",
+                          "title":  "CI/CD Pipeline for Continuous Deployment",
+                          "description":  "Defines a production-grade CI/CD baseline for .NET services with required PR checks, automatic deployment from main, progressive rollout, post-deploy verification, and rollback readiness.",
+                          "category":  "recommendations",
+                          "relativePath":  "recommendations/ci-cd-pipeline-for-continuous-deployment.md",
+                          "tags":  [
+                                       "ci-cd",
+                                       "pipeline",
+                                       "continuous-deployment",
+                                       "github-actions",
+                                       "devops",
                                        "recommendations"
                                    ]
                       },
