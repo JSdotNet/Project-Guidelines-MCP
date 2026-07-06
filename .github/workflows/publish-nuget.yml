@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'src/**'
-      - '.github/workflows/publish-nuget.yml'
   workflow_dispatch:
 
 env:
