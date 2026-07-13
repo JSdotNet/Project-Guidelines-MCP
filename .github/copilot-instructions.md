@@ -10,7 +10,7 @@
 
 When answering questions about architecture, patterns, C# style, testing, observability, or any technical decision:
 
-1. **MCP server first** � call `jsdotnet-coding-guidelines` tools (`SearchDocuments`, `ListDocuments`, `GetDocument`) to retrieve authoritative content from `guide/`.
+1. **MCP server first** — call `jsdotnet-coding-guidelines` tools (`search_guides`, `list_guides`, `get_guide`) to retrieve authoritative content from `guide/`.
 2. **Local docs second** � if MCP is unavailable, read `guide/index.json` and the referenced markdown files directly.
 3. **Disclose uncertainty** � if neither source is reachable, say so explicitly. Do not invent or recall guidance from memory alone.
 
@@ -120,14 +120,16 @@ The `jsdotnet-coding-guidelines` MCP server (NuGet: `JSdotNet.Project.Guidelines
 
 | Tool | Purpose |
 |------|---------|
-| `ListDocuments` | List all available docs with metadata (title, category, tags) |
-| `SearchDocuments` | Keyword search across all docs |
-| `GetDocument` | Fetch full content of a specific doc by ID |
+| `list_guides` | List all available guides with metadata (title, category, tags) |
+| `list_guides_by_type` | List guides filtered by category (adrs, designs, recommendations, structures, config) |
+| `search_guides` | Keyword search across all guides |
+| `search_guides_by_tag` | Find all guides annotated with a specific tag |
+| `get_guide` | Fetch full content of a specific guide by ID |
 
 **Usage examples:**
-- "What is the recommended project structure?" -> `SearchDocuments("project structure")`
-- "List all ADRs" -> `ListDocuments` filtered by category `adrs`
-- "Fetch ADR 0005" -> `GetDocument("0005-modular-monolith-structure")`
+- "What is the recommended project structure?" -> `search_guides("project structure")`
+- "List all ADRs" -> `list_guides_by_type` with category `adrs`
+- "Fetch ADR 0005" -> `get_guide("0005-modular-monolith-structure")`
 
 ---
 
