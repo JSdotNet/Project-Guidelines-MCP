@@ -48,7 +48,7 @@ public sealed class UsageLogTests : IDisposable
     public async Task RecordAsync_WritesEntryToFile()
     {
         var sut = new JsonFileUsageLog(TempFile());
-        await sut.RecordAsync(MakeEntry("list_docs"), TestContext.Current.CancellationToken);
+        await sut.RecordAsync(MakeEntry("list_guides"), TestContext.Current.CancellationToken);
 
         Assert.True(File.Exists(TempFile()));
         var lines = await File.ReadAllLinesAsync(TempFile(), TestContext.Current.CancellationToken);
@@ -59,9 +59,9 @@ public sealed class UsageLogTests : IDisposable
     public async Task RecordAsync_MultipleEntries_AppendsEachOnOwnLine()
     {
         var sut = new JsonFileUsageLog(TempFile());
-        await sut.RecordAsync(MakeEntry("list_docs"), TestContext.Current.CancellationToken);
-        await sut.RecordAsync(MakeEntry("search_docs"), TestContext.Current.CancellationToken);
-        await sut.RecordAsync(MakeEntry("get_doc"), TestContext.Current.CancellationToken);
+        await sut.RecordAsync(MakeEntry("list_guides"), TestContext.Current.CancellationToken);
+        await sut.RecordAsync(MakeEntry("search_guides"), TestContext.Current.CancellationToken);
+        await sut.RecordAsync(MakeEntry("get_guide"), TestContext.Current.CancellationToken);
 
         var lines = (await File.ReadAllLinesAsync(TempFile(), TestContext.Current.CancellationToken))
             .Where(l => !string.IsNullOrWhiteSpace(l))
@@ -73,7 +73,7 @@ public sealed class UsageLogTests : IDisposable
     public async Task RecordAsync_CapturesFailedEntry()
     {
         var sut = new JsonFileUsageLog(TempFile());
-        var entry = MakeEntry("get_doc", succeeded: false, error: "Document 'x' not found");
+        var entry = MakeEntry("get_guide", succeeded: false, error: "Document 'x' not found");
         await sut.RecordAsync(entry, TestContext.Current.CancellationToken);
 
         var lines = await File.ReadAllLinesAsync(TempFile(), TestContext.Current.CancellationToken);
@@ -94,14 +94,14 @@ public sealed class UsageLogTests : IDisposable
     public async Task GetRecentAsync_ReturnsRoundTrippedEntries()
     {
         var sut = new JsonFileUsageLog(TempFile());
-        var original = MakeEntry("search_docs");
+        var original = MakeEntry("search_guides");
         await sut.RecordAsync(original, TestContext.Current.CancellationToken);
 
         var results = await sut.GetRecentAsync(10, TestContext.Current.CancellationToken);
 
         Assert.Single(results);
         var r = results[0];
-        Assert.Equal("search_docs", r.ToolName);
+        Assert.Equal("search_guides", r.ToolName);
         Assert.Equal(2, r.ResultCount);
         Assert.True(r.Succeeded);
         Assert.Equal(original.Parameters["q"], r.Parameters["q"]);
