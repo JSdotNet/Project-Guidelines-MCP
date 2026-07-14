@@ -1,6 +1,6 @@
 {
     "version":  "1.0",
-"generated":  "2026-06-23T16:43:32Z",
+"generated":  "2026-07-15T01:48:00Z",
     "documents":  [
                       {
                           "id":  "0001-adopt-dotnet-10",
@@ -553,7 +553,7 @@
                       {
                           "id":  "testing-unit",
                           "title":  "Unit Testing with xUnit, Moq and Bogus",
-                          "description":  "Defines unit-test–specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
+                          "description":  "Defines unit-testï¿½specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
                           "category":  "recommendations",
                           "relativePath":  "recommendations/testing-unit.md",
                           "tags":  [
@@ -718,7 +718,7 @@
                       {
                           "id":  "style-guide-typography",
                           "title":  "Style Guide: Typography",
-                          "description":  "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xsGÇô5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
+                          "description":  "Fixed typography tokens: font families (Inter, Poppins, Fira Code), sizes (xsGï¿½ï¿½5xl), weights, line heights, and letter spacing. Includes default heading combinations and accessibility notes.",
                           "category":  "style-guide",
                           "relativePath":  "style-guide/02-typography.md",
                           "tags":  [

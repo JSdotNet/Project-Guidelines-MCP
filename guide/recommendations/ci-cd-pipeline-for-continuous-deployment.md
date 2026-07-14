@@ -1,6 +1,6 @@
 ---
 title: "CI/CD Pipeline for Continuous Deployment"
-date: 2026-06-22
+date: 2026-07-15
 status: Accepted
 tags: [ci-cd, pipeline, continuous-deployment, github-actions, devops, recommendations]
 ---
@@ -68,8 +68,8 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
       - run: dotnet restore
@@ -79,11 +79,76 @@ jobs:
         run: ./deploy/deploy-production.sh
 ```
 
+## Pipeline failure reporting (main branch only)
+
+Add a `report-failure` job to every **main branch** workflow. This job:
+- Runs only when a preceding job fails (`if: failure()`).
+- Opens a GitHub issue so failures are tracked and not silently lost.
+- Skips creation when an open issue for the same workflow already exists (deduplication).
+- Is **not** added to PR pipelines — those report through PR comments and status checks.
+
+```yaml
+  report-failure:
+    name: Report Pipeline Failure
+    needs: [<your-main-job>]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create GitHub Issue (skip if open issue exists)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          BODY: |
+            ## 🔴 Pipeline Failure: ${{ github.workflow }}
+
+            | | |
+            |---|---|
+            | **Workflow** | ${{ github.workflow }} |
+            | **Run** | [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+            | **Branch** | `${{ github.ref_name }}` |
+            | **Commit** | `${{ github.sha }}` |
+            | **Triggered by** | ${{ github.actor }} |
+
+            Please [inspect the workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+        run: |
+          EXISTING=$(gh issue list \
+            --repo "$GH_REPO" \
+            --state open \
+            --label "bug" \
+            --search "Pipeline failure: ${{ github.workflow }} in:title" \
+            --json number \
+            --jq 'length')
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "An open failure issue already exists for this workflow — skipping."
+            exit 0
+          fi
+          echo "$BODY" | gh issue create \
+            --repo "$GH_REPO" \
+            --title "⚠️ Pipeline failure: ${{ github.workflow }}" \
+            --body-file - \
+            --label "bug"
+```
+
+The issue title is kept stable (no run number) so the deduplication search always matches an existing open issue. Close the issue manually once the root cause is resolved — the next failure will then re-open a fresh one.
+
+## Action version pinning
+
+Always pin to the current major version of official GitHub Actions and update them on a regular cadence. As of July 2026, the required versions to avoid Node.js deprecation warnings are:
+
+| Action | Minimum version |
+|---|---|
+| `actions/checkout` | `@v7` |
+| `actions/setup-dotnet` | `@v5` |
+| `actions/upload-artifact` | `@v7` |
+| `actions/download-artifact` | `@v4` |
+
 ## Maintenance best practices
 
 - Keep pipelines fast and deterministic; remove flaky or redundant checks.
 - Version and review pipeline files like production code.
-- Pin action versions and update them on a scheduled cadence.
+- Pin action versions and update them on a scheduled cadence (see Action version pinning above).
 - Track DORA metrics and lead time to detect delivery regression.
 - Keep rollback, incident response, and release ownership explicit.
 - Periodically run disaster/rollback drills to validate recovery readiness.
