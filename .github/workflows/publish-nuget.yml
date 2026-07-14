@@ -153,7 +153,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: Create GitHub Issue
+      - name: Create GitHub Issue (skip if open issue exists)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -170,8 +170,19 @@ jobs:
 
             Please [inspect the workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
         run: |
+          EXISTING=$(gh issue list \
+            --repo "$GH_REPO" \
+            --state open \
+            --label "bug" \
+            --search "Pipeline failure: ${{ github.workflow }} in:title" \
+            --json number \
+            --jq 'length')
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "An open failure issue already exists for this workflow — skipping."
+            exit 0
+          fi
           echo "$BODY" | gh issue create \
             --repo "$GH_REPO" \
-            --title "⚠️ Pipeline failure: ${{ github.workflow }} #${{ github.run_number }}" \
+            --title "⚠️ Pipeline failure: ${{ github.workflow }}" \
             --body-file - \
             --label "bug"

@@ -99,35 +99,3 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: '/language:csharp'
-
-  report-failure:
-    name: Report Pipeline Failure
-    needs: [build-test-coverage, security-scan]
-    if: failure()
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-    steps:
-      - name: Create GitHub Issue
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          BODY: |
-            ## 🔴 Pipeline Failure: ${{ github.workflow }}
-
-            | | |
-            |---|---|
-            | **Workflow** | ${{ github.workflow }} |
-            | **Run** | [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
-            | **PR** | ${{ github.event.pull_request.html_url }} |
-            | **Branch** | `${{ github.head_ref }}` |
-            | **Commit** | `${{ github.sha }}` |
-            | **Triggered by** | ${{ github.actor }} |
-
-            Please [inspect the workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
-        run: |
-          echo "$BODY" | gh issue create \
-            --repo "$GH_REPO" \
-            --title "⚠️ Pipeline failure: ${{ github.workflow }} #${{ github.run_number }}" \
-            --body-file - \
-            --label "bug"
