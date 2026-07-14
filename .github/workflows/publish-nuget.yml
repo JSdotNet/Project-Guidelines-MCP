@@ -22,12 +22,12 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0  # Required for GitVersion
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -139,8 +139,50 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload NuGet package as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: JSdotNet.Project.Guidelines.McpServer.${{ steps.gitversion.outputs.fullSemVer }}
           path: ./artifacts/*.nupkg
           retention-days: 90
+
+  report-failure:
+    name: Report Pipeline Failure
+    needs: [build-test-publish]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create GitHub Issue (skip if open issue exists)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          BODY: |
+            ## 🔴 Pipeline Failure: ${{ github.workflow }}
+
+            | | |
+            |---|---|
+            | **Workflow** | ${{ github.workflow }} |
+            | **Run** | [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+            | **Branch** | `${{ github.ref_name }}` |
+            | **Commit** | `${{ github.sha }}` |
+            | **Triggered by** | ${{ github.actor }} |
+
+            Please [inspect the workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+        run: |
+          EXISTING=$(gh issue list \
+            --repo "$GH_REPO" \
+            --state open \
+            --label "bug" \
+            --search "Pipeline failure: ${{ github.workflow }} in:title" \
+            --json number \
+            --jq 'length')
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "An open failure issue already exists for this workflow — skipping."
+            exit 0
+          fi
+          echo "$BODY" | gh issue create \
+            --repo "$GH_REPO" \
+            --title "⚠️ Pipeline failure: ${{ github.workflow }}" \
+            --body-file - \
+            --label "bug"
