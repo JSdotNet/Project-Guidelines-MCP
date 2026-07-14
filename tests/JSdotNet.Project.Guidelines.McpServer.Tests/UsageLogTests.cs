@@ -52,7 +52,7 @@ public sealed class UsageLogTests : IDisposable
 
         Assert.True(File.Exists(TempFile()));
         var lines = await File.ReadAllLinesAsync(TempFile(), TestContext.Current.CancellationToken);
-        Assert.Single(lines.Where(l => !string.IsNullOrWhiteSpace(l)));
+        Assert.Single(lines, l => !string.IsNullOrWhiteSpace(l));
     }
 
     [Fact]

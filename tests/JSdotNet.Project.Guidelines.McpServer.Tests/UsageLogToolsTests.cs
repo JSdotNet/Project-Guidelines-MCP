@@ -40,7 +40,7 @@ public sealed class UsageLogToolsTests
         for (var i = 0; i < 30; i++)
             log.Entries.Add(MakeEntry($"tool-{i}"));
 
-        var result = await UsageLogTools.GetUsageLogsAsync(log);
+        var result = await UsageLogTools.GetUsageLogsAsync(log, ct: TestContext.Current.CancellationToken);
 
         var entries = JsonSerializer.Deserialize<JsonElement[]>(result)!;
         Assert.Equal(20, entries.Length);
