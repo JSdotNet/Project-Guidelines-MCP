@@ -96,19 +96,43 @@ jobs:
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
+      - name: Write deployment summary
+        run: |
+          echo "## 📦 NuGet Package Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Package** | \`JSdotNet.Project.Guidelines.McpServer\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Version** | \`${{ steps.gitversion.outputs.fullSemVer }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **NuGet** | [View on NuGet.org](https://www.nuget.org/packages/JSdotNet.Project.Guidelines.McpServer/${{ steps.gitversion.outputs.fullSemVer }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ steps.gitversion.outputs.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Install" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "dotnet add package JSdotNet.Project.Guidelines.McpServer --version ${{ steps.gitversion.outputs.fullSemVer }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.gitversion.outputs.semVer }}
           name: Release v${{ steps.gitversion.outputs.semVer }}
           body: |
-            ## Release v${{ steps.gitversion.outputs.semVer }}
-            
-            ### Changes
-            - Build: ${{ steps.gitversion.outputs.fullSemVer }}
-            - Commit: ${{ steps.gitversion.outputs.sha }}
-            
-            Published to NuGet: https://www.nuget.org/packages/JSdotNet.Project.Guidelines.McpServer/${{ steps.gitversion.outputs.fullSemVer }}
+            ## 📦 JSdotNet.Project.Guidelines.McpServer `${{ steps.gitversion.outputs.fullSemVer }}`
+
+            ### Install
+            ```
+            dotnet add package JSdotNet.Project.Guidelines.McpServer --version ${{ steps.gitversion.outputs.fullSemVer }}
+            ```
+
+            ### NuGet
+            [View on NuGet.org](https://www.nuget.org/packages/JSdotNet.Project.Guidelines.McpServer/${{ steps.gitversion.outputs.fullSemVer }})
+
+            ### Build info
+            | | |
+            |---|---|
+            | **Full SemVer** | `${{ steps.gitversion.outputs.fullSemVer }}` |
+            | **Commit** | `${{ steps.gitversion.outputs.sha }}` |
           draft: false
           prerelease: ${{ steps.gitversion.outputs.preReleaseLabel != '' }}
         env:
@@ -117,6 +141,6 @@ jobs:
       - name: Upload NuGet package as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: nuget-package
+          name: JSdotNet.Project.Guidelines.McpServer.${{ steps.gitversion.outputs.fullSemVer }}
           path: ./artifacts/*.nupkg
           retention-days: 90
