@@ -16,15 +16,15 @@ builder.Logging.AddConsole(consoleLogOptions =>
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
-builder.Services.AddSingleton(new HttpClient());
+builder.Services.AddSingleton<HttpClient>();
 
 builder.Services.AddSingleton<IUsageLog>(_ =>
 {
     var baseDir = Environment.GetEnvironmentVariable("JSDOTNET_LOG_PATH")
-        ?? Path.Combine(
+        ?? Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
             "JSdotNet", "GuidelinesMcpServer");
-    var logFile = Path.Combine(baseDir, $"usage-{Environment.ProcessId}.jsonl");
+    var logFile = Path.Join(baseDir, $"usage-{Environment.ProcessId}.jsonl");
     return new JsonFileUsageLog(logFile);
 });
 

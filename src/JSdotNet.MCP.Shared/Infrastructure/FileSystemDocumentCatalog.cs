@@ -39,7 +39,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
             }
         }
         // Fallback: app base/guide (may be empty)
-        return Path.Combine(AppContext.BaseDirectory, "guide");
+        return Path.Join(AppContext.BaseDirectory, "guide");
     }
 
     private static string? FindUpForDocs(string startDir)
@@ -47,7 +47,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var dir = new DirectoryInfo(startDir);
         while (dir is not null)
         {
-            var docs = Path.Combine(dir.FullName, "guide");
+            var docs = Path.Join(dir.FullName, "guide");
             if (Directory.Exists(docs) && Directory.GetFiles(docs, "*.md", SearchOption.AllDirectories).Length > 0)
             {
                 return docs;
@@ -66,7 +66,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var all = _documents.Value;
         return all.Where(d => d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                d.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                               File.ReadAllText(Path.Combine(_root, d.RelativePath)).Contains(query, StringComparison.OrdinalIgnoreCase))
+                               File.ReadAllText(Path.Join(_root, d.RelativePath)).Contains(query, StringComparison.OrdinalIgnoreCase))
                   .Take(50)
                   .ToList();
     }
@@ -82,7 +82,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
     {
         var doc = _documents.Value.FirstOrDefault(d => d.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
         if (doc is null) throw new FileNotFoundException($"Document '{id}' not found");
-        var path = Path.Combine(_root, doc.RelativePath);
+        var path = Path.Join(_root, doc.RelativePath);
         await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var reader = new StreamReader(stream);
         return await reader.ReadToEndAsync();
@@ -93,7 +93,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         if (!Directory.Exists(_root)) return Array.Empty<DocumentInfo>();
 
         // Try loading from index.json first
-        var indexPath = Path.Combine(_root, "index.json");
+        var indexPath = Path.Join(_root, "index.json");
         if (File.Exists(indexPath))
         {
             try

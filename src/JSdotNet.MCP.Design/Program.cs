@@ -16,15 +16,15 @@ builder.Logging.AddConsole(consoleLogOptions =>
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
-builder.Services.AddSingleton(new HttpClient());
+builder.Services.AddSingleton<HttpClient>();
 
 builder.Services.AddSingleton<IUsageLog>(_ =>
 {
     var baseDir = Environment.GetEnvironmentVariable("JSDOTNET_LOG_PATH")
-        ?? Path.Combine(
+        ?? Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
             "JSdotNet", "DesignMcpServer");
-    var logFile = Path.Combine(baseDir, $"usage-{Environment.ProcessId}.jsonl");
+    var logFile = Path.Join(baseDir, $"usage-{Environment.ProcessId}.jsonl");
     return new JsonFileUsageLog(logFile);
 });
 
@@ -65,18 +65,19 @@ await builder.Build().RunAsync();
 
 static string? FindNearestDocsFolder(string relativePath)
 {
-    foreach (var start in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
+    foreach (var directory in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory }
+        .Select(static p => new DirectoryInfo(p)))
     {
-        var directory = new DirectoryInfo(start);
-        while (directory is not null)
+        var dir = directory;
+        while (dir is not null)
         {
-            var candidate = Path.Combine(directory.FullName, relativePath);
+            var candidate = Path.Join(dir.FullName, relativePath);
             if (Directory.Exists(candidate))
             {
                 return candidate;
             }
 
-            directory = directory.Parent;
+            dir = dir.Parent;
         }
     }
 

@@ -200,8 +200,8 @@ public class DocumentCatalogTests
         while (current != null)
         {
             var docsPath = childFolder is null
-                ? System.IO.Path.Combine(current, "guide")
-                : System.IO.Path.Combine(current, childFolder);
+                ? System.IO.Path.Join(current, "guide")
+                : System.IO.Path.Join(current, childFolder);
             if (System.IO.Directory.Exists(docsPath))
                 return docsPath;
             current = System.IO.Directory.GetParent(current)?.FullName;

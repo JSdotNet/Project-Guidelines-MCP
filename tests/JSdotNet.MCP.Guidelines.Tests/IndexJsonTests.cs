@@ -196,10 +196,10 @@ Content here.
         var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir != null)
         {
-            if (File.Exists(Path.Combine(dir.FullName, "guide", "index.json")))
+            if (File.Exists(Path.Join(dir.FullName, "guide", "index.json")))
                 return dir.FullName;
 
-            if (File.Exists(Path.Combine(dir.FullName, "JSdotNet.MCP.slnx")))
+            if (File.Exists(Path.Join(dir.FullName, "JSdotNet.MCP.slnx")))
                 return dir.FullName;
 
             dir = dir.Parent;
