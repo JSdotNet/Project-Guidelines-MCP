@@ -28,10 +28,20 @@ Documents are served from the local filesystem when available, with automatic fa
 From the repository root:
 
 ```powershell
-dotnet run --project .\src\JSdotNet.Project.Guidelines.McpServer\JSdotNet.Project.Guidelines.McpServer.csproj
+dotnet run --project .\src\JSdotNet.MCP.Guidelines\JSdotNet.MCP.Guidelines.csproj
 ```
 
 The server uses stdio transport for MCP communication. Logs are written to stderr, JSON-RPC messages to stdout.
+
+### Design / UX Optimized Server
+
+A second MCP server is included for the scoped design and UX guidance set under `guide/style-guide`. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that folder structure.
+
+```powershell
+dotnet run --project .\src\JSdotNet.MCP.Design\JSdotNet.MCP.Design.csproj
+```
+
+When run from the repository root, the server automatically discovers `guide/style-guide` locally. For GitHub-backed usage, it resolves documents from the `guide/style-guide` path on GitHub.
 
 ### Install as GitHub Copilot MCP Tool
 
@@ -53,7 +63,7 @@ This is the recommended approach for general use. Documents are automatically fe
 1. **Install the package**:
 
    ```bash
-   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
+   dotnet tool install --global JSdotNet.MCP.Guidelines
    ```
 
 2. **Configure VS Code MCP settings**:
@@ -91,7 +101,7 @@ This is the recommended approach for general use. Documents are automatically fe
 1. **Install the package**:
 
    ```powershell
-   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
+   dotnet tool install --global JSdotNet.MCP.Guidelines
    ```
 
 2. **Configure Copilot MCP settings**:
@@ -114,13 +124,13 @@ This is the recommended approach for general use. Documents are automatically fe
 **Update**:
 
 ```bash
-dotnet tool update --global JSdotNet.Project.Guidelines.McpServer
+dotnet tool update --global JSdotNet.MCP.Guidelines
 ```
 
 **Uninstall**:
 
 ```bash
-dotnet tool uninstall --global JSdotNet.Project.Guidelines.McpServer
+dotnet tool uninstall --global JSdotNet.MCP.Guidelines
 ```
 
 ---
@@ -132,7 +142,7 @@ Copilot CLI reads `.mcp.json` from your project root automatically. This repo sh
 1. **Install the package** (if not already installed):
 
    ```bash
-   dotnet tool install --global JSdotNet.Project.Guidelines.McpServer
+   dotnet tool install --global JSdotNet.MCP.Guidelines
    ```
 
 2. **Copy `.mcp.json` to your project root** (or add the server entry to an existing `.mcp.json`):
@@ -172,7 +182,7 @@ Follow the prompts: type `stdio`, command `jsdotnet-project-guidelines-mcpserver
 **Update**:
 
 ```bash
-dotnet tool update --global JSdotNet.Project.Guidelines.McpServer
+dotnet tool update --global JSdotNet.MCP.Guidelines
 ```
 
 Then inside an active Copilot CLI session, run `/mcp show` to confirm the updated server version is loaded.
@@ -180,7 +190,7 @@ Then inside an active Copilot CLI session, run `/mcp show` to confirm the update
 **Uninstall**:
 
 ```bash
-dotnet tool uninstall --global JSdotNet.Project.Guidelines.McpServer
+dotnet tool uninstall --global JSdotNet.MCP.Guidelines
 ```
 
 Then remove the entry from `.mcp.json` or run `/mcp delete jsdotnet-coding-guidelines` inside a Copilot CLI session to remove the user-level entry.
@@ -212,7 +222,7 @@ For contributors testing local changes before publishing to NuGet. This allows y
          "args": [
            "run",
            "--project",
-           "D:/projects/github.com/JSdotNet/Project-Guidelines-MCP/src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj"
+           "D:/projects/github.com/JSdotNet/Project-Guidelines-MCP/src/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj"
          ]
        }
      }
@@ -229,10 +239,10 @@ If you want to test the packaged tool locally before publishing to NuGet.org:
 
 ```powershell
 # Pack the project
-dotnet pack src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj -o ./local-packages
+dotnet pack src/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj -o ./local-packages
 
 # Install from local package
-dotnet tool install --global --add-source ./local-packages JSdotNet.Project.Guidelines.McpServer
+dotnet tool install --global --add-source ./local-packages JSdotNet.MCP.Guidelines
 ```
 
 ---
@@ -280,7 +290,7 @@ src/
  Project.Guidelines.McpServer/
 tests/
  Project.Guidelines.McpServer.Tests/
-JSdotNet.Project.Guidelines.slnx
+JSdotNet.MCP.Guidelines.slnx
 .github/
  copilot-instructions.md
 ```
@@ -332,13 +342,13 @@ JSdotNet.Project.Guidelines.slnx
 
 ```bash
 # Build the solution
-dotnet build JSdotNet.Project.Guidelines.slnx
+dotnet build JSdotNet.MCP.slnx
 
 # Run all tests
-dotnet test tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj
+dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj
 
 # Run tests with coverage
-dotnet test tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
 
 # Generate coverage report
 reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
@@ -346,7 +356,7 @@ reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"covera
 
 ### Code Coverage Requirements
 
-- **Core Library** (`JSdotNet.Project.Guidelines.Docs`): ≥80% line coverage
+- **Core Library** (`JSdotNet.MCP.Shared`): ≥80% line coverage
 - **Tests**: All tests must pass
 - Coverage reports are automatically generated in CI/CD
 
@@ -382,7 +392,7 @@ Configuration: `GitVersion.yml` at repository root.
 
 Published to NuGet.org:
 
-- **JSdotNet.Project.Guidelines.McpServer** – MCP Server .NET global tool
+- **JSdotNet.MCP.Guidelines** – MCP Server .NET global tool
 
 Package features:
 

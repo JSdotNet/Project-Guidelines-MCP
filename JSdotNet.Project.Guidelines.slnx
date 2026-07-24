@@ -1,9 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/JSdotNet.Project.Guidelines.Docs/JSdotNet.Project.Guidelines.Docs.csproj" />
-    <Project Path="src/JSdotNet.Project.Guidelines.McpServer/JSdotNet.Project.Guidelines.McpServer.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/JSdotNet.Project.Guidelines.McpServer.Tests/JSdotNet.Project.Guidelines.McpServer.Tests.csproj" />
-  </Folder>
-</Solution>

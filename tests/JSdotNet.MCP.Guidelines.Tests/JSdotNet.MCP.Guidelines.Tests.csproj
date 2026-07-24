@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\JSdotNet.MCP.Shared\JSdotNet.MCP.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

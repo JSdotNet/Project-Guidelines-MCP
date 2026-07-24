@@ -1,4 +1,4 @@
-﻿# Copilot Repository Instructions: project-coding-guidelines
+# Copilot Repository Instructions: project-coding-guidelines
 
 > Purpose: This repo defines authoritative design, architecture, style and structural guidance for modern .NET C# projects. Guidance lives in `guide/` and is served programmatically via the `jsdotnet-coding-guidelines` MCP server. This file governs how to maintain **this repository** � not how to write .NET code.
 
@@ -40,7 +40,7 @@ This instructions file covers only **repository-operational** concerns: structur
   structures/                  - Example folder/file scaffolds & templates
 /src/                          - MCP Server production code
 /tests/                        - MCP Server test projects
-/JSdotNet.Project.Guidelines.slnx
+/JSdotNet.MCP.slnx
 /.github/copilot-instructions.md - This file
 ```
 
@@ -116,7 +116,7 @@ Rules:
 
 ## 4. MCP Server: Usage by Copilot
 
-The `jsdotnet-coding-guidelines` MCP server (NuGet: `JSdotNet.Project.Guidelines.McpServer`) exposes:
+The `jsdotnet-coding-guidelines` MCP server (NuGet: `JSdotNet.MCP.Guidelines`) exposes:
 
 | Tool | Purpose |
 |------|---------|
@@ -151,7 +151,7 @@ These rules govern the MCP server implementation itself (applies when modifying 
 - ADR process: Open PR with ADR in `adrs/` as `NNNN-title.md` (reserve number sequentially). Review ensures clarity of consequences.
 - Commit messages: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:` etc.).
 - Merge requires: passing CI build + review from at least 1 maintainer.
-- **Code coverage**: Maintain at least 80% line coverage for `JSdotNet.Project.Guidelines.Docs` and `JSdotNet.Project.Guidelines.McpServer`; enforced in CI via coverlet.
+- **Code coverage**: Maintain at least 80% line coverage for `JSdotNet.MCP.Shared` and `JSdotNet.MCP.Guidelines`; enforced in CI via coverlet.
 
 ---
 

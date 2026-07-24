@@ -1,0 +1,220 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using JSdotNet.MCP.Shared.Abstractions;
+
+namespace JSdotNet.MCP.Shared.Infrastructure;
+
+/// <summary>
+/// Loads markdown documents from a local filesystem folder structure.
+/// Prefers guide/index.json if available; falls back to directory scanning.
+/// </summary>
+public sealed class FileSystemDocumentCatalog : IDocumentCatalog
+{
+    private readonly string _root;
+    private readonly Lazy<IReadOnlyList<DocumentInfo>> _documents;
+
+    private static readonly Regex TitleRegex = new("^#\\s*(.+)$", RegexOptions.Multiline | RegexOptions.Compiled);
+
+    public FileSystemDocumentCatalog(string? root = null)
+    {
+        _root = root ?? ResolveDefaultRoot();
+        _documents = new Lazy<IReadOnlyList<DocumentInfo>>(LoadDocuments);
+    }
+
+    private static string ResolveDefaultRoot()
+    {
+        // Search upwards from multiple starting points for a 'guide' folder with markdown files
+        foreach (var start in new[] { AppContext.BaseDirectory, Directory.GetCurrentDirectory(), Path.GetDirectoryName(typeof(FileSystemDocumentCatalog).Assembly.Location) ?? AppContext.BaseDirectory })
+        {
+            var candidate = FindUpForDocs(start);
+            if (candidate is not null)
+            {
+                return candidate;
+            }
+        }
+        // Fallback: app base/guide (may be empty)
+        return Path.Join(AppContext.BaseDirectory, "guide");
+    }
+
+    private static string? FindUpForDocs(string startDir)
+    {
+        var dir = new DirectoryInfo(startDir);
+        while (dir is not null)
+        {
+            var docs = Path.Join(dir.FullName, "guide");
+            if (Directory.Exists(docs) && Directory.GetFiles(docs, "*.md", SearchOption.AllDirectories).Length > 0)
+            {
+                return docs;
+            }
+            dir = dir.Parent;
+        }
+        return null;
+    }
+
+    public IReadOnlyList<DocumentInfo> ListDocuments() => _documents.Value;
+
+    public IReadOnlyList<DocumentInfo> Search(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query)) return Array.Empty<DocumentInfo>();
+        query = query.Trim();
+        var all = _documents.Value;
+        return all.Where(d => d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                               d.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                               File.ReadAllText(Path.Join(_root, d.RelativePath)).Contains(query, StringComparison.OrdinalIgnoreCase))
+                  .Take(50)
+                  .ToList();
+    }
+
+    public IReadOnlyList<DocumentInfo> SearchByTag(string tag)
+    {
+        if (string.IsNullOrWhiteSpace(tag)) return Array.Empty<DocumentInfo>();
+        var all = _documents.Value;
+        return all.Where(d => d.Tags.Any(t => string.Equals(t, tag, StringComparison.OrdinalIgnoreCase))).ToList();
+    }
+
+    public async Task<string> GetContentAsync(string id, CancellationToken cancellationToken = default)
+    {
+        var doc = _documents.Value.FirstOrDefault(d => d.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+        if (doc is null) throw new FileNotFoundException($"Document '{id}' not found");
+        var path = Path.Join(_root, doc.RelativePath);
+        await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using var reader = new StreamReader(stream);
+        return await reader.ReadToEndAsync();
+    }
+
+    private IReadOnlyList<DocumentInfo> LoadDocuments()
+    {
+        if (!Directory.Exists(_root)) return Array.Empty<DocumentInfo>();
+
+        // Try loading from index.json first
+        var indexPath = Path.Join(_root, "index.json");
+        if (File.Exists(indexPath))
+        {
+            try
+            {
+                var indexJson = File.ReadAllText(indexPath);
+                var indexData = JsonSerializer.Deserialize<DocumentIndexFile>(indexJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (indexData?.Documents != null && indexData.Documents.Count > 0)
+                {
+                    return indexData.Documents
+                        .Select(d => new DocumentInfo(
+                            d.Id,
+                            d.Title,
+                            d.Description ?? string.Empty,
+                            d.Category,
+                            d.RelativePath,
+                            (IReadOnlyList<string>)(d.Tags ?? new List<string>())))
+                        .OrderBy(d => d.Category)
+                        .ThenBy(d => d.Title)
+                        .ToList();
+                }
+            }
+            catch
+            {
+                // Index invalid or corrupted, fall back to scanning
+            }
+        }
+
+        // Fallback: scan directory structure
+        return ScanDirectories();
+    }
+
+    private IReadOnlyList<DocumentInfo> ScanDirectories()
+    {
+        var files = Directory.GetFiles(_root, "*.md", SearchOption.AllDirectories);
+        var list = new List<DocumentInfo>(files.Length);
+        foreach (var file in files)
+        {
+            var rel = Path.GetRelativePath(_root, file);
+            var category = Path.GetDirectoryName(rel)?.Replace("\\", "/") ?? string.Empty;
+            var content = File.ReadAllText(file);
+            var (frontTitle, tags) = ParseFrontMatterForTitleAndTags(content);
+            var title = frontTitle ?? (TitleRegex.Match(content).Groups.Count > 1 ? TitleRegex.Match(content).Groups[1].Value.Trim() : Path.GetFileNameWithoutExtension(file));
+            var id = GenerateId(rel);
+            list.Add(new DocumentInfo(id, title, string.Empty, category, rel, tags));
+        }
+        return list.OrderBy(d => d.Category).ThenBy(d => d.Title).ToList();
+    }
+
+    private static string GenerateId(string relativePath)
+    {
+        var noExt = Path.GetFileNameWithoutExtension(relativePath);
+        return noExt.Replace(' ', '-').Replace('_', '-').ToLowerInvariant();
+    }
+
+    private static (string? Title, IReadOnlyList<string> Tags) ParseFrontMatterForTitleAndTags(string content)
+    {
+        if (!content.StartsWith("---")) return (null, Array.Empty<string>());
+
+        var end = content.IndexOf("\n---", StringComparison.Ordinal);
+        if (end < 0) return (null, Array.Empty<string>());
+
+        var block = content.Substring(3, end - 3).Trim();
+        string? title = null;
+        var tags = new List<string>();
+        var lines = block.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+        bool inTagList = false;
+        foreach (var ln in lines)
+        {
+            var line = ln.Trim();
+            if (line.StartsWith("title:", StringComparison.OrdinalIgnoreCase))
+            {
+                title = line.Substring(line.IndexOf(':') + 1).Trim().Trim('"');
+                continue;
+            }
+            if (line.StartsWith("tags:", StringComparison.OrdinalIgnoreCase))
+            {
+                var rest = line.Substring(line.IndexOf(':') + 1).Trim();
+                if (rest.StartsWith("["))
+                {
+                    // inline list: [tag1, tag2]
+                    rest = rest.Trim('[', ']');
+                    tags.AddRange(rest.Split(',').Select(s => s.Trim().Trim('"')).Where(s => s.Length > 0));
+                }
+                else
+                {
+                    inTagList = true;
+                }
+                continue;
+            }
+            if (inTagList)
+            {
+                if (line.StartsWith("- "))
+                {
+                    tags.Add(line.Substring(2).Trim().Trim('"'));
+                    continue;
+                }
+                // end of list when not '- '
+                inTagList = false;
+            }
+        }
+        return (title, tags);
+    }
+
+    private sealed class DocumentIndexFile
+    {
+        public string Version { get; set; } = string.Empty;
+        public string Generated { get; set; } = string.Empty;
+        public List<DocumentIndexEntry> Documents { get; set; } = new();
+    }
+
+    private sealed class DocumentIndexEntry
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string RelativePath { get; set; } = string.Empty;
+        public List<string>? Tags { get; set; }
+    }
+}

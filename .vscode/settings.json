@@ -1,5 +1,5 @@
 {
-    "dotnet.defaultSolution": "JSdotNet.Project.Guidelines.slnx",
+    "dotnet.defaultSolution": "JSdotNet.MCP.slnx",
     "files.exclude": {
         "**/bin": true,
         "**/obj": true

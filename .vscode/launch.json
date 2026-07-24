@@ -2,24 +2,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C#: JSdotNet.Project.Guidelines.McpServer",
+      "name": "C#: JSdotNet.MCP.Guidelines",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/JSdotNet.Project.Guidelines.McpServer/bin/Debug/net10.0/JSdotNet.Project.Guidelines.McpServer.dll",
+      "program": "${workspaceFolder}/src/JSdotNet.MCP.Guidelines/bin/Debug/net10.0/JSdotNet.MCP.Guidelines.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/JSdotNet.Project.Guidelines.McpServer",
+      "cwd": "${workspaceFolder}/src/JSdotNet.MCP.Guidelines",
       "console": "integratedTerminal",
       "stopAtEntry": false
     },
     {
-      "name": "C#: JSdotNet.Project.Guidelines.McpServer (Release)",
+      "name": "C#: JSdotNet.MCP.Guidelines (Release)",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build-release",
-      "program": "${workspaceFolder}/src/JSdotNet.Project.Guidelines.McpServer/bin/Release/net10.0/JSdotNet.Project.Guidelines.McpServer.dll",
+      "program": "${workspaceFolder}/src/JSdotNet.MCP.Guidelines/bin/Release/net10.0/JSdotNet.MCP.Guidelines.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/JSdotNet.Project.Guidelines.McpServer",
+      "cwd": "${workspaceFolder}/src/JSdotNet.MCP.Guidelines",
       "console": "integratedTerminal",
       "stopAtEntry": false
     },

@@ -1,11 +1,11 @@
 # GitHub Copilot App configuration for Project-Guidelines-MCP
-# Guideline source: jsdotnet.project.guidelines.mcpserver
+# Guideline source: JSdotNet.MCP.Guidelines.mcpserver
 
 # --- Pre-PR Validation ---
 # Build the solution to catch compilation errors before opening a PR.
 pre_flight:
   - name: Build solution
-    run: dotnet build JSdotNet.Project.Guidelines.slnx --no-incremental
+    run: dotnet build JSdotNet.MCP.slnx --no-incremental
     shell: pwsh
 
 # --- Post-PR: Pipeline Monitoring ---
