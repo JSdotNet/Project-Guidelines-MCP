@@ -1,0 +1,88 @@
+{
+    "version": "1.0",
+    "generated": "2026-07-24T09:56:44Z",
+    "documents": [
+        {
+            "id": "01-color-palette",
+            "title": "Style Guide: Color Palette",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "01-color-palette.md",
+            "tags": [
+                "style-guide",
+                "color",
+                "design-tokens",
+                "dark-mode",
+                "light-mode"
+            ]
+        },
+        {
+            "id": "02-typography",
+            "title": "Style Guide: Typography",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "02-typography.md",
+            "tags": [
+                "style-guide",
+                "typography",
+                "fonts",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "03-spacing-and-layout",
+            "title": "Style Guide: Spacing and Layout",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "03-spacing-and-layout.md",
+            "tags": [
+                "style-guide",
+                "spacing",
+                "layout",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "04-motion-and-interaction",
+            "title": "Style Guide: Motion and Interaction",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "04-motion-and-interaction.md",
+            "tags": [
+                "style-guide",
+                "motion",
+                "animation",
+                "interaction",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "05-customization-guide",
+            "title": "Style Guide: Customization Guide",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "05-customization-guide.md",
+            "tags": [
+                "style-guide",
+                "customization",
+                "color",
+                "design-tokens",
+                "branding"
+            ]
+        },
+        {
+            "id": "readme",
+            "title": "Style Guide: Overview",
+            "description": "",
+            "category": "style-guide",
+            "relativePath": "README.md",
+            "tags": [
+                "style-guide",
+                "design-tokens",
+                "ux",
+                "frontend"
+            ]
+        }
+    ]
+}

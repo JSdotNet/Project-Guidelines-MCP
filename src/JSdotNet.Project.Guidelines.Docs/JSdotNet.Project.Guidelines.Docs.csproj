@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
-  </ItemGroup>
-
-  <!-- No longer copying docs from this project; docs live in repository root /docs -->
-
-</Project>

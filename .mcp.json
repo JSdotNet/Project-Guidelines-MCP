@@ -2,8 +2,20 @@
   "mcpServers": {
     "jsdotnet-coding-guidelines": {
       "type": "stdio",
-      "command": "jsdotnet-project-guidelines-mcpserver",
+      "command": "jsdotnet-guidelines-mcpserver",
       "args": [],
+      "tools": [
+        "*"
+      ]
+    },
+    "jsdotnet-design-ux-guidelines": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "src/JSdotNet.MCP.Design/JSdotNet.MCP.Design.csproj"
+      ],
       "tools": [
         "*"
       ]
