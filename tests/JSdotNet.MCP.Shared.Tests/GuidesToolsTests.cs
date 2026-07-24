@@ -248,4 +248,52 @@ public sealed class GuidesToolsTests
         Assert.NotNull(usageLog.Entries[0].ErrorMessage);
         Assert.Contains("missing-doc", usageLog.Entries[0].ErrorMessage);
     }
+
+    // --- Failure paths ---
+
+    [Fact]
+    public async Task ListGuidesAsync_WhenCatalogThrows_PropagatesExceptionAndRecordsFailure()
+    {
+        var usageLog = new FakeUsageLog();
+        var catalog = new FakeDocumentCatalog([], throwOnList: true);
+        var sut = new GuidesTools(catalog, usageLog, NullLogger<GuidesTools>.Instance);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => sut.ListGuidesAsync(CancellationToken.None));
+
+        Assert.Single(usageLog.Entries);
+        Assert.Equal("list_guides", usageLog.Entries[0].ToolName);
+        Assert.False(usageLog.Entries[0].Succeeded);
+        Assert.NotNull(usageLog.Entries[0].ErrorMessage);
+    }
+
+    [Fact]
+    public async Task ListGuidesByTypeAsync_WhenCatalogThrows_PropagatesExceptionAndRecordsFailure()
+    {
+        var usageLog = new FakeUsageLog();
+        var catalog = new FakeDocumentCatalog([], throwOnList: true);
+        var sut = new GuidesTools(catalog, usageLog, NullLogger<GuidesTools>.Instance);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => sut.ListGuidesByTypeAsync("adrs", CancellationToken.None));
+
+        Assert.Single(usageLog.Entries);
+        Assert.Equal("list_guides_by_type", usageLog.Entries[0].ToolName);
+        Assert.False(usageLog.Entries[0].Succeeded);
+    }
+
+    [Fact]
+    public async Task SearchGuidesAsync_WhenCatalogThrows_PropagatesExceptionAndRecordsFailure()
+    {
+        var usageLog = new FakeUsageLog();
+        var catalog = new FakeDocumentCatalog([], throwOnSearch: true);
+        var sut = new GuidesTools(catalog, usageLog, NullLogger<GuidesTools>.Instance);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => sut.SearchGuidesAsync("query", CancellationToken.None));
+
+        Assert.Single(usageLog.Entries);
+        Assert.Equal("search_guides", usageLog.Entries[0].ToolName);
+        Assert.False(usageLog.Entries[0].Succeeded);
+    }
 }

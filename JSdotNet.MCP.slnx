@@ -6,6 +6,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj" />
+    <Project Path="tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj" />
     <Project Path="tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj" />
   </Folder>
 </Solution>

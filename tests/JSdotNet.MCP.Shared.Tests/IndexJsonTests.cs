@@ -169,36 +169,11 @@ Content here.
         Assert.Equal(docs1.Count, docs2.Count);
     }
 
-    [Fact]
-    public void RealIndex_ExistsAndIsValid()
-    {
-        // Arrange
-        var repoRoot = FindRepoRoot();
-        Assert.NotNull(repoRoot);
-
-        var indexPath = Path.Combine(repoRoot, "guide", "index.json");
-
-        // Assert index exists
-        Assert.True(File.Exists(indexPath), "guide/index.json should exist");
-
-        // Assert index is valid JSON
-        var content = File.ReadAllText(indexPath);
-        var indexData = JsonSerializer.Deserialize<JsonElement>(content);
-
-        Assert.True(indexData.TryGetProperty("version", out _));
-        Assert.True(indexData.TryGetProperty("generated", out _));
-        Assert.True(indexData.TryGetProperty("documents", out var docs));
-        Assert.True(docs.GetArrayLength() > 0);
-    }
-
     private static string? FindRepoRoot()
     {
         var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir != null)
         {
-            if (File.Exists(Path.Join(dir.FullName, "guide", "index.json")))
-                return dir.FullName;
-
             if (File.Exists(Path.Join(dir.FullName, "JSdotNet.MCP.slnx")))
                 return dir.FullName;
 
