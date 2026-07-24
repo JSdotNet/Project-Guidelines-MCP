@@ -5,7 +5,7 @@ using JSdotNet.MCP.Shared.Abstractions;
 using JSdotNet.MCP.Shared.Infrastructure;
 using Xunit;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 public class DocumentCatalogTests
 {

@@ -2,7 +2,7 @@ using System.Text.Json;
 using JSdotNet.MCP.Shared.Logging;
 using JSdotNet.MCP.Shared.Tools;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 public sealed class UsageLogToolsTests
 {

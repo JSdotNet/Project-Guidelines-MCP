@@ -1,7 +1,7 @@
 using JSdotNet.MCP.Shared.Abstractions;
 using JSdotNet.MCP.Shared.Logging;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 internal sealed class FakeDocumentCatalog : IDocumentCatalog
 {

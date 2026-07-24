@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using JSdotNet.MCP.Shared.Logging;
 using Xunit;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 public sealed class UsageLogTests : IDisposable
 {

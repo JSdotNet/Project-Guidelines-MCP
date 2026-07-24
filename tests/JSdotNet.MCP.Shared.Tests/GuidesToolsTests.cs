@@ -4,7 +4,7 @@ using JSdotNet.MCP.Shared.Logging;
 using JSdotNet.MCP.Shared.Tools;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 public sealed class GuidesToolsTests
 {

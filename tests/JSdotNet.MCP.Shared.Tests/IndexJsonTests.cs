@@ -6,7 +6,7 @@ using JSdotNet.MCP.Shared.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.MCP.Shared.Tests;
 
 public class IndexJsonTests
 {
