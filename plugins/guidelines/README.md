@@ -1,25 +1,28 @@
 # JSdotNet Project Guidelines Plugin
 
-This plugin provides three complementary skills to help you work with the JSdotNet Project Guidelines MCP server:
+This plugin provides six complementary skills to help you work with the two JSdotNet MCP servers, plus one skill to test them:
 
-1. **guidelines-mcp** — Reference guide for using MCP tools
+1. **guidelines-mcp** — Reference guide for using both MCP servers and their tools
 2. **gap-analysis** — Analyze project structure against guidelines
-3. **feedback-loop** — Track MCP usage and propose improvements
-
-Plus one extension that enables gap analysis and feedback loop tools.
+3. **code-review** — Review code for architectural and guideline compliance
+4. **decision-validation** — Validate decisions before implementation
+5. **migration-planning** — Plan incremental refactoring to align with guidelines
+6. **feedback-loop** — Track MCP usage and propose improvements
+7. **test-mcp-servers** — Smoke-test both MCP servers end-to-end
 
 ---
 
 ## What You Get
 
-### Six Skills
+### Seven Skills
 
-- **guidelines-mcp** — Reference guide for MCP tools, decision guide, common tags
+- **guidelines-mcp** — Reference guide for both MCP servers, tool reference, quick decision guide, common tags
 - **gap-analysis** — Analyze project structure against guidelines, identify gaps
 - **code-review** — Validate code for architectural and style compliance
 - **decision-validation** — Validate decisions before implementation, ensure alignment
 - **migration-planning** — Plan and execute incremental refactoring to align with guidelines
 - **feedback-loop** — Analyze usage logs and propose improvements
+- **test-mcp-servers** — Smoke-test both MCP servers after install, upgrade, or when troubleshooting
 
 All skills are pure markdown with workflows, examples, and integration patterns. No dependencies or setup required.
 
@@ -53,9 +56,9 @@ Skills in `plugins/guidelines/skills/` auto-load as project-scoped skills when y
 Invoke skill: guidelines-mcp
 
 This teaches you:
-- Six MCP tools available
-- When to use each tool
-- Common tags for searching
+- Two MCP servers and when to use each
+- Six MCP tools available on both servers
+- Valid categories and common tags
 - Example workflows
 ```
 
@@ -83,43 +86,31 @@ This helps you:
 - Find relevant guidance
 ```
 
-### 4. Create Architecture Decisions
+### 4. Validate a Decision
 
 ```
-Invoke skill: adr-creation
+Invoke skill: decision-validation
 
 This helps you:
-- Structure ADRs properly
-- Capture trade-offs
-- Link related decisions
+- Check guideline alignment before coding
+- Evaluate alternatives with trade-offs
 - Get team consensus
+- Document the decision
 ```
 
-### 5. Design Error Handling
+### 5. Plan Incremental Refactoring
 
 ```
-Invoke skill: error-handling
+Invoke skill: migration-planning
 
 This guides you on:
-- Choosing error strategies
-- Translating at boundaries
-- Logging effectively
-- Testing error paths
+- Assessing migration scope
+- Breaking work into safe phases
+- Managing dependencies
+- Tracking and communicating progress
 ```
 
-### 6. Organize Tests
-
-```
-Invoke skill: testing-strategy
-
-This teaches you:
-- Organizing by layer
-- Unit vs. integration tests
-- Meaningful coverage
-- Error path testing
-```
-
-### 7. Track Improvement Opportunities
+### 6. Track Improvement Opportunities
 
 ```
 Invoke skill: feedback-loop
@@ -131,6 +122,18 @@ This helps you:
 - Propose enhancements
 ```
 
+### 7. Test the MCP Servers
+
+```
+Invoke skill: test-mcp-servers
+
+This helps you:
+- Verify both servers are connected
+- Confirm all six tools work
+- Diagnose empty results or missing content
+- Run cross-server isolation checks
+```
+
 ---
 
 ## Skills Usage
@@ -139,12 +142,13 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 
 | Skill | Best Used When | Pairs With |
 |-------|---|---|
-| **guidelines-mcp** | Starting out; learning MCP tools | Any other skill |
+| **guidelines-mcp** | Starting out; learning MCP tools or servers | Any other skill |
 | **gap-analysis** | Analyzing project structure | guidelines-mcp, code-review, migration-planning |
 | **code-review** | Reviewing PRs or new code | guidelines-mcp, decision-validation |
 | **decision-validation** | Making significant technical decisions | guidelines-mcp, migration-planning |
 | **migration-planning** | Planning refactoring to align with guidelines | gap-analysis, decision-validation, code-review |
 | **feedback-loop** | Analyzing usage, proposing improvements | guidelines-mcp, gap-analysis |
+| **test-mcp-servers** | After install/upgrade or when tools return unexpected results | guidelines-mcp |
 
 ### Example Combined Workflows
 
@@ -196,18 +200,18 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 
 ---
 
-## The Three Skills Explained
+## The Seven Skills Explained
 
-### The Skill 1: guidelines-mcp
+### Skill 1: guidelines-mcp
 
-**What it teaches**: How to use the MCP server.
+**What it teaches**: How to use both MCP servers and their tools.
 
 **When to invoke it**: 
-- You're new to the MCP server
-- You need a reference for which tool to use
-- You want to understand common tags
+- You're new to the MCP servers
+- You need a reference for which server and tool to use
+- You want to understand categories and common tags
 
-**Output**: Reference guide, decision tree, example workflows.
+**Output**: Server overview, tool reference, decision tree, example workflows.
 
 ---
 
@@ -224,16 +228,68 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 
 ---
 
-### Skill 3: feedback-loop
+### Skill 3: code-review
+
+**What it teaches**: How to review code against guidelines.
+
+**When to invoke it**:
+- Reviewing a PR for architectural compliance
+- Checking a design before implementation
+- Validating a code snippet against patterns
+
+**Output**: Review checklist, common findings with guidance, workflow examples.
+
+---
+
+### Skill 4: decision-validation
+
+**What it teaches**: How to validate technical decisions before implementing.
+
+**When to invoke it**:
+- Making a significant architecture or pattern choice
+- Checking if a decision aligns with existing ADRs
+- Evaluating alternatives with trade-offs
+
+**Output**: Validation framework, checklist, example scenarios.
+
+---
+
+### Skill 5: migration-planning
+
+**What it teaches**: How to plan incremental refactoring.
+
+**When to invoke it**:
+- Code significantly violates guidelines
+- Multiple projects need the same change
+- You want a structured, low-risk migration approach
+
+**Output**: Phase templates, effort estimation, risk mitigation, communication templates.
+
+---
+
+### Skill 6: feedback-loop
 
 **What it teaches**: How to use MCP usage logs to improve guidelines.
 
 **When to invoke it**:
-- You notice a pattern of "what users are searching for but not finding"
+- You notice patterns in what users search for but can't find
 - You want to propose a new ADR or recommendation
 - You're collecting evidence for documentation improvements
 
 **Output**: Analysis workflow, issue drafting template, submission process.
+
+---
+
+### Skill 7: test-mcp-servers
+
+**What it teaches**: How to verify both MCP servers are working correctly.
+
+**When to invoke it**:
+- After installing or upgrading the MCP servers
+- When tool calls return unexpected empty results
+- When you want to confirm both servers are connected and serving the right content
+
+**Output**: Numbered smoke tests, pass/fail criteria, cross-server isolation test, diagnostic guidance.
 
 ---
 
@@ -243,9 +299,13 @@ Each skill can be invoked by name from a Copilot session. They work best when co
 plugins/guidelines/
   .github/plugin/plugin.json   ← Canonical plugin metadata
   skills/
-    guidelines-mcp.md          ← Skill 1: MCP reference
+    guidelines-mcp.md          ← Skill 1: Both MCP servers reference
     gap-analysis.md            ← Skill 2: Gap analysis workflow
-    feedback-loop.md           ← Skill 3: Feedback loop process
+    code-review.md             ← Skill 3: Code review against guidelines
+    decision-validation.md     ← Skill 4: Validate decisions pre-implementation
+    migration-planning.md      ← Skill 5: Incremental refactoring planner
+    feedback-loop.md           ← Skill 6: Usage analysis + issue creation workflow
+    test-mcp-servers.md        ← Skill 7: Smoke-test both MCP servers
   .github/
   README.md                    ← This file
 ```
@@ -307,18 +367,17 @@ If you have questions or find bugs:
 
 ## Version History
 
+- **3.0** (2026-07-27): Aligned with two MCP servers; corrected all tool names; added test skill
+  - Fixed all tool names (`search_docs` → `search_guides`, `get_doc` → `get_guide`, etc.)
+  - Updated `guidelines-mcp` to document both servers (`jsdotnet-coding-guidelines` and `jsdotnet-design-ux-guidelines`)
+  - Added `test-mcp-servers`: smoke-test both MCP servers end-to-end
+  - Removed stale `adr-creation`, `error-handling`, `testing-strategy` references from README
+
 - **2.1** (2026-06-05): Replaced ADR/error/testing skills with decision/migration skills
   - Added decision-validation: Validate decisions before implementation
   - Added migration-planning: Plan and execute incremental refactoring
   - Removed adr-creation, error-handling, testing-strategy
 
 - **2.0** (2026-06-05): Added code review, ADR creation, error handling, and testing skills
-  - code-review: Validate code against guidelines
-  - adr-creation: Create Architecture Decision Records
-  - error-handling: Design consistent error handling
-  - testing-strategy: Organize tests and coverage
 
 - **1.0** (2026-06-05): Initial release with three core skills
-  - guidelines-mcp: MCP reference guide
-  - gap-analysis: Project structure audit workflow
-  - feedback-loop: Usage analysis + issue creation workflow

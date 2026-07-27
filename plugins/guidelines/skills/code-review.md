@@ -175,9 +175,9 @@ public async Task<IActionResult> CreateOrder(CreateOrderDto dto)
 
 **Guidance:**
 ```
-Search: search_docs("cqrs")
-         search_docs_by_tag("application-layer")
-Read: get_doc("adr-NNNN: Vertical Slice Pattern")
+Search: search_guides("cqrs")
+         search_guides_by_tag("application-layer")
+Read: get_guide("adr-NNNN: Vertical Slice Pattern")
 
 Recommendation:
 1. Move calculation to Order aggregate
@@ -211,9 +211,9 @@ public class Order
 
 **Guidance:**
 ```
-Search: search_docs("hexagonal architecture")
-         search_docs_by_tag("ports-adapters")
-Read: get_doc("adr-NNNN: Domain/Infrastructure Separation")
+Search: search_guides("hexagonal architecture")
+         search_guides_by_tag("ports-adapters")
+Read: get_guide("adr-NNNN: Domain/Infrastructure Separation")
 
 Recommendation:
 1. Remove all EF attributes from domain class
@@ -246,8 +246,8 @@ public class Money
 
 **Guidance:**
 ```
-Search: search_docs_by_tag("value-object")
-Read: get_doc("adr-NNNN: Value Object Pattern")
+Search: search_guides_by_tag("value-object")
+Read: get_guide("adr-NNNN: Value Object Pattern")
 
 Recommendation:
 1. Use record struct or sealed record for immutability
@@ -281,9 +281,9 @@ for (int i = 0; i < 3; i++)
 
 **Guidance:**
 ```
-Search: search_docs_by_tag("resilience")
-         search_docs("retry")
-Read: get_doc("adr-NNNN: Resilience Policy")
+Search: search_guides_by_tag("resilience")
+         search_guides("retry")
+Read: get_guide("adr-NNNN: Resilience Policy")
 
 Recommendation:
 1. Check if Polly is the standard (per guidelines)
@@ -304,8 +304,8 @@ Review often leads to "I need to understand this ADR":
    → Find "Use CQRS pattern" recommendation
 
 2. Skill: guidelines-mcp
-   → search_docs_by_tag("cqrs")
-   → get_doc("adr-NNNN")
+   → search_guides_by_tag("cqrs")
+   → get_guide("adr-NNNN")
    → Understand full decision + consequences
 ```
 
@@ -381,7 +381,7 @@ If review findings repeat across projects:
 
 - **Be specific**: Paste actual code, not just descriptions
 - **Ask targeted questions**: "Is this immutable?" vs. "Review this code"
-- **Reference ADRs after reviews**: Always follow up with `get_doc()` to read full context
+- **Reference ADRs after reviews**: Always follow up with `get_guide()` to read full context
 - **Document findings**: Add ADR references in comments for traceability
 - **Use checklists**: The checklist above helps ensure consistency
 - **Pair with feedback-loop**: If findings repeat, propose documentation improvements

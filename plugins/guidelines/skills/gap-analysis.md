@@ -65,24 +65,24 @@ For each gap identified, use the MCP tools to find relevant guidance:
 
 **Example 1: Missing Domain Layer**
 ```
-search_docs("domain layer structure")
-search_docs_by_tag("ddd")
-list_docs_by_type("structures")
-get_doc("adr-NNNN-domain-layering")
+search_guides("domain layer structure")
+search_guides_by_tag("ddd")
+list_guides_by_type("structures")
+get_guide("adr-NNNN-domain-layering")
 ```
 
 **Example 2: Controllers with Business Logic**
 ```
-search_docs("clean controllers")
-search_docs_by_tag("cqrs")
-search_docs_by_tag("application-layer")
+search_guides("clean controllers")
+search_guides_by_tag("cqrs")
+search_guides_by_tag("application-layer")
 ```
 
 **Example 3: Missing Repository Pattern**
 ```
-search_docs("repository pattern")
-search_docs_by_tag("persistence")
-list_docs_by_type("structures")
+search_guides("repository pattern")
+search_guides_by_tag("persistence")
+list_guides_by_type("structures")
 ```
 
 ### Step 4: Create an Improvement Plan
@@ -118,9 +118,9 @@ Call: submit_guidelines_issue(draftId)
 
 **Solution**:
 ```
-1. search_docs_by_tag("ddd")
-2. list_docs_by_type("structures")
-3. get_doc("ADR-NNNN: Domain-Driven Design Structure")
+1. search_guides_by_tag("ddd")
+2. list_guides_by_type("structures")
+3. get_guide("ADR-NNNN: Domain-Driven Design Structure")
 4. Create MyProject.Domain/ with Entities/, ValueObjects/, Services/
 ```
 
@@ -130,9 +130,9 @@ Call: submit_guidelines_issue(draftId)
 
 **Solution**:
 ```
-1. search_docs_by_tag("cqrs")
-2. search_docs_by_tag("application-layer")
-3. get_doc("ADR-NNNN: Vertical Slice Pattern")
+1. search_guides_by_tag("cqrs")
+2. search_guides_by_tag("application-layer")
+3. get_guide("ADR-NNNN: Vertical Slice Pattern")
 4. Scaffold MyProject.Application/ with Handlers/, Commands/, Queries/
 ```
 
@@ -142,9 +142,9 @@ Call: submit_guidelines_issue(draftId)
 
 **Solution**:
 ```
-1. search_docs("hexagonal architecture")
-2. search_docs_by_tag("ports-adapters")
-3. get_doc("ADR-NNNN: Port/Adapter Boundaries")
+1. search_guides("hexagonal architecture")
+2. search_guides_by_tag("ports-adapters")
+3. get_guide("ADR-NNNN: Port/Adapter Boundaries")
 4. Move EF configurations to Infrastructure; define ports in Application
 ```
 
@@ -154,9 +154,9 @@ Call: submit_guidelines_issue(draftId)
 
 **Solution**:
 ```
-1. search_docs_by_tag("testing")
-2. list_docs_by_type("structures")
-3. search_docs("unit test organization")
+1. search_guides_by_tag("testing")
+2. list_guides_by_type("structures")
+3. search_guides("unit test organization")
 4. Create MyProject.Tests/ with subdirs: Domain.Tests/, Application.Tests/, Integration.Tests/
 ```
 
@@ -166,9 +166,9 @@ Call: submit_guidelines_issue(draftId)
 
 **Solution**:
 ```
-1. search_docs("error handling")
-2. search_docs_by_tag("exceptions")
-3. get_doc("ADR-NNNN: Exception Strategy")
+1. search_guides("error handling")
+2. search_guides_by_tag("exceptions")
+3. get_guide("ADR-NNNN: Exception Strategy")
 4. Implement domain exceptions, translate at layer boundaries
 ```
 
@@ -210,6 +210,6 @@ If you use **guidelines-feedback** skill, you can:
 
 - **Start with the scan**: Let the tool do the heavy lifting to identify structural gaps.
 - **Cross-reference ADRs**: For each gap, find the corresponding ADR or recommendation.
-- **Use tags for speed**: `search_docs_by_tag()` is faster than free-text search when the gap is clear.
+- **Use tags for speed**: `search_guides_by_tag()` is faster than free-text search when the gap is clear.
 - **Create a baseline**: Run the scan once, document gaps, then periodically re-run to track improvements.
 - **Engage the team**: Share scan results and ADRs with your team to align on improvements.

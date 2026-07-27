@@ -70,9 +70,9 @@ Tooling Decisions
 
 ```
 Invoke: guidelines-mcp
-→ search_docs("your decision topic")
-→ search_docs_by_tag("relevant tags")
-→ get_doc("adr-NNNN") if found
+→ search_guides("your decision topic")
+→ search_guides_by_tag("relevant tags")
+→ get_guide("adr-NNNN") if found
 ```
 
 **Example:**
@@ -275,8 +275,8 @@ Step 1: Problem
 patterns are completely different"
 
 Step 2: Guidelines Check
-search_docs_by_tag("cqrs")
-get_doc("adr-0004-cqrs-pattern")
+search_guides_by_tag("cqrs")
+get_guide("adr-0004-cqrs-pattern")
 Result: ADR-0004 recommends CQRS when read/write patterns differ
 
 Step 3: Alternatives
@@ -309,8 +309,8 @@ Step 1: Problem
 without database; no abstraction for persistence"
 
 Step 2: Guidelines Check
-search_docs_by_tag("repository")
-get_doc("adr-0003-repository-pattern")
+search_guides_by_tag("repository")
+get_guide("adr-0003-repository-pattern")
 Result: ADR-0003 recommends repository for persistence abstraction
 
 Step 3: Alternatives
@@ -342,7 +342,7 @@ Step 1: Problem
 "We want a robust audit trail for all order changes"
 
 Step 2: Guidelines Check
-search_docs("event sourcing")
+search_guides("event sourcing")
 Result: No specific guideline; recommendations suggest incremental adoption
 
 Step 3: Alternatives

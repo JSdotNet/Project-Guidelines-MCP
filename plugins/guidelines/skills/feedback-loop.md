@@ -30,7 +30,7 @@ Call: analyze_guidelines_usage(maxEntries: 200, maxAgeDays: 30)
 ```
 
 **What you get**:
-- **Tool call frequencies**: Which tools are called most (e.g., search_docs, list_docs_by_type)
+- **Tool call frequencies**: Which tools are called most (e.g., search_guides, list_guides_by_type)
 - **Zero-result searches**: Which queries returned no guidance (opportunity to add docs)
 - **Top queries**: What users are searching for most
 - **Failed calls**: Which tool calls errored or returned unexpected results
@@ -41,11 +41,11 @@ Call: analyze_guidelines_usage(maxEntries: 200, maxAgeDays: 30)
 ## Usage Analysis (Last 30 Days)
 
 ### Tool Frequencies
-- search_docs: 47 calls (47%)
-- search_docs_by_tag: 23 calls (23%)
-- get_doc: 15 calls (15%)
-- list_docs_by_type: 12 calls (12%)
-- list_docs: 3 calls (3%)
+- search_guides: 47 calls (47%)
+- search_guides_by_tag: 23 calls (23%)
+- get_guide: 15 calls (15%)
+- list_guides_by_type: 12 calls (12%)
+- list_guides: 3 calls (3%)
 
 ### Zero-Result Searches
 1. "async state machine" (5 times) — No matching docs
@@ -58,8 +58,8 @@ Call: analyze_guidelines_usage(maxEntries: 200, maxAgeDays: 30)
 3. Rec-005: Error Handling (8 reads)
 
 ### Failed Calls
-- 1 timeout in search_docs (date filter issue)
-- 2 malformed JSON in get_doc request
+- 1 timeout in search_guides (date filter issue)
+- 2 malformed JSON in get_guide request
 ```
 
 ### Phase 2: Identify Improvement Opportunities
@@ -79,7 +79,7 @@ Opportunity 1: "async state machine" search returned 0 results
 Opportunity 2: "decorator pattern" had low results
 → Add section to existing ADR on patterns, with C# examples
 
-Opportunity 3: search_docs never used, but search_docs_by_tag popular
+Opportunity 3: search_guides never used, but search_guides_by_tag popular
 → Update guidelines-mcp skill to emphasize tag-based search
 ```
 
@@ -186,7 +186,7 @@ If you've run a gap analysis on a project, use the feedback loop to propose guid
 1. Run: analyze_guidelines_usage()
    → Find "my specific pattern" has 3 zero-result searches
 
-2. Run: search_docs("my specific pattern")
+2. Run: search_guides("my specific pattern")
    → Verify no docs exist
 
 3. Call: draft_guidelines_issue(
@@ -206,7 +206,7 @@ If you've run a gap analysis on a project, use the feedback loop to propose guid
 1. Run: analyze_guidelines_usage()
    → Find "error handling" has 15 reads for one doc, but 2 reads for similar doc
 
-2. Call: get_doc("adr-error-handling")
+2. Call: get_guide("adr-error-handling")
    → Read current error handling guidance
 
 3. Call: draft_guidelines_issue(
@@ -221,7 +221,7 @@ If you've run a gap analysis on a project, use the feedback loop to propose guid
 
 ```
 1. Run: analyze_guidelines_usage()
-   → Find "cqrs" search returns docs, but get_doc("adr-cqrs") rarely used
+   → Find "cqrs" search returns docs, but get_guide("adr-cqrs") rarely used
 
 2. Call: draft_guidelines_issue(
      title: "Enhance ADR-0002: Add CQRS Implementation Examples",

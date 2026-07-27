@@ -1,8 +1,8 @@
 {
   "name": "jsdotnet-guidelines",
   "displayName": "JSdotNet Project Guidelines",
-  "version": "1.0.0",
-  "description": "Six skills for using the JSdotNet Project Guidelines MCP server to discover guidance, review code, validate decisions, and plan migrations.",
+  "version": "1.1.0",
+  "description": "Seven skills for working with two JSdotNet MCP servers: coding guidelines (ADRs, architecture, patterns) and design/UX guidelines (style guide, design tokens). Covers guidance discovery, code review, decision validation, migration planning, and MCP server testing.",
   "publisher": "JSdotNet",
   "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
   "repository": {
@@ -46,6 +46,12 @@
       "path": "../../skills/migration-planning.md",
       "title": "Migration Planning",
       "description": "Plan and execute incremental refactoring to align code with guidelines. Break into phases, manage dependencies, and track progress."
+    },
+    {
+      "id": "test-mcp-servers",
+      "path": "../../skills/test-mcp-servers.md",
+      "title": "Test MCP Servers",
+      "description": "Smoke-test both JSdotNet MCP servers (coding guidelines and design/UX) to verify they are connected, returning expected content, and that all six tools work end-to-end."
     }
   ],
   "keywords": [
