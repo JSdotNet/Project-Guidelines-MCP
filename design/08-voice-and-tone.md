@@ -5,7 +5,7 @@ tags: [style-guide, voice, tone, copy, content, ux-writing]
 ---
 # Voice and Tone
 
-> Copy quality is part of UX quality. Inconsistent or unclear language is a usability defect.
+> This document is canonical for UI copy rules and message examples. Layout, timing, and interaction behavior for these moments live in [09 - Interaction Patterns](09-interaction-patterns.md).
 
 ---
 
@@ -23,9 +23,9 @@ The products in this organization communicate with users in a way that is:
 
 ### What we are not
 
-- We are not **casual or playful** — no jokes, puns, or excessive friendliness in task-critical UI.
-- We are not **formal or stiff** — no legalistic phrasing or passive voice where active is clearer.
-- We are not **vague** — never say "something went wrong" without a path to resolution.
+- We are not **casual or playful** - no jokes, puns, or excessive friendliness in task-critical UI.
+- We are not **formal or stiff** - no legalistic phrasing or passive voice where active is clearer.
+- We are not **vague** - never say "something went wrong" without a path to resolution.
 
 ---
 
@@ -39,7 +39,7 @@ The products in this organization communicate with users in a way that is:
 | Contractions are fine in messages | "We couldn't find that page." | "We were unable to locate that page." |
 | Oxford comma | "Name, email, and password" | "Name, email and password" |
 | Numbers < 10 spelled out in prose | "three retries" | "3 retries" |
-| Numbers ≥ 10 as numerals | "12 items" | "twelve items" |
+| Numbers >= 10 as numerals | "12 items" | "twelve items" |
 
 ---
 
@@ -55,7 +55,7 @@ Buttons must use **verb + noun** phrasing that describes the action and its targ
 | "Cancel" | "No" / "Abort" | Universal convention; users expect it |
 | "Send report" | "Submit" | "Submit" is generic; "Send report" is specific |
 | "Sign in" | "Login" | Prefer natural language over technical terms |
-| "Sign out" | "Logout" | Same — natural language |
+| "Sign out" | "Logout" | Same - natural language |
 
 ---
 
@@ -65,9 +65,9 @@ Errors must follow a three-part structure: **what happened → why → what to d
 
 ### Required elements
 
-1. **What** — state the problem clearly and specifically.
-2. **Why** — only if it adds actionable context (skip if obvious).
-3. **Next step** — always provide a way forward.
+1. **What** - state the problem clearly and specifically.
+2. **Why** - only if it adds actionable context (skip if obvious).
+3. **Next step** - always provide a way forward.
 
 ### Examples
 
@@ -97,10 +97,7 @@ Errors must follow a three-part structure: **what happened → why → what to d
 
 ## Empty States
 
-Empty states occur when a list, table, or container has no content. They must always:
-
-1. Explain why the view is empty.
-2. Suggest the most appropriate action to populate it.
+Use the layout, icon, and CTA structure from [09 - Interaction Patterns](09-interaction-patterns.md). This section defines the **copy** for those states.
 
 | Context | Message | Action |
 |---|---|---|
@@ -113,6 +110,8 @@ Empty states occur when a list, table, or container has no content. They must al
 ---
 
 ## Confirmation Dialogs
+
+Use the modal and destructive-action behavior from [09 - Interaction Patterns](09-interaction-patterns.md). This section defines the **wording** inside those dialogs.
 
 Confirmation dialogs must:
 
@@ -132,22 +131,24 @@ Confirmation dialogs must:
 
 ## Loading and Progress
 
+Use the loading-state selection rules from [09 - Interaction Patterns](09-interaction-patterns.md). This section defines the **copy style** for each loading moment.
+
 | State | Copy |
 |---|---|
-| Short operation (< 2 s) | No copy needed — spinner only |
-| Medium operation (2–10 s) | "Saving…" / "Loading…" / "Processing…" |
-| Long operation (> 10 s) | "Uploading file (2 of 5)…" — show progress and context |
+| Short operation (< 2 s) | No copy needed - spinner only |
+| Medium operation (2–10 s) | "Saving..." / "Loading..." / "Processing..." |
+| Long operation (> 10 s) | "Uploading file (2 of 5)..." - show progress and context |
 | Background operation complete | Toast: "Changes saved." / "Report ready." |
 
-- Always use present participle form for in-progress state: "Saving…" not "Save in progress".
+- Always use present participle form for in-progress state: "Saving..." not "Save in progress".
 - Use past tense for completion toasts: "Saved." / "Deleted." / "Sent."
 
 ---
 
 ## Tooltips
 
-- Keep tooltip copy to **one short sentence or phrase** (≤ 10 words).
-- Tooltips clarify the function of an icon or control — they must not repeat the label.
+- Keep tooltip copy to **one short sentence or phrase** (<= 10 words).
+- Tooltips clarify the function of an icon or control - they must not repeat the label.
 - Never put critical information in a tooltip. If the user must read it to avoid an error, it belongs inline.
 
 | ✅ Correct | ❌ Incorrect |
@@ -160,7 +161,7 @@ Confirmation dialogs must:
 ## Placeholders
 
 - Placeholder text is a **format hint**, not a label.
-- Use short, concrete examples: `e.g. name@example.com`, `YYYY-MM-DD`, `Search projects…`
+- Use short, concrete examples: `e.g. name@example.com`, `YYYY-MM-DD`, `Search projects...`
 - Never write requirements in placeholders: "Must be at least 8 characters" belongs in helper text, not the placeholder.
 
 ---
@@ -178,3 +179,6 @@ Confirmation dialogs must:
 | Toast / notification messages | Sentence case |
 | Error messages | Sentence case |
 | Tooltip text | Sentence case |
+
+
+

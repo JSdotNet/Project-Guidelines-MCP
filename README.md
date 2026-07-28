@@ -35,13 +35,13 @@ The server uses stdio transport for MCP communication. Logs are written to stder
 
 ### Design / UX Optimized Server
 
-A second MCP server is included for the scoped design and UX guidance set under `guide/style-guide`. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that folder structure.
+A second MCP server is included for the scoped design and UX guidance set under the repository's `design/` folder. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that documentation set.
 
 ```powershell
 dotnet run --project .\src\JSdotNet.MCP.Design\JSdotNet.MCP.Design.csproj
 ```
 
-When run from the repository root, the server automatically discovers `guide/style-guide` locally. For GitHub-backed usage, it resolves documents from the `guide/style-guide` path on GitHub.
+When run from the repository root, the server automatically discovers `design/` locally. For GitHub-backed usage, it resolves documents from the repository's `design/` path on GitHub.
 
 ### Install as GitHub Copilot MCP Tool
 
@@ -427,3 +427,4 @@ dotnet-gitversion
 - The MCP Server uses the `FileSystemDocumentCatalog` for local development and `GitHubDocumentCatalog` for published scenarios.
 - Coverage threshold is enforced at 80% for core library code.
 - CI/CD pipeline only triggers on changes to `src/` folder when pushed to `main` branch.
+

@@ -5,7 +5,7 @@ tags: [style-guide, components, patterns, accessibility, design-tokens]
 ---
 # Component Patterns
 
-> Component specifications define anatomy, states, variants, and accessibility requirements for every reusable UI element. All tokens referenced here are defined in the preceding style guide documents.
+> This document is canonical for component anatomy, states, variants, and accessibility requirements. Recurring flow behavior such as validation, toast lifecycle, and page-level error handling is defined in [09 - Interaction Patterns](09-interaction-patterns.md); message wording lives in [08 - Voice and Tone](08-voice-and-tone.md).
 
 ---
 
@@ -255,11 +255,7 @@ Provides brief, non-blocking feedback about an operation result. Appears automat
 
 ### Behavior
 
-- Auto-dismiss after **5 s** (success/info) or **8 s** (warning/error).
-- Pause auto-dismiss on hover or focus.
-- Allow manual dismissal at all times via the dismiss button.
-- Stack multiple toasts vertically; limit to 3 visible at once.
-- Position: bottom-right on desktop, bottom-center on mobile.
+Use the recommended toast lifecycle, stacking, placement, and recovery rules from [09 - Interaction Patterns](09-interaction-patterns.md). Keep the message content aligned with [08 - Voice and Tone](08-voice-and-tone.md).
 
 ### Accessibility Requirements
 
@@ -267,3 +263,5 @@ Provides brief, non-blocking feedback about an operation result. Appears automat
 - `role="alert"` is announced immediately by screen readers; use it only for errors and warnings.
 - The dismiss button must have `aria-label="Dismiss notification"`.
 - Toasts must not interrupt keyboard focus — they appear in the DOM but do not steal focus.
+
+

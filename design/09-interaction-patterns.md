@@ -5,7 +5,7 @@ tags: [style-guide, interaction, patterns, forms, navigation, ux]
 ---
 # Interaction Patterns
 
-> This document defines the standard UX patterns for recurring interactions across all products. Consistent patterns reduce cognitive load and make products predictable.
+> This document is canonical for recurring interaction behavior and layout patterns across web products. Use [04 - Motion and Interaction](04-motion-and-interaction.md) for timing and easing tokens, [06 - Component Patterns](06-component-patterns.md) for component anatomy, and [08 - Voice and Tone](08-voice-and-tone.md) for message wording.
 
 ---
 
@@ -57,6 +57,8 @@ Empty states are UI moments where a container has no content. Every empty state 
 1. **A clear explanation** of why the view is empty.
 2. **A call to action** (when the user can do something about it).
 3. **An icon or illustration** to make the state scannable (`icon-xl` or `icon-2xl` from the iconography guide).
+
+Use [08 - Voice and Tone](08-voice-and-tone.md) for the message wording and CTA phrasing.
 
 ### Empty State Layout
 
@@ -148,6 +150,7 @@ When refreshing data in an already-populated view:
 - Show an error toast for failed button actions.
 - The toast message must include the specific failure and a corrective action where possible.
 - Re-enable the button after the error so the user can retry.
+- Use [08 - Voice and Tone](08-voice-and-tone.md) for the exact wording pattern.
 
 ### Network Offline
 
@@ -168,12 +171,12 @@ Use tabs to switch between **peer-level content sections** within the same page 
 
 | Rule | Detail |
 |---|---|
-| Maximum tab count | 7 tabs; prefer ≤ 5 |
+| Preferred tab count | Prefer up to 5 tabs; if a view needs more than 7, reconsider the information architecture |
 | Tab labels | Noun or short noun phrase ("Overview", "Settings", "Members") |
 | Active indicator | `color-primary` underline, `border-width-2` |
 | Keyboard navigation | Arrow keys to move between tabs; `Enter`/`Space` to activate |
 | ARIA | `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected` |
-| Scrollable tabs | When tabs overflow, use horizontal scroll with fade-out gradient; do not wrap |
+| Overflow behavior | When tabs overflow, prefer horizontal scroll or an alternate navigation pattern rather than wrapping |
 
 ### Breadcrumbs
 
@@ -192,14 +195,14 @@ Home  /  Projects  /  My App  /  Settings
 
 Use a side drawer for secondary navigation or detail panels that do not require full-page navigation.
 
-| Property | Value |
+| Property | Recommended default |
 |---|---|
-| Width (desktop) | 320–480 px |
-| Width (mobile) | Full screen width |
+| Width (desktop) | Start around 320-480 px; adjust to content density |
+| Width (mobile) | Usually full width or nearly full width |
 | Overlay | `color-background-overlay` scrim behind drawer |
 | Entry transition | `transition-slow`, `ease-out`, slide from edge |
 | Exit transition | `transition-base`, `ease-in`, slide out |
-| Close triggers | Dismiss button, `Escape` key, scrim click |
+| Close triggers | Dismiss button, `Escape` key, and usually scrim click |
 | Focus management | Focus moves into drawer on open; returns to trigger on close |
 | ARIA | `role="dialog"`, `aria-modal="true"`, `aria-label` or `aria-labelledby` |
 
@@ -207,26 +210,26 @@ Use a side drawer for secondary navigation or detail panels that do not require 
 
 Use a modal dialog for focused tasks that require the user's full attention before continuing.
 
-| Property | Value |
+| Property | Recommended default |
 |---|---|
-| Max width | 480 px (small), 640 px (default), 800 px (large) |
+| Width | Start around 480 px (small), 640 px (default), and 800 px (large); adjust to content complexity |
 | Overlay | `color-background-overlay` scrim |
 | Entry transition | `transition-slow`, `ease-out`, fade + scale from `0.95` |
 | Exit transition | `transition-base`, `ease-in`, fade + scale out |
-| Close triggers | Dismiss button (×), `Escape` key |
-| Scrim click | Only closes non-destructive modals (not confirmation dialogs) |
+| Close triggers | Dismiss button (x) and `Escape` key |
+| Scrim click | Allow it for non-destructive modals; disable it for destructive confirmation flows |
 | Focus trap | Tab focus must remain within the modal until closed |
 | Scroll | Long modal content scrolls within the dialog; background does not scroll |
 | ARIA | `role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing to modal title |
 
 ### Toast Stacking
 
-When multiple toasts are triggered concurrently:
+When multiple toasts are triggered concurrently, use these recommended defaults unless a product-specific constraint justifies another placement:
 
 - Stack vertically with `spacing-sm` gap.
-- Limit to 3 visible toasts at once; queue the rest.
+- Limit to about 3 visible toasts at once; queue the rest.
 - Older toasts animate out before newer ones enter when the queue is full.
-- Position: **bottom-right** on desktop, **bottom-center** on mobile.
+- Prefer bottom-right on desktop and bottom-center on mobile, unless that conflicts with other persistent UI.
 
 ---
 
@@ -273,3 +276,5 @@ Use drag-and-drop for explicit reordering tasks where the positional order is me
 - Show a placeholder in the drop target position during drag.
 - Provide keyboard-accessible reordering as an alternative (e.g., move-up/move-down buttons or arrow-key handling with `role="listbox"`).
 - Announce position changes to screen readers using a live region: "Item moved to position 3 of 8."
+
+

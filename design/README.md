@@ -9,7 +9,7 @@ tags: [style-guide, design-tokens, ux, frontend]
 
 | Property | Value |
 |---|---|
-| Version | 2.0 |
+| Version | 2.1 |
 | Last updated | 2026-07-28 |
 | Status | Active |
 | Owner | JSdotNet UX Guild |
@@ -19,25 +19,32 @@ tags: [style-guide, design-tokens, ux, frontend]
 
 ## Purpose
 
-This style guide is the **canonical design token reference** for all frontend projects in this organization. It defines the visual language — colors, typography, spacing, motion — that ensures a consistent, accessible user experience across applications built with any frontend technology (Angular, React, Vue, Svelte, Blazor, or plain HTML/CSS).
+This style guide is the **canonical UX foundation, component, content, and interaction reference** for web products in this organization. It defines the shared visual language, reusable UI patterns, copy guidance, and recurring interaction behaviors that keep products consistent and accessible across frameworks.
 
-> **Technology-agnostic:** This guide deliberately avoids SCSS, CSS, or framework-specific syntax. For implementation patterns, see [ADR 0011: Centralized Frontend Styling Variables](../adrs/0011-centralized-frontend-styling-variables.md).
+> **Framework-agnostic web guidance:** These documents avoid framework-specific implementation details. For token implementation patterns in code, see [ADR 0011: Centralized Frontend Styling Variables](../guide/adrs/0011-centralized-frontend-styling-variables.md).
 
 ---
 
 ## Structure
 
-| Document | Contents |
-|---|---|
-| [01 — Color Palette](01-color-palette.md) | Color tokens for light and dark mode, hex values, semantic names, usage rules, visual swatches |
-| [02 — Typography](02-typography.md) | Font families, sizes, weights, line heights |
-| [03 — Spacing & Layout](03-spacing-and-layout.md) | Spacing scale, border radius, shadows, z-index |
-| [04 — Motion & Interaction](04-motion-and-interaction.md) | Transition durations, easing curves, focus states, loading indicators |
-| [05 — Customization Guide](05-customization-guide.md) | How to override the color scheme per project |
-| [06 — Component Patterns](06-component-patterns.md) | Button, Form Input, Card, Badge, Toast — states, variants, accessibility |
-| [07 — Iconography](07-iconography.md) | Icon library (Lucide), sizing scale, color rules, accessibility |
-| [08 — Voice and Tone](08-voice-and-tone.md) | Language personality, button labels, error messages, empty states |
-| [09 — Interaction Patterns](09-interaction-patterns.md) | Form validation, loading, error handling, navigation (tabs, breadcrumbs, modals, drawers) |
+| Area | Documents | Purpose |
+|---|---|---|
+| **Foundations** | [01 - Color Palette](01-color-palette.md), [02 - Typography](02-typography.md), [03 - Spacing & Layout](03-spacing-and-layout.md), [04 - Motion & Interaction](04-motion-and-interaction.md), [05 - Customization Guide](05-customization-guide.md) | Design tokens, scales, motion rules, and the allowed customization boundary |
+| **Components** | [06 - Component Patterns](06-component-patterns.md), [07 - Iconography](07-iconography.md) | Anatomy, states, variants, and accessibility requirements for reusable UI building blocks |
+| **Content** | [08 - Voice and Tone](08-voice-and-tone.md) | Product language, button labels, message structure, and UI writing conventions |
+| **Interactions** | [09 - Interaction Patterns](09-interaction-patterns.md) | Canonical behavior for validation, empty states, loading, errors, and navigation patterns |
+
+---
+
+## How to Use This Guide
+
+1. Start with the foundation documents before defining component-level behavior.
+2. Use [04 - Motion & Interaction](04-motion-and-interaction.md) for timing, easing, and reduced-motion constraints.
+3. Use [06 - Component Patterns](06-component-patterns.md) for component anatomy, states, and accessibility.
+4. Use [08 - Voice and Tone](08-voice-and-tone.md) for copy rules and message examples.
+5. Use [09 - Interaction Patterns](09-interaction-patterns.md) as the canonical source for recurring UI behavior and layout patterns.
+
+When a topic appears in more than one document, the more specific document is authoritative for that concern.
 
 ---
 
@@ -45,46 +52,48 @@ This style guide is the **canonical design token reference** for all frontend pr
 
 | Aspect | Customizable Per Project? |
 |---|---|
-| **Color scheme** | ✅ Yes — the only permitted customization |
-| Typography | ❌ No — fixed for all projects |
-| Spacing scale | ❌ No — fixed for all projects |
-| Border radius | ❌ No — fixed for all projects |
-| Motion / transitions | ❌ No — fixed for all projects |
-| Component patterns | ❌ No — fixed for all projects |
-| Iconography | ❌ No — fixed for all projects |
-| Voice and tone | ❌ No — fixed for all projects |
+| **Color scheme** | Yes - the only permitted customization |
+| Typography | No - fixed for all projects |
+| Spacing scale | No - fixed for all projects |
+| Border radius | No - fixed for all projects |
+| Motion / transitions | No - fixed for all projects |
+| Component patterns | No - shared baseline |
+| Iconography | No - shared baseline with limited substitution rules |
+| Voice and tone | No - shared baseline |
+| Interaction patterns | No - shared baseline |
 
-A project team may only override the **color tokens** defined in [01 — Color Palette](01-color-palette.md). All other tokens are fixed and must not be modified. See [05 — Customization Guide](05-customization-guide.md) for the permitted override mechanism.
+A project team may only override the **color tokens** defined in [01 - Color Palette](01-color-palette.md). All other tokens and guidance are fixed unless the style guide itself is updated through the repository change process. See [05 - Customization Guide](05-customization-guide.md) for the permitted override mechanism.
 
 ---
 
 ## Design Principles
 
-1. **Semantic naming** — tokens are named by *purpose* (e.g., `color-primary`, `color-error`), not by raw value (never `blue-500` or `#dc3545`).
-2. **Light and dark first** — every color token has both a light-mode and a dark-mode variant. There is no single-mode design.
-3. **Accessibility** — all color combinations meet WCAG 2.1 AA contrast requirements (4.5:1 for normal text, 3:1 for large text and UI components).
-4. **Consistency over cleverness** — use the predefined scale; do not introduce one-off values.
-5. **User-centred copy** — clear, direct, calm language in all UI text; see [08 — Voice and Tone](08-voice-and-tone.md).
-6. **Progressive disclosure** — show only what is needed at each step; reveal complexity on demand.
+1. **Semantic naming** - tokens are named by purpose (for example, `color-primary`, `color-error`), not by raw value.
+2. **Light and dark first** - every color token has both a light-mode and a dark-mode variant.
+3. **Accessibility by default** - all color, motion, focus, and copy guidance must support WCAG 2.1 AA as a baseline.
+4. **Consistency over cleverness** - use the predefined scale and shared patterns before introducing local exceptions.
+5. **Clear language is part of UX** - UI text should be direct, calm, and useful; see [08 - Voice and Tone](08-voice-and-tone.md).
+6. **Behavior belongs to patterns** - recurring flows such as validation, loading, and error recovery are defined once in [09 - Interaction Patterns](09-interaction-patterns.md) and reused consistently.
 
 ---
 
 ## Platform Scope
 
-This style guide targets **web** applications. All responsive breakpoints, touch targets, and layout guidelines apply to browser-rendered UIs:
+This style guide targets **web applications**:
 
-- Desktop-first layout, fully responsive down to mobile (`≥ 320 px`).
-- Touch targets ≥ 44 × 44 px for all interactive elements on mobile.
-- Dark mode support is mandatory — every token has both light and dark values.
+- Responsive layouts from mobile (`>= 320 px`) through large desktop screens.
+- Keyboard-accessible interactions as a default, not an enhancement.
+- Touch targets >= 44 x 44 px for interactive controls on mobile and touch devices.
+- Mandatory support for light mode, dark mode, and reduced-motion user preferences.
 
 ---
 
 ## Relationship to ADR 0011
 
-This style guide defines **what** the tokens are and what they mean.  
-[ADR 0011](../adrs/0011-centralized-frontend-styling-variables.md) defines **how** those tokens are declared and used in code (SCSS variables, CSS custom properties, framework-specific integration).
+This style guide defines **what** the shared tokens and UX rules are.
+[ADR 0011](../guide/adrs/0011-centralized-frontend-styling-variables.md) defines **how** the design tokens are represented and consumed in code.
 
-The style guide is the source of truth. ADR 0011 is the implementation contract.
+The style guide is the source of truth for UX decisions. ADR 0011 is the implementation contract for frontend projects.
 
 ---
 
@@ -92,6 +101,6 @@ The style guide is the source of truth. ADR 0011 is the implementation contract.
 
 Sample SVG files in [`assets/`](assets/) let you verify the style guide visually without running any build:
 
-- [`color-palette-light.svg`](assets/color-palette-light.svg) — all color tokens in light mode
-- [`color-palette-dark.svg`](assets/color-palette-dark.svg) — all color tokens in dark mode
-- [`foundations-overview.svg`](assets/foundations-overview.svg) — typography, spacing, surfaces, motion, and the "colors-only" customization boundary
+- [`color-palette-light.svg`](assets/color-palette-light.svg) - all color tokens in light mode
+- [`color-palette-dark.svg`](assets/color-palette-dark.svg) - all color tokens in dark mode
+- [`foundations-overview.svg`](assets/foundations-overview.svg) - typography, spacing, surfaces, motion, and the colors-only customization boundary

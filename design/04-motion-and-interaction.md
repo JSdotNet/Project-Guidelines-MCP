@@ -1,20 +1,20 @@
 ---
 title: "Style Guide: Motion and Interaction"
-date: 2026-06-05
+date: 2026-07-28
 tags: [style-guide, motion, animation, interaction, accessibility, design-tokens]
 ---
 # Motion and Interaction
 
-> Motion and interaction tokens are **fixed** — they are not customizable per project.
+> This document is canonical for motion tokens and animation constraints. Recurring UI behavior such as validation, toast lifecycles, loading layouts, and navigation patterns is defined in [09 - Interaction Patterns](09-interaction-patterns.md).
 
 ---
 
 ## Design Principles
 
-1. **Motion serves purpose** — animate only to communicate state changes, direct attention, or provide feedback. Never animate for decoration alone.
-2. **Respect user preferences** — honor the `prefers-reduced-motion` media query. All animations must degrade gracefully when motion is reduced.
-3. **Speed signals intent** — fast transitions (≤ 150 ms) feel like direct manipulation; slower transitions (250–350 ms) signal a structural navigation change.
-4. **Consistent easing** — use the defined easing curves; mixing curves creates visual noise.
+1. **Motion serves purpose** - animate only to communicate state changes, direct attention, or provide feedback. Never animate for decoration alone.
+2. **Respect user preferences** - honor the `prefers-reduced-motion` media query. All animations must degrade gracefully when motion is reduced.
+3. **Speed signals intent** - fast transitions (<= 150 ms) feel like direct manipulation; slower transitions (250-350 ms) signal a structural navigation change.
+4. **Consistent easing** - use the defined easing curves; mixing curves creates visual noise.
 
 ---
 
@@ -22,17 +22,17 @@ tags: [style-guide, motion, animation, interaction, accessibility, design-tokens
 
 | Token | Value | Usage |
 |---|---|---|
-| `transition-instant` | `0ms` | Immediate state changes that need no animation (e.g., visibility toggles for screen readers) |
+| `transition-instant` | `0ms` | Immediate state changes that need no animation (for example, visibility toggles for screen readers) |
 | `transition-fast` | `150ms` | Hover states, focus rings, button presses, color changes on interactive elements |
-| `transition-base` | `250ms` | Default for most UI transitions — dropdowns opening, card hover elevation |
-| `transition-slow` | `350ms` | Panels, drawers, toasts entering/exiting |
+| `transition-base` | `250ms` | Default for most UI transitions - dropdowns opening, card hover elevation |
+| `transition-slow` | `350ms` | Panels, drawers, toasts entering or exiting |
 | `transition-page` | `500ms` | Full-page route transitions |
 
 ### Usage Rules
 
 - Do not use values outside this scale.
 - Entrance animations (`transition-slow`) should feel slightly slower than exit animations (`transition-base`) to avoid abruptness.
-- Never animate layout-triggering properties (`width`, `height`, `top`, `left`) on the critical path — prefer `transform` and `opacity`.
+- Never animate layout-triggering properties (`width`, `height`, `top`, `left`) on the critical path - prefer `transform` and `opacity`.
 
 ---
 
@@ -40,18 +40,18 @@ tags: [style-guide, motion, animation, interaction, accessibility, design-tokens
 
 | Token | Value | Usage |
 |---|---|---|
-| `ease-linear` | `linear` | Progress bars, loading indicators — continuous motion |
-| `ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Elements exiting the screen — start slow, end fast |
-| `ease-out` | `cubic-bezier(0, 0, 0.2, 1)` | Elements entering the screen — start fast, end gently |
-| `ease-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Default — state changes that do not involve screen entry/exit |
-| `ease-bounce` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Confirmations, success indicators — slight overshoot for delight |
+| `ease-linear` | `linear` | Progress bars, loading indicators - continuous motion |
+| `ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Elements exiting the screen - start slow, end fast |
+| `ease-out` | `cubic-bezier(0, 0, 0.2, 1)` | Elements entering the screen - start fast, end gently |
+| `ease-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Default - state changes that do not involve screen entry or exit |
+| `ease-bounce` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Positive confirmations - slight overshoot for delight |
 
 ### Usage Rules
 
 - Default to `ease-in-out` for most transitions.
-- Use `ease-out` for elements *entering* the viewport (dropdown opens, modal slides in).
-- Use `ease-in` for elements *leaving* the viewport (dropdown closes, modal slides out).
-- `ease-bounce` is reserved for positive confirmations (checkmark animations, saved indicators) — never for error states.
+- Use `ease-out` for elements entering the viewport.
+- Use `ease-in` for elements leaving the viewport.
+- `ease-bounce` is reserved for positive confirmations - never for error states.
 
 ---
 
@@ -61,18 +61,18 @@ Apply these token combinations consistently for common patterns:
 
 | Interaction | Duration | Easing |
 |---|---|---|
-| Button hover color/shadow | `transition-fast` | `ease-in-out` |
+| Button hover color or shadow | `transition-fast` | `ease-in-out` |
 | Input focus ring | `transition-fast` | `ease-in-out` |
 | Card hover elevation | `transition-base` | `ease-in-out` |
-| Dropdown / menu open | `transition-base` | `ease-out` |
-| Dropdown / menu close | `transition-fast` | `ease-in` |
-| Modal / dialog enter | `transition-slow` | `ease-out` |
-| Modal / dialog exit | `transition-base` | `ease-in` |
+| Dropdown or menu open | `transition-base` | `ease-out` |
+| Dropdown or menu close | `transition-fast` | `ease-in` |
+| Modal or dialog enter | `transition-slow` | `ease-out` |
+| Modal or dialog exit | `transition-base` | `ease-in` |
 | Side drawer enter | `transition-slow` | `ease-out` |
 | Side drawer exit | `transition-base` | `ease-in` |
-| Toast / snackbar enter | `transition-slow` | `ease-out` |
-| Toast / snackbar exit | `transition-base` | `ease-in` |
-| Page / route transition | `transition-page` | `ease-in-out` |
+| Toast or snackbar enter | `transition-slow` | `ease-out` |
+| Toast or snackbar exit | `transition-base` | `ease-in` |
+| Page or route transition | `transition-page` | `ease-in-out` |
 | Success confirmation | `transition-base` | `ease-bounce` |
 
 ---
@@ -86,14 +86,14 @@ Keyboard focus must always be **clearly visible** and must never be removed with
 | Focus ring color | `color-border-focus` (`#A16207` / `#F2C14E` dark) |
 | Focus ring width | `2px` |
 | Focus ring offset | `2px` (outside the element boundary) |
-| Focus ring style | `outline` (not `box-shadow` — `outline` is visible in Windows High Contrast mode) |
+| Focus ring style | `outline` (not `box-shadow` - `outline` remains visible in Windows High Contrast mode) |
 
 ### Usage Rules
 
 - Never set `outline: none` without providing a fully compliant replacement.
 - Focus styles must pass **3:1** contrast against the adjacent background.
 - Interactive elements that are not natively focusable must receive `tabindex="0"` and explicit focus styles.
-- Focus order must follow a logical reading order (top-to-bottom, left-to-right for LTR layouts).
+- Focus order must follow a logical reading order.
 
 ---
 
@@ -109,23 +109,26 @@ Every animation or transition in the codebase must degrade gracefully:
 
 Permitted in reduced-motion mode:
 - Instant state changes (no transition)
-- Opacity fade-only transitions at `transition-fast` or slower
+- Opacity-only fades at `transition-fast` or slower
 
 Not permitted in reduced-motion mode:
-- Translate, scale, rotate transforms
-- Slide-in/slide-out effects
+- Translate, scale, or rotate transforms
+- Slide-in or slide-out effects
 - Parallax scrolling
 
 ---
 
-## Loading & Progress Indicators
+## Loading and Feedback Motion
 
-| Pattern | Guidance |
+This document defines **how loading and feedback move**, not when those patterns appear. For canonical behavior, placement, and recovery patterns, see [09 - Interaction Patterns](09-interaction-patterns.md). For component anatomy, see [06 - Component Patterns](06-component-patterns.md).
+
+| Pattern | Motion Guidance |
 |---|---|
-| **Spinner** | Use for indeterminate waits < 10 s. Animate with `ease-linear` and a constant rotation. Pause animation when `prefers-reduced-motion` is active. |
-| **Skeleton loader** | Use for content-shaped placeholders. Pulse animation at `2s` cycle; disable pulse under reduced motion. |
-| **Progress bar** | Use for determinate progress. Transition `width` with `ease-linear`. |
-| **Skeleton shimmer** | Subtle `background-position` animation. Use `animation-duration: 1.5s`. Disable under reduced motion. |
+| Spinner | Use continuous `ease-linear` rotation; pause or remove under reduced motion |
+| Skeleton pulse | Use a subtle `2s` opacity pulse; disable animation under reduced motion |
+| Skeleton shimmer | If used, keep it subtle and short (`1.5s` cycle); disable under reduced motion |
+| Progress bar | Transition determinate progress with `ease-linear` |
+| Success confirmation | Use `transition-base` with `ease-bounce` only when it adds clarity |
 
 ---
 
@@ -133,7 +136,7 @@ Not permitted in reduced-motion mode:
 
 | State | Visual Change |
 |---|---|
-| Hover | Slightly elevated `shadow` or `background-color` shift by ~5–10% lightness |
-| Active / Pressed | `shadow-inner` + scale `0.98` (transform only — skip under reduced motion) |
-| Disabled | `color-text-disabled`, `cursor: not-allowed`, no hover/focus response |
+| Hover | Slightly elevated `shadow` or `background-color` shift by about 5-10% lightness |
+| Active or pressed | `shadow-inner` plus scale `0.98` (transform only - skip under reduced motion) |
+| Disabled | `color-text-disabled`, `cursor: not-allowed`, no hover or focus response |
 | Loading | Replace label with spinner; disable pointer events |
