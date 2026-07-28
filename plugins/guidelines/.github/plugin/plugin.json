@@ -1,8 +1,8 @@
 {
-  "name": "jsdotnet-guidelines",
-  "displayName": "JSdotNet Project Guidelines",
-  "version": "1.1.0",
-  "description": "Seven skills for working with two JSdotNet MCP servers: coding guidelines (ADRs, architecture, patterns) and design/UX guidelines (style guide, design tokens). Covers guidance discovery, code review, decision validation, migration planning, and MCP server testing.",
+  "name": "jsdotnet-project-guidelines",
+  "displayName": "JSdotNet Project Coding Guidelines",
+  "version": "2.0.0",
+  "description": "Six skills for working with the jsdotnet-coding-guidelines MCP server: ADRs, architecture patterns, coding standards, and documented decisions. Covers guidance discovery, gap analysis, code review, decision validation, migration planning, and server smoke-testing.",
   "publisher": "JSdotNet",
   "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
   "repository": {
@@ -12,22 +12,16 @@
   "license": "MIT",
   "skills": [
     {
-      "id": "guidelines-mcp",
-      "path": "../../skills/guidelines-mcp.md",
-      "title": "JSdotNet Project Guidelines MCP",
-      "description": "Learn how to use the MCP server: tool reference, quick decision guide, common tags, and example workflows."
+      "id": "coding-guidelines-mcp",
+      "path": "../../skills/coding-guidelines-mcp.md",
+      "title": "JSdotNet Coding Guidelines MCP",
+      "description": "Reference guide for the jsdotnet-coding-guidelines MCP server: tool reference, valid categories, common tags, and example workflows for ADRs, architecture patterns, and coding standards."
     },
     {
       "id": "gap-analysis",
       "path": "../../skills/gap-analysis.md",
-      "title": "Project Guidelines Gap Analysis",
+      "title": "Project Architecture Gap Analysis",
       "description": "Analyze your .NET project structure against established guidelines. Identify missing layers, conventions, and create an improvement plan."
-    },
-    {
-      "id": "feedback-loop",
-      "path": "../../skills/feedback-loop.md",
-      "title": "Guidelines Feedback Loop",
-      "description": "Analyze MCP usage logs, identify improvement opportunities, and propose new ADRs or documentation enhancements as GitHub issues."
     },
     {
       "id": "code-review",
@@ -48,10 +42,16 @@
       "description": "Plan and execute incremental refactoring to align code with guidelines. Break into phases, manage dependencies, and track progress."
     },
     {
-      "id": "test-mcp-servers",
-      "path": "../../skills/test-mcp-servers.md",
-      "title": "Test MCP Servers",
-      "description": "Smoke-test both JSdotNet MCP servers (coding guidelines and design/UX) to verify they are connected, returning expected content, and that all six tools work end-to-end."
+      "id": "feedback-loop",
+      "path": "../../skills/feedback-loop.md",
+      "title": "Guidelines Feedback Loop",
+      "description": "Analyze MCP usage logs, identify improvement opportunities, and propose new ADRs or documentation enhancements as GitHub issues."
+    },
+    {
+      "id": "test-guidelines-server",
+      "path": "../../skills/test-guidelines-server.md",
+      "title": "Test Coding Guidelines Server",
+      "description": "Smoke-test the jsdotnet-coding-guidelines MCP server to verify it is connected, returning expected content, and that all tools work end-to-end."
     }
   ],
   "keywords": [
@@ -60,6 +60,8 @@
     "ddd",
     "hexagonal",
     "adr",
+    "csharp",
+    "dotnet",
     "mcp",
     "copilot-skills"
   ],
