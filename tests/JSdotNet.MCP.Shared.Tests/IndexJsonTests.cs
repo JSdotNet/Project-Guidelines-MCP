@@ -11,7 +11,7 @@ namespace JSdotNet.MCP.Shared.Tests;
 public class IndexJsonTests
 {
     [Fact]
-    public void FileSystemCatalog_LoadsFromIndexJson_WhenAvailable()
+    public async Task FileSystemCatalog_LoadsFromIndexJson_WhenAvailable()
     {
         // Arrange
         var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -38,7 +38,7 @@ public class IndexJsonTests
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = catalog.ListDocuments();
+            var docs = await catalog.ListDocumentsAsync();
 
             // Assert
             Assert.Single(docs);
@@ -55,7 +55,7 @@ public class IndexJsonTests
     }
 
     [Fact]
-    public void FileSystemCatalog_Search_MatchesDescription()
+    public async Task FileSystemCatalog_Search_MatchesDescription()
     {
         // Arrange
         var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -84,7 +84,7 @@ public class IndexJsonTests
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var results = catalog.Search("Uniqueterm");
+            var results = await catalog.SearchAsync("Uniqueterm");
 
             // Assert
             Assert.NotEmpty(results);
@@ -98,7 +98,7 @@ public class IndexJsonTests
     }
 
     [Fact]
-    public void FileSystemCatalog_FallsBackToScanning_WhenIndexMissing()
+    public async Task FileSystemCatalog_FallsBackToScanning_WhenIndexMissing()
     {
         // Arrange
         var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -120,7 +120,7 @@ Content here.
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = catalog.ListDocuments();
+            var docs = await catalog.ListDocumentsAsync();
 
             // Assert
             Assert.Single(docs);
@@ -135,14 +135,14 @@ Content here.
     }
 
     [Fact(Skip = "Requires GitHub network access")]
-    public void GitHubCatalog_LoadsFromIndexJson_WhenAvailable()
+    public async Task GitHubCatalog_LoadsFromIndexJson_WhenAvailable()
     {
         // Arrange
         var cache = new MemoryCache(new MemoryCacheOptions());
 
         // Act - This will attempt to fetch from GitHub
         var catalog = new GitHubDocumentCatalog(cache);
-        var docs = catalog.ListDocuments();
+        var docs = await catalog.ListDocumentsAsync();
 
         // Assert - Should have loaded from index.json in the repo
         // ID format doesn't include leading zero padding
@@ -151,17 +151,17 @@ Content here.
     }
 
     [Fact(Skip = "Requires GitHub network access")]
-    public void GitHubCatalog_CachesResults_WithSlidingExpiration()
+    public async Task GitHubCatalog_CachesResults_WithSlidingExpiration()
     {
         // Arrange
         var cache = new MemoryCache(new MemoryCacheOptions());
         var catalog = new GitHubDocumentCatalog(cache);
 
         // Act - First call
-        var docs1 = catalog.ListDocuments();
+        var docs1 = await catalog.ListDocumentsAsync();
 
         // Act - Second call (should hit cache)
-        var docs2 = catalog.ListDocuments();
+        var docs2 = await catalog.ListDocumentsAsync();
 
         // Assert
         Assert.NotEmpty(docs1);

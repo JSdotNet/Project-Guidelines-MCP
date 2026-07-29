@@ -49,13 +49,14 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         }
     }
 
-    public IReadOnlyList<DocumentInfo> ListDocuments() => LoadDocumentsAsync().GetAwaiter().GetResult();
+    public Task<IReadOnlyList<DocumentInfo>> ListDocumentsAsync(CancellationToken cancellationToken = default)
+        => LoadDocumentsAsync();
 
-    public IReadOnlyList<DocumentInfo> Search(string query)
+    public async Task<IReadOnlyList<DocumentInfo>> SearchAsync(string query, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(query)) return Array.Empty<DocumentInfo>();
         var q = query.Trim();
-        var all = ListDocuments();
+        var all = await LoadDocumentsAsync().ConfigureAwait(false);
         var results = new List<DocumentInfo>();
         foreach (var d in all)
         {
@@ -70,10 +71,10 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         return results;
     }
 
-    public IReadOnlyList<DocumentInfo> SearchByTag(string tag)
+    public async Task<IReadOnlyList<DocumentInfo>> SearchByTagAsync(string tag, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(tag)) return Array.Empty<DocumentInfo>();
-        var all = LoadDocumentsAsync().GetAwaiter().GetResult();
+        var all = await LoadDocumentsAsync().ConfigureAwait(false);
         return all.Where(d => d.Tags.Any(t => string.Equals(t, tag, StringComparison.OrdinalIgnoreCase))).ToList();
     }
 

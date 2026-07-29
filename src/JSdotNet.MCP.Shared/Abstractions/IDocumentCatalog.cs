@@ -12,7 +12,7 @@ public interface IDocumentCatalog
     /// <summary>
     /// List all available documents with metadata.
     /// </summary>
-    IReadOnlyList<DocumentInfo> ListDocuments();
+    Task<IReadOnlyList<DocumentInfo>> ListDocumentsAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get the raw Markdown content of a document by id.
@@ -22,12 +22,12 @@ public interface IDocumentCatalog
     /// <summary>
     /// Simple case-insensitive search over title and content.
     /// </summary>
-    IReadOnlyList<DocumentInfo> Search(string query);
+    Task<IReadOnlyList<DocumentInfo>> SearchAsync(string query, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Search documents by tag
+    /// Search documents by tag.
     /// </summary>
-    IReadOnlyList<DocumentInfo> SearchByTag(string tag);
+    Task<IReadOnlyList<DocumentInfo>> SearchByTagAsync(string tag, CancellationToken cancellationToken = default);
 }
 
 /// <summary>

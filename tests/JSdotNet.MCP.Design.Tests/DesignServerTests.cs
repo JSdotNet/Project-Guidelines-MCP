@@ -9,26 +9,26 @@ namespace JSdotNet.MCP.Design.Tests;
 public sealed class DesignServerTests
 {
     [Fact]
-    public void DesignCatalog_LoadsDesignDocs()
+    public async Task DesignCatalog_LoadsDesignDocs()
     {
         var designRoot = FindFolder("design");
         Assert.NotNull(designRoot);
 
         var catalog = new FileSystemDocumentCatalog(designRoot!);
-        var docs = catalog.ListDocuments();
+        var docs = await catalog.ListDocumentsAsync();
 
         Assert.NotEmpty(docs);
         Assert.Contains(docs, d => d.Id.Contains("color-palette") || d.Id.Contains("typography") || d.Id.Contains("spacing"));
     }
 
     [Fact]
-    public void DesignCatalog_SearchReturnsResults()
+    public async Task DesignCatalog_SearchReturnsResults()
     {
         var designRoot = FindFolder("design");
         Assert.NotNull(designRoot);
 
         var catalog = new FileSystemDocumentCatalog(designRoot!);
-        var results = catalog.Search("color");
+        var results = await catalog.SearchAsync("color");
 
         Assert.NotEmpty(results);
     }
@@ -40,7 +40,7 @@ public sealed class DesignServerTests
         Assert.NotNull(designRoot);
 
         var catalog = new FileSystemDocumentCatalog(designRoot!);
-        var doc = catalog.ListDocuments().First();
+        var doc = (await catalog.ListDocumentsAsync()).First();
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
 
         Assert.False(string.IsNullOrWhiteSpace(content));

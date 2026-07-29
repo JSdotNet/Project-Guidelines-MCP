@@ -59,8 +59,8 @@ public sealed class GitHubDocumentCatalogTests
         var handler = new CountingHandler(_ => HttpOk(ValidIndexJson));
         await using var catalog = BuildCatalog(handler, cache);
 
-        var first = catalog.ListDocuments();
-        var second = catalog.ListDocuments();
+        var first = await catalog.ListDocumentsAsync();
+        var second = await catalog.ListDocumentsAsync();
 
         Assert.Single(first);
         Assert.Single(second);
@@ -77,11 +77,11 @@ public sealed class GitHubDocumentCatalogTests
         var handler = new CountingHandler(_ => HttpOk(ValidIndexJson));
         await using var catalog = BuildCatalog(handler, cache, cacheDuration: TimeSpan.FromMilliseconds(50));
 
-        catalog.ListDocuments(); // warm the cache — 1 HTTP call
+        await catalog.ListDocumentsAsync(); // warm the cache — 1 HTTP call
 
         await Task.Delay(100, TestContext.Current.CancellationToken); // let the entry expire
 
-        catalog.ListDocuments(); // cache miss — should trigger 2nd HTTP call
+        await catalog.ListDocumentsAsync(); // cache miss — should trigger 2nd HTTP call
 
         Assert.Equal(2, handler.CallCount);
     }
@@ -109,19 +109,19 @@ public sealed class GitHubDocumentCatalogTests
         });
         await using var catalog = BuildCatalog(handler, cache);
 
-        // First call: both index.json (503, caught) and directory traversal (503) throw → ListDocuments raises
-        var ex = Record.Exception(() => catalog.ListDocuments());
+        // First call: both index.json (503, caught) and directory traversal (503) throw → ListDocumentsAsync raises
+        var ex = await Record.ExceptionAsync(async () => await catalog.ListDocumentsAsync());
         Assert.NotNull(ex); // expected to throw — failure is NOT cached
 
         // Second call: GitHub is healthy; catalog retries (no permanent lock from Lazy)
-        var docs = catalog.ListDocuments();
+        var docs = await catalog.ListDocumentsAsync();
         Assert.NotEmpty(docs);
     }
 
     [Fact]
     public async Task SearchByTag_AfterTransientFailure_RecoversOnNextCall()
     {
-        // Same 2-failure + 1-success pattern: SearchByTag also calls LoadDocumentsAsync.
+        // Same 2-failure + 1-success pattern: SearchByTagAsync also calls LoadDocumentsAsync.
         using var cache = new MemoryCache(new MemoryCacheOptions());
         int invocation = 0;
         var handler = new CountingHandler(_ =>
@@ -133,10 +133,10 @@ public sealed class GitHubDocumentCatalogTests
         });
         await using var catalog = BuildCatalog(handler, cache);
 
-        var ex = Record.Exception(() => catalog.SearchByTag("testing"));
+        var ex = await Record.ExceptionAsync(async () => await catalog.SearchByTagAsync("testing"));
         Assert.NotNull(ex);
 
-        var results = catalog.SearchByTag("testing");
+        var results = await catalog.SearchByTagAsync("testing");
         Assert.Single(results);
     }
 
