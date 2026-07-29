@@ -56,6 +56,30 @@ public class DocumentCatalogTests
             async () => await catalog.GetContentAsync("non-existent-id", TestContext.Current.CancellationToken));
     }
 
+    // --- Cancellation ---
+
+    [Fact]
+    public async Task GetContentAsync_WithCancelledToken_ThrowsOperationCanceledException()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            File.WriteAllText(Path.Combine(tempDir, "doc.md"), "# Hello\n\nContent.");
+
+            var catalog = new FileSystemDocumentCatalog(tempDir);
+            using var cts = new System.Threading.CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                async () => await catalog.GetContentAsync("doc", cts.Token));
+        }
+        finally
+        {
+            Directory.Delete(tempDir, recursive: true);
+        }
+    }
+
     // --- DocumentInfo record ---
 
     [Fact]

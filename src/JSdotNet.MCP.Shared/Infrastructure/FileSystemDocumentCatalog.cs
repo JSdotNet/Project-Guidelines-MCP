@@ -85,7 +85,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var path = Path.Join(_root, doc.RelativePath);
         await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var reader = new StreamReader(stream);
-        return await reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private IReadOnlyList<DocumentInfo> LoadDocuments()
