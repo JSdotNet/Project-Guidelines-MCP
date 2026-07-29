@@ -152,7 +152,7 @@ public class DocumentCatalogTests
     // --- Search resilience: missing / unreadable files ---
 
     [Fact]
-    public void Search_WithMissingFile_SkipsDocumentAndReturnsOtherMatches()
+    public async Task Search_WithMissingFile_SkipsDocumentAndReturnsOtherMatches()
     {
         var tempDir = Path.Join(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
@@ -190,7 +190,7 @@ public class DocumentCatalogTests
             var catalog = new FileSystemDocumentCatalog(tempDir);
 
             // Should not throw, and should return the real document whose file content matches
-            var results = catalog.Search("uniquetoken");
+            var results = await catalog.SearchAsync("uniquetoken", TestContext.Current.CancellationToken);
 
             Assert.Single(results);
             Assert.Equal("real-doc", results[0].Id);
@@ -202,7 +202,7 @@ public class DocumentCatalogTests
     }
 
     [Fact]
-    public void Search_WithAllFilesMissing_ReturnsEmptyWithoutThrowing()
+    public async Task Search_WithAllFilesMissing_ReturnsEmptyWithoutThrowing()
     {
         var tempDir = Path.Join(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
@@ -237,7 +237,7 @@ public class DocumentCatalogTests
             var catalog = new FileSystemDocumentCatalog(tempDir);
 
             // Should not throw, should return empty list
-            var results = catalog.Search("anything");
+            var results = await catalog.SearchAsync("anything", TestContext.Current.CancellationToken);
 
             Assert.Empty(results);
         }
