@@ -124,5 +124,102 @@ public class DocumentCatalogTests
             Directory.Delete(tempDir, recursive: true);
         }
     }
-}
 
+    // --- Search resilience: missing / unreadable files ---
+
+    [Fact]
+    public void Search_WithMissingFile_SkipsDocumentAndReturnsOtherMatches()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            // Write one real file whose content matches the query
+            File.WriteAllText(Path.Combine(tempDir, "real.md"), "# Real Doc\n\nThis is a uniquetoken document.");
+
+            // Write an index that includes a stale entry pointing to a non-existent file
+            File.WriteAllText(Path.Combine(tempDir, "index.json"), """
+                {
+                  "version": "1.0",
+                  "generated": "2025-01-01T00:00:00Z",
+                  "documents": [
+                    {
+                      "id": "real-doc",
+                      "title": "Real Doc",
+                      "description": "",
+                      "category": "",
+                      "relativePath": "real.md",
+                      "tags": []
+                    },
+                    {
+                      "id": "ghost-doc",
+                      "title": "Ghost Doc",
+                      "description": "",
+                      "category": "",
+                      "relativePath": "does-not-exist.md",
+                      "tags": []
+                    }
+                  ]
+                }
+                """);
+
+            var catalog = new FileSystemDocumentCatalog(tempDir);
+
+            // Should not throw, and should return the real document whose file content matches
+            var results = catalog.Search("uniquetoken");
+
+            Assert.Single(results);
+            Assert.Equal("real-doc", results[0].Id);
+        }
+        finally
+        {
+            Directory.Delete(tempDir, recursive: true);
+        }
+    }
+
+    [Fact]
+    public void Search_WithAllFilesMissing_ReturnsEmptyWithoutThrowing()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            // Index points to files that don't exist on disk
+            File.WriteAllText(Path.Combine(tempDir, "index.json"), """
+                {
+                  "version": "1.0",
+                  "generated": "2025-01-01T00:00:00Z",
+                  "documents": [
+                    {
+                      "id": "ghost-1",
+                      "title": "Ghost One",
+                      "description": "",
+                      "category": "",
+                      "relativePath": "missing1.md",
+                      "tags": []
+                    },
+                    {
+                      "id": "ghost-2",
+                      "title": "Ghost Two",
+                      "description": "",
+                      "category": "",
+                      "relativePath": "missing2.md",
+                      "tags": []
+                    }
+                  ]
+                }
+                """);
+
+            var catalog = new FileSystemDocumentCatalog(tempDir);
+
+            // Should not throw, should return empty list
+            var results = catalog.Search("anything");
+
+            Assert.Empty(results);
+        }
+        finally
+        {
+            Directory.Delete(tempDir, recursive: true);
+        }
+    }
+}
