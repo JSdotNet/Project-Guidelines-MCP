@@ -1,0 +1,63 @@
+{
+  "name": "jsdotnet-design-ux-guidelines",
+  "displayName": "JSdotNet Design & UX Guidelines",
+  "version": "1.0.0",
+  "description": "Five skills for working with the jsdotnet-design-ux-guidelines MCP server: UX style guide, design tokens (color, typography, spacing, motion). Covers token lookup, UI component styling, project color customization, and server smoke-testing.",
+  "publisher": "JSdotNet",
+  "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JSdotNet/Project-Guidelines-MCP.git"
+  },
+  "license": "MIT",
+  "skills": [
+    {
+      "id": "design-mcp",
+      "path": "../../skills/design-mcp.md",
+      "title": "JSdotNet Design & UX MCP",
+      "description": "Reference guide for the jsdotnet-design-ux-guidelines MCP server: style-guide catalog, tool reference, token categories, and example workflows for color, typography, spacing, and motion."
+    },
+    {
+      "id": "design-token-lookup",
+      "path": "../../skills/design-token-lookup.md",
+      "title": "Design Token Lookup",
+      "description": "Look up design tokens by category (color, typography, spacing, motion). Find the right token name, its light/dark values, and usage rules before writing any CSS or style code."
+    },
+    {
+      "id": "ui-component-styling",
+      "path": "../../skills/ui-component-styling.md",
+      "title": "UI Component Styling",
+      "description": "Style UI components using the design token system. Covers button states, form inputs, cards, typography hierarchy, semantic feedback (success/warning/error), and accessibility rules."
+    },
+    {
+      "id": "design-customization",
+      "path": "../../skills/design-customization.md",
+      "title": "Design Customization",
+      "description": "Customize the project color scheme by overriding brand and semantic color tokens. Covers which tokens may be overridden, contrast requirements, and the override contract."
+    },
+    {
+      "id": "test-design-server",
+      "path": "../../skills/test-design-server.md",
+      "title": "Test Design & UX Server",
+      "description": "Smoke-test the jsdotnet-design-ux-guidelines MCP server to verify it is connected, serving the correct style-guide content, and that all tools work end-to-end."
+    }
+  ],
+  "keywords": [
+    "design-tokens",
+    "style-guide",
+    "ux",
+    "frontend",
+    "color",
+    "typography",
+    "spacing",
+    "motion",
+    "accessibility",
+    "mcp",
+    "copilot-skills"
+  ],
+  "categories": [
+    "Documentation",
+    "Design",
+    "UX"
+  ]
+}

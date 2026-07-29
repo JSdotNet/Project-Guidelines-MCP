@@ -17,33 +17,33 @@ public class DocumentCatalogTests
     // --- Search guard-clause tests ---
 
     [Fact]
-    public void Search_WithEmptyQuery_ReturnsEmpty()
+    public async Task Search_WithEmptyQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(catalog.Search(""));
+        Assert.Empty(await catalog.SearchAsync(""));
     }
 
     [Fact]
-    public void Search_WithWhitespaceQuery_ReturnsEmpty()
+    public async Task Search_WithWhitespaceQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(catalog.Search("   "));
+        Assert.Empty(await catalog.SearchAsync("   "));
     }
 
     [Fact]
-    public void Search_WithNullQuery_ReturnsEmpty()
+    public async Task Search_WithNullQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(catalog.Search(null!));
+        Assert.Empty(await catalog.SearchAsync(null!));
     }
 
     // --- Non-existent root ---
 
     [Fact]
-    public void FileSystemCatalog_WithNonExistentRoot_ReturnsEmpty()
+    public async Task FileSystemCatalog_WithNonExistentRoot_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog("C:\\NonExistentPath\\Docs");
-        Assert.Empty(catalog.ListDocuments());
+        Assert.Empty(await catalog.ListDocumentsAsync());
     }
 
     // --- GetContent with unknown id ---
@@ -54,6 +54,30 @@ public class DocumentCatalogTests
         var catalog = new FileSystemDocumentCatalog();
         await Assert.ThrowsAsync<FileNotFoundException>(
             async () => await catalog.GetContentAsync("non-existent-id", TestContext.Current.CancellationToken));
+    }
+
+    // --- Cancellation ---
+
+    [Fact]
+    public async Task GetContentAsync_WithCancelledToken_ThrowsOperationCanceledException()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            File.WriteAllText(Path.Combine(tempDir, "doc.md"), "# Hello\n\nContent.");
+
+            var catalog = new FileSystemDocumentCatalog(tempDir);
+            using var cts = new System.Threading.CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                async () => await catalog.GetContentAsync("doc", cts.Token));
+        }
+        finally
+        {
+            Directory.Delete(tempDir, recursive: true);
+        }
     }
 
     // --- DocumentInfo record ---
@@ -79,7 +103,7 @@ public class DocumentCatalogTests
     // --- Front-matter parsing (isolated via temp dirs) ---
 
     [Fact]
-    public void FileSystemCatalog_ParsesFrontMatterMultilineTags()
+    public async Task FileSystemCatalog_ParsesFrontMatterMultilineTags()
     {
         var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
@@ -89,7 +113,7 @@ public class DocumentCatalogTests
                 "---\ntitle: \"Multiline Tags Doc\"\ntags:\n- alpha\n- beta\n- gamma\n---\n# Body");
 
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = catalog.ListDocuments();
+            var docs = await catalog.ListDocumentsAsync();
 
             Assert.Single(docs);
             Assert.Equal("Multiline Tags Doc", docs[0].Title);
@@ -104,7 +128,7 @@ public class DocumentCatalogTests
     }
 
     [Fact]
-    public void FileSystemCatalog_FrontMatterNoEndMarker_FallsBackToH1Title()
+    public async Task FileSystemCatalog_FrontMatterNoEndMarker_FallsBackToH1Title()
     {
         var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
@@ -114,7 +138,7 @@ public class DocumentCatalogTests
                 "---\ntitle: \"Should Be Ignored\"\n\n# Real H1 Title\n\nContent.");
 
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = catalog.ListDocuments();
+            var docs = await catalog.ListDocumentsAsync();
 
             Assert.Single(docs);
             Assert.Equal("Real H1 Title", docs[0].Title);

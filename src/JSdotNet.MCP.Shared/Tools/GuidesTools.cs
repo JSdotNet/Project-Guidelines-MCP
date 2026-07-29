@@ -18,7 +18,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         string? errorMessage = null;
         try
         {
-            var docs = catalog.ListDocuments()
+            var docs = (await catalog.ListDocumentsAsync(ct))
                 .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
                 .ToList();
             ids = docs.Select(d => d.Id).ToArray();
@@ -44,7 +44,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         string? errorMessage = null;
         try
         {
-            var docs = catalog.ListDocuments()
+            var docs = (await catalog.ListDocumentsAsync(ct))
                 .Where(d => string.Equals(d.Category.Split('/')?.FirstOrDefault() ?? string.Empty, category, StringComparison.OrdinalIgnoreCase))
                 .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
                 .ToList();
@@ -71,7 +71,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         string? errorMessage = null;
         try
         {
-            var docs = catalog.Search(query)
+            var docs = (await catalog.SearchAsync(query, ct))
                 .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
                 .ToList();
             ids = docs.Select(d => d.Id).ToArray();
@@ -97,7 +97,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         string? errorMessage = null;
         try
         {
-            var docs = catalog.SearchByTag(tag)
+            var docs = (await catalog.SearchByTagAsync(tag, ct))
                 .Select(d => new { d.Id, d.Title, d.Description, d.Category, d.RelativePath, d.Tags })
                 .ToList();
             ids = docs.Select(d => d.Id).ToArray();

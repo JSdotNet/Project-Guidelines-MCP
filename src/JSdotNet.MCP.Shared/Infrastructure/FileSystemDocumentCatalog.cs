@@ -57,25 +57,28 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         return null;
     }
 
-    public IReadOnlyList<DocumentInfo> ListDocuments() => _documents.Value;
+    public Task<IReadOnlyList<DocumentInfo>> ListDocumentsAsync(CancellationToken cancellationToken = default)
+        => Task.FromResult(_documents.Value);
 
-    public IReadOnlyList<DocumentInfo> Search(string query)
+    public Task<IReadOnlyList<DocumentInfo>> SearchAsync(string query, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(query)) return Array.Empty<DocumentInfo>();
+        if (string.IsNullOrWhiteSpace(query)) return Task.FromResult<IReadOnlyList<DocumentInfo>>(Array.Empty<DocumentInfo>());
         query = query.Trim();
         var all = _documents.Value;
-        return all.Where(d => d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+        var results = all.Where(d => d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                d.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                TryFileContainsQuery(Path.Join(_root, d.RelativePath), query))
                   .Take(50)
                   .ToList();
+        return Task.FromResult<IReadOnlyList<DocumentInfo>>(results);
     }
 
-    public IReadOnlyList<DocumentInfo> SearchByTag(string tag)
+    public Task<IReadOnlyList<DocumentInfo>> SearchByTagAsync(string tag, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(tag)) return Array.Empty<DocumentInfo>();
+        if (string.IsNullOrWhiteSpace(tag)) return Task.FromResult<IReadOnlyList<DocumentInfo>>(Array.Empty<DocumentInfo>());
         var all = _documents.Value;
-        return all.Where(d => d.Tags.Any(t => string.Equals(t, tag, StringComparison.OrdinalIgnoreCase))).ToList();
+        var results = all.Where(d => d.Tags.Any(t => string.Equals(t, tag, StringComparison.OrdinalIgnoreCase))).ToList();
+        return Task.FromResult<IReadOnlyList<DocumentInfo>>(results);
     }
 
     public async Task<string> GetContentAsync(string id, CancellationToken cancellationToken = default)
@@ -85,7 +88,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var path = Path.Join(_root, doc.RelativePath);
         await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var reader = new StreamReader(stream);
-        return await reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static bool TryFileContainsQuery(string path, string query)
