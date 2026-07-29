@@ -23,7 +23,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
     private readonly string _documentsPath;
     private readonly HttpClient _http;
     private readonly IMemoryCache _cache;
-    private readonly Lazy<Task<IReadOnlyList<DocumentInfo>>> _documents;
+    private readonly TimeSpan _cacheDuration;
 
     public GitHubDocumentCatalog(
         IMemoryCache cache,
@@ -31,7 +31,8 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         string repo = "Project-Guidelines-MCP",
         string branch = "main",
         HttpClient? httpClient = null,
-        string documentsPath = "guide")
+        string documentsPath = "guide",
+        TimeSpan? cacheDuration = null)
     {
         _owner = owner;
         _repo = repo;
@@ -39,16 +40,16 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         _documentsPath = NormalizeDocumentsPath(documentsPath);
         _http = httpClient ?? new HttpClient();
         _cache = cache;
+        _cacheDuration = cacheDuration ?? TimeSpan.FromMinutes(30);
         _http.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("JSdotNet.McpServer", "1.0"));
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
         if (!string.IsNullOrWhiteSpace(token))
         {
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
-        _documents = new Lazy<Task<IReadOnlyList<DocumentInfo>>>(LoadDocumentsAsync);
     }
 
-    public IReadOnlyList<DocumentInfo> ListDocuments() => _documents.Value.GetAwaiter().GetResult();
+    public IReadOnlyList<DocumentInfo> ListDocuments() => LoadDocumentsAsync().GetAwaiter().GetResult();
 
     public IReadOnlyList<DocumentInfo> Search(string query)
     {
@@ -72,13 +73,13 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
     public IReadOnlyList<DocumentInfo> SearchByTag(string tag)
     {
         if (string.IsNullOrWhiteSpace(tag)) return Array.Empty<DocumentInfo>();
-        var all = _documents.Value.GetAwaiter().GetResult();
+        var all = LoadDocumentsAsync().GetAwaiter().GetResult();
         return all.Where(d => d.Tags.Any(t => string.Equals(t, tag, StringComparison.OrdinalIgnoreCase))).ToList();
     }
 
     public async Task<string> GetContentAsync(string id, CancellationToken cancellationToken = default)
     {
-        var all = await _documents.Value.ConfigureAwait(false);
+        var all = await LoadDocumentsAsync().ConfigureAwait(false);
         foreach (var d in all)
         {
             if (string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase))
@@ -123,10 +124,10 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
                         (IReadOnlyList<string>)(d.Tags ?? new List<string>())))
                     .ToList();
 
-                // Cache with 30-minute absolute expiration
+                // Cache with configured absolute expiration (default 30 minutes)
                 _cache.Set(cacheKey, documents, new MemoryCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
+                    AbsoluteExpirationRelativeToNow = _cacheDuration
                 });
 
                 return documents;
@@ -143,7 +144,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
         // Cache the fallback result too
         _cache.Set(cacheKey, list, new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
+            AbsoluteExpirationRelativeToNow = _cacheDuration
         });
 
         return list;
