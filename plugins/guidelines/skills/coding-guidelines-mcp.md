@@ -1,23 +1,20 @@
-# Skill: JSdotNet Project Guidelines MCP
+# Skill: JSdotNet Coding Guidelines MCP
 
-**Description:** Learn how to use the two JSdotNet MCP servers — `jsdotnet-coding-guidelines` (coding standards, ADRs, architecture) and `jsdotnet-design-ux-guidelines` (UX style guide, design tokens) — to retrieve guidance for .NET and frontend projects.
+**Description:** Learn how to use the `jsdotnet-coding-guidelines` MCP server to retrieve coding standards, Architecture Decision Records (ADRs), design documents, recommendations, and project structure templates for .NET projects.
 
 ---
 
-## Two MCP Servers
-
-This repository exposes **two separate MCP servers**. Always use the right server for your task:
+## The MCP Server
 
 | Server | MCP name | Serves | Contains |
 |--------|----------|--------|----------|
 | **Coding Guidelines** | `jsdotnet-coding-guidelines` | `guide/` | ADRs, designs, recommendations, structures, config |
-| **Design / UX** | `jsdotnet-design-ux-guidelines` | `design/` | UX style guide, design tokens (color, typography, spacing, motion) |
 
-Both servers expose the **same six tools** — the difference is which content they serve.
+> For UX/design token guidance, use the separate `jsdotnet-design-ux-guidelines` server and its plugin.
 
 ---
 
-## Available MCP Tools
+## Available Tools
 
 | Tool | When to use |
 |------|-------------|
@@ -28,32 +25,21 @@ Both servers expose the **same six tools** — the difference is which content t
 | `get_guide(id)` | Fetch the full markdown of a specific document by ID |
 | `get_usage_logs(count)` | Retrieve recent tool-invocation records for analysis |
 
-### Coding Guidelines — Valid `list_guides_by_type` categories
+### Valid `list_guides_by_type` categories
 
 `adrs` · `designs` · `recommendations` · `structures` · `config`
-
-### Design / UX — Valid `list_guides_by_type` categories
-
-`style-guide`
 
 ---
 
 ## Quick Decision Guide
-
-### For coding / architecture questions (use `jsdotnet-coding-guidelines`):
 
 - **"What guidance exists for X?"** → `search_guides("X")`
 - **"What are the accepted ADRs?"** → `list_guides_by_type("adrs")`
 - **"Show me everything tagged persistence."** → `search_guides_by_tag("persistence")`
 - **"I found an ADR ID — read it."** → `get_guide("adr-id")`
 - **"Starting a new project — what templates exist?"** → `list_guides_by_type("structures")`
-
-### For UX / frontend questions (use `jsdotnet-design-ux-guidelines`):
-
-- **"What color tokens are defined?"** → `search_guides_by_tag("color")`
-- **"What typography rules apply?"** → `get_guide("02-typography")`
-- **"What can I customize per project?"** → `get_guide("05-customization-guide")`
-- **"Show all style-guide documents."** → `list_guides_by_type("style-guide")`
+- **"What recommendations exist?"** → `list_guides_by_type("recommendations")`
+- **"Any config guidelines?"** → `list_guides_by_type("config")`
 
 ---
 
@@ -61,21 +47,17 @@ Both servers expose the **same six tools** — the difference is which content t
 
 Use `search_guides_by_tag()` to filter by topic:
 
-### Coding Guidelines tags
 - **Architecture**: `hexagonal`, `ddd`, `clean-architecture`, `cqrs`, `ports-adapters`
 - **Patterns**: `value-object`, `aggregate`, `domain-event`, `repository`, `factory`
 - **Cross-cutting**: `logging`, `error-handling`, `resilience`, `testing`, `security`, `observability`
 - **Infrastructure**: `persistence`, `messaging`, `external-api`, `caching`
 - **Code Style**: `csharp`, `dotnet`, `naming`, `dependency-injection`
 
-### Design / UX tags
-- `style-guide`, `design-tokens`, `color`, `typography`, `spacing`, `layout`, `motion`, `animation`, `accessibility`, `customization`, `branding`, `ux`, `frontend`
-
 ---
 
 ## Workflow: Aligning Code with Guidelines
 
-When implementing a new feature, ensure alignment with documented decisions:
+When implementing a new feature:
 
 1. **Identify the domain**: What architectural layer (Domain, Application, Infrastructure)?
 2. **Search for relevant guidance**: `search_guides("your feature")` or `search_guides_by_tag("relevant-tag")`
@@ -92,7 +74,6 @@ When implementing a new feature, ensure alignment with documented decisions:
 ### Implementing a Persistence Adapter
 
 ```
-[jsdotnet-coding-guidelines]
 1. search_guides("persistence adapter")
    → Find ADRs and recommendations on repository pattern and EF Core usage
 2. search_guides_by_tag("persistence")
@@ -103,24 +84,9 @@ When implementing a new feature, ensure alignment with documented decisions:
    → Read the specific decision on ORM strategy
 ```
 
-### Styling a Frontend Component
+### Implementing Error Handling & Resilience
 
 ```
-[jsdotnet-design-ux-guidelines]
-1. list_guides_by_type("style-guide")
-   → See all style guide documents
-2. get_guide("01-color-palette")
-   → Get available color tokens for light and dark mode
-3. get_guide("02-typography")
-   → Check font and size rules
-4. get_guide("05-customization-guide")
-   → Understand what color overrides are allowed per project
-```
-
-### Error Handling & Resilience
-
-```
-[jsdotnet-coding-guidelines]
 1. search_guides("error handling")
    → Search for exception strategies
 2. search_guides_by_tag("resilience")
@@ -129,13 +95,26 @@ When implementing a new feature, ensure alignment with documented decisions:
    → Read the retry + resilience policy
 ```
 
+### Reviewing Domain Model Design
+
+```
+1. search_guides_by_tag("ddd")
+   → Find all DDD-related guidance
+2. search_guides_by_tag("value-object")
+   → Immutability and validation rules
+3. search_guides_by_tag("aggregate")
+   → Aggregate root conventions
+4. list_guides_by_type("structures")
+   → Find domain model scaffold templates
+```
+
 ---
 
 ## Tips
 
 - **Always call `get_guide` before implementing** anything that might be governed by an ADR or recommendation.
-- **Use tag search for precise lookups** — much faster than free-text search when you know the topic.
-- **Reference ADRs in code comments** — this creates traceability between decisions and implementation.
+- **Use tag search for precise lookups** — much faster than free-text when you know the topic.
+- **Reference ADRs in code comments** — creates traceability between decisions and implementation.
 - **Check document status** — look for `Accepted` ADRs; be cautious with `Proposed` or `Deprecated` ones.
 - **Use `get_usage_logs`** sparingly — it's for analyzing MCP server usage, not for normal guidance lookups.
-- **Know which server to query** — coding/architecture questions go to `jsdotnet-coding-guidelines`; frontend/UX questions go to `jsdotnet-design-ux-guidelines`.
+
