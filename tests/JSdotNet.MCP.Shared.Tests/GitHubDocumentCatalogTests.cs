@@ -103,12 +103,9 @@ public sealed class GitHubDocumentCatalogTests
             invocation++;
             // First two calls fail (index.json + directory traversal GET)
             if (invocation <= 2)
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable));
+                return HttpError(HttpStatusCode.ServiceUnavailable);
             // Third call (index.json retry) succeeds
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(ValidIndexJson, Encoding.UTF8, "application/json")
-            });
+            return HttpOk(ValidIndexJson);
         });
         await using var catalog = BuildCatalog(handler, cache);
 
@@ -121,6 +118,56 @@ public sealed class GitHubDocumentCatalogTests
         Assert.NotEmpty(docs);
     }
 
+    [Fact]
+    public async Task SearchByTag_AfterTransientFailure_RecoversOnNextCall()
+    {
+        // Same 2-failure + 1-success pattern: SearchByTag also calls LoadDocumentsAsync.
+        using var cache = new MemoryCache(new MemoryCacheOptions());
+        int invocation = 0;
+        var handler = new CountingHandler(_ =>
+        {
+            invocation++;
+            return invocation <= 2
+                ? HttpError(HttpStatusCode.ServiceUnavailable)
+                : HttpOk(ValidIndexJson);
+        });
+        await using var catalog = BuildCatalog(handler, cache);
+
+        var ex = Record.Exception(() => catalog.SearchByTag("testing"));
+        Assert.NotNull(ex);
+
+        var results = catalog.SearchByTag("testing");
+        Assert.Single(results);
+    }
+
+    [Fact]
+    public async Task GetContentAsync_AfterTransientFailure_RecoversOnNextCall()
+    {
+        // GetContentAsync calls LoadDocumentsAsync then fetches the raw content.
+        // First two calls (index.json + traversal) fail; third (index.json retry)
+        // and fourth (content fetch) succeed.
+        using var cache = new MemoryCache(new MemoryCacheOptions());
+        int invocation = 0;
+        var handler = new CountingHandler(_ =>
+        {
+            invocation++;
+            return invocation switch
+            {
+                <= 2 => HttpError(HttpStatusCode.ServiceUnavailable),
+                3    => HttpOk(ValidIndexJson),
+                _    => HttpOk("# Test Document content")
+            };
+        });
+        await using var catalog = BuildCatalog(handler, cache);
+
+        var ex = await Record.ExceptionAsync(
+            async () => await catalog.GetContentAsync("test-doc", TestContext.Current.CancellationToken));
+        Assert.NotNull(ex);
+
+        var content = await catalog.GetContentAsync("test-doc", TestContext.Current.CancellationToken);
+        Assert.Contains("Test Document", content);
+    }
+
     // ---- Helpers ----
 
     private static Task<HttpResponseMessage> HttpOk(string json)
@@ -128,6 +175,9 @@ public sealed class GitHubDocumentCatalogTests
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json")
         });
+
+    private static Task<HttpResponseMessage> HttpError(HttpStatusCode statusCode)
+        => Task.FromResult(new HttpResponseMessage(statusCode));
 
     /// <summary>Counts how many times SendAsync is called and delegates to a factory.</summary>
     private sealed class CountingHandler : HttpMessageHandler
