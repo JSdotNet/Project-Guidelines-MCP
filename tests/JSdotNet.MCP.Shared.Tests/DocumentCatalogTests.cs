@@ -130,15 +130,15 @@ public class DocumentCatalogTests
     [Fact]
     public void Search_WithMissingFile_SkipsDocumentAndReturnsOtherMatches()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        var tempDir = Path.Join(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
         try
         {
             // Write one real file whose content matches the query
-            File.WriteAllText(Path.Combine(tempDir, "real.md"), "# Real Doc\n\nThis is a uniquetoken document.");
+            File.WriteAllText(Path.Join(tempDir, "real.md"), "# Real Doc\n\nThis is a uniquetoken document.");
 
             // Write an index that includes a stale entry pointing to a non-existent file
-            File.WriteAllText(Path.Combine(tempDir, "index.json"), """
+            File.WriteAllText(Path.Join(tempDir, "index.json"), """
                 {
                   "version": "1.0",
                   "generated": "2025-01-01T00:00:00Z",
@@ -180,12 +180,12 @@ public class DocumentCatalogTests
     [Fact]
     public void Search_WithAllFilesMissing_ReturnsEmptyWithoutThrowing()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        var tempDir = Path.Join(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(tempDir);
         try
         {
             // Index points to files that don't exist on disk
-            File.WriteAllText(Path.Combine(tempDir, "index.json"), """
+            File.WriteAllText(Path.Join(tempDir, "index.json"), """
                 {
                   "version": "1.0",
                   "generated": "2025-01-01T00:00:00Z",
