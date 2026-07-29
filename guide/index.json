@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-07-24T10:30:00Z",
+    "generated": "2026-07-29T14:41:41Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -404,6 +404,22 @@
                 "coding-style",
                 "conventions",
                 "dotnet",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "copilot-instruction-file-setup",
+            "title": "Copilot Instruction-File Setup",
+            "description": "Defines a concise policy for repository Copilot instruction files: explicit MCP server names, JSdotNet Copilot skill-catalog based orchestration routing, named specialist agents, and fallback behavior when MCP servers, skills, plugins, or agents are unavailable.",
+            "category": "recommendations",
+            "relativePath": "recommendations/copilot-instruction-file-setup.md",
+            "tags": [
+                "copilot",
+                "instructions",
+                "mcp",
+                "agents",
+                "plugins",
+                "orchestration",
                 "recommendations"
             ]
         },
