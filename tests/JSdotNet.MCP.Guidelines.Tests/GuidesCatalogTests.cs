@@ -12,10 +12,10 @@ namespace JSdotNet.MCP.Guidelines.Tests;
 public sealed class GuidesCatalogTests
 {
     [Fact]
-    public void ListDocuments_ReturnsItems()
+    public async Task ListDocuments_ReturnsItems()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var docs = catalog.ListDocuments();
+        var docs = await catalog.ListDocumentsAsync();
         Assert.NotEmpty(docs);
         Assert.Contains(docs, d => d.Id.Contains("adopt-dotnet"));
     }
@@ -24,51 +24,51 @@ public sealed class GuidesCatalogTests
     public async Task GetContent_ReturnsMarkdown()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var id = catalog.ListDocuments().First().Id;
+        var id = (await catalog.ListDocumentsAsync()).First().Id;
         var content = await catalog.GetContentAsync(id, TestContext.Current.CancellationToken);
         Assert.False(string.IsNullOrWhiteSpace(content));
         Assert.Contains("#", content);
     }
 
     [Fact]
-    public void Search_FindsExpected()
+    public async Task Search_FindsExpected()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var results = catalog.Search("target framework");
+        var results = await catalog.SearchAsync("target framework");
         Assert.Contains(results, r => r.Id.Contains("0001"));
     }
 
     [Fact]
-    public void Search_CaseInsensitive_FindsResults()
+    public async Task Search_CaseInsensitive_FindsResults()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var results = catalog.Search("TARGET FRAMEWORK");
+        var results = await catalog.SearchAsync("TARGET FRAMEWORK");
         Assert.NotEmpty(results);
     }
 
     [Fact]
-    public void Search_ByTag_FindsExpected()
+    public async Task Search_ByTag_FindsExpected()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var results = catalog.SearchByTag("dotnet");
+        var results = await catalog.SearchByTagAsync("dotnet");
         Assert.NotEmpty(results);
         Assert.Contains(results, r => r.Id.Contains("adopt-dotnet"));
     }
 
     [Fact]
-    public void ListDocuments_ReturnsSortedByCategory()
+    public async Task ListDocuments_ReturnsSortedByCategory()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var docs = catalog.ListDocuments();
+        var docs = await catalog.ListDocumentsAsync();
         var categories = docs.Select(d => d.Category).ToList();
         Assert.Equal(categories.OrderBy(c => c).ToList(), categories);
     }
 
     [Fact]
-    public void ListDocuments_AllDocumentsHaveValidIds()
+    public async Task ListDocuments_AllDocumentsHaveValidIds()
     {
         var catalog = new FileSystemDocumentCatalog();
-        foreach (var doc in catalog.ListDocuments())
+        foreach (var doc in await catalog.ListDocumentsAsync())
         {
             Assert.False(string.IsNullOrWhiteSpace(doc.Id));
             Assert.False(string.IsNullOrWhiteSpace(doc.Title));
@@ -80,7 +80,7 @@ public sealed class GuidesCatalogTests
     public async Task GetContent_MultipleDocuments_AllReadable()
     {
         var catalog = new FileSystemDocumentCatalog();
-        foreach (var doc in catalog.ListDocuments().Take(3))
+        foreach (var doc in (await catalog.ListDocumentsAsync()).Take(3))
         {
             var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
             Assert.False(string.IsNullOrWhiteSpace(content));
