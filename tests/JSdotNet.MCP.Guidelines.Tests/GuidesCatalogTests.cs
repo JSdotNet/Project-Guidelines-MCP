@@ -88,6 +88,24 @@ public sealed class GuidesCatalogTests
     }
 
     [Fact]
+    public async Task CopilotInstructionGuide_IsDiscoverableAndReadable()
+    {
+        var catalog = new FileSystemDocumentCatalog();
+
+        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "copilot-instruction-file-setup");
+        Assert.Equal("recommendations/copilot-instruction-file-setup.md", doc.RelativePath.Replace('\\', '/'));
+
+        var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
+        Assert.Contains("plugins/copilot-app/skills", content);
+        Assert.Contains("## Tool and MCP Selection Policy", content);
+        Assert.Contains("## Agent Usage Policy", content);
+        Assert.Contains("## Repo-Specific Orchestration Routing", content);
+        Assert.Contains("orch-feature", content);
+        Assert.Contains("architecture:architect", content);
+        Assert.Contains("jsdotnet-project-guidelines-mcpserver", content);
+    }
+
+    [Fact]
     public void GuideIndex_ExistsAndIsValid()
     {
         var repoRoot = FindRepoRoot();

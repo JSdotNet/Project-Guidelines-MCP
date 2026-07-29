@@ -1,11 +1,11 @@
 {
     "version": "1.0",
-    "generated": "2026-07-24T09:56:44Z",
+    "generated": "2026-07-28T12:00:00Z",
     "documents": [
         {
             "id": "01-color-palette",
             "title": "Style Guide: Color Palette",
-            "description": "",
+            "description": "Color tokens for light and dark mode: brand, semantic, text, background, and border groups with hex values and usage rules.",
             "category": "style-guide",
             "relativePath": "01-color-palette.md",
             "tags": [
@@ -19,7 +19,7 @@
         {
             "id": "02-typography",
             "title": "Style Guide: Typography",
-            "description": "",
+            "description": "Font families (Inter, Poppins, Fira Code), size scale, weights, line heights, and heading defaults.",
             "category": "style-guide",
             "relativePath": "02-typography.md",
             "tags": [
@@ -32,7 +32,7 @@
         {
             "id": "03-spacing-and-layout",
             "title": "Style Guide: Spacing and Layout",
-            "description": "",
+            "description": "4 px base spacing scale, 12-column layout grid, breakpoints, border radius, border width, shadows, and z-index scale.",
             "category": "style-guide",
             "relativePath": "03-spacing-and-layout.md",
             "tags": [
@@ -45,7 +45,7 @@
         {
             "id": "04-motion-and-interaction",
             "title": "Style Guide: Motion and Interaction",
-            "description": "",
+            "description": "Transition durations, easing curves, standard transition presets, focus states, reduced-motion rules, and loading indicator patterns.",
             "category": "style-guide",
             "relativePath": "04-motion-and-interaction.md",
             "tags": [
@@ -60,7 +60,7 @@
         {
             "id": "05-customization-guide",
             "title": "Style Guide: Customization Guide",
-            "description": "",
+            "description": "Rules for overriding brand and semantic color tokens per project, including the override contract, contrast requirements, and step-by-step process.",
             "category": "style-guide",
             "relativePath": "05-customization-guide.md",
             "tags": [
@@ -72,9 +72,67 @@
             ]
         },
         {
+            "id": "06-component-patterns",
+            "title": "Style Guide: Component Patterns",
+            "description": "Reusable UI component specifications: Button, Form Input, Card, Badge/Chip, and Toast — covering anatomy, states, variants, and accessibility requirements.",
+            "category": "style-guide",
+            "relativePath": "06-component-patterns.md",
+            "tags": [
+                "style-guide",
+                "components",
+                "patterns",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "07-iconography",
+            "title": "Style Guide: Iconography",
+            "description": "Lucide icon library rules: sizing scale, color conventions using currentColor, accessibility requirements for icon-only and icon+label elements.",
+            "category": "style-guide",
+            "relativePath": "07-iconography.md",
+            "tags": [
+                "style-guide",
+                "iconography",
+                "icons",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "08-voice-and-tone",
+            "title": "Style Guide: Voice and Tone",
+            "description": "Language personality, grammar rules, button label patterns, error message structure, empty state copy, confirmation dialog copy, and capitalization reference.",
+            "category": "style-guide",
+            "relativePath": "08-voice-and-tone.md",
+            "tags": [
+                "style-guide",
+                "voice",
+                "tone",
+                "copy",
+                "content",
+                "ux-writing"
+            ]
+        },
+        {
+            "id": "09-interaction-patterns",
+            "title": "Style Guide: Interaction Patterns",
+            "description": "Standard UX patterns for form validation, empty states, loading states, error handling, and navigation (tabs, breadcrumbs, modals, drawers, drag-and-drop).",
+            "category": "style-guide",
+            "relativePath": "09-interaction-patterns.md",
+            "tags": [
+                "style-guide",
+                "interaction",
+                "patterns",
+                "forms",
+                "navigation",
+                "ux"
+            ]
+        },
+        {
             "id": "readme",
             "title": "Style Guide: Overview",
-            "description": "",
+            "description": "Entry point to the UX style guide: structure overview, customization policy, design principles, and platform scope.",
             "category": "style-guide",
             "relativePath": "README.md",
             "tags": [
