@@ -67,7 +67,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var all = _documents.Value;
         var results = all.Where(d => d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                d.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                               File.ReadAllText(Path.Join(_root, d.RelativePath)).Contains(query, StringComparison.OrdinalIgnoreCase))
+                               TryFileContainsQuery(Path.Join(_root, d.RelativePath), query))
                   .Take(50)
                   .ToList();
         return Task.FromResult<IReadOnlyList<DocumentInfo>>(results);
@@ -89,6 +89,18 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var reader = new StreamReader(stream);
         return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private static bool TryFileContainsQuery(string path, string query)
+    {
+        try
+        {
+            return File.ReadAllText(path).Contains(query, StringComparison.OrdinalIgnoreCase);
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            return false;
+        }
     }
 
     private IReadOnlyList<DocumentInfo> LoadDocuments()
