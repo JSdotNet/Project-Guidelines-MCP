@@ -1,6 +1,6 @@
 ---
 title: "GitHub Copilot Agent Configuration (github-app.yml)"
-date: 2026-06-05
+date: 2026-07-30
 status: Accepted
 tags: [github, copilot-agent, ci-cd, pr-workflow, automation, config]
 ---
@@ -36,6 +36,13 @@ pre_flight:
 - Use `--no-restore` / `--no-build` flags to avoid repeating earlier steps.
 - A non-zero exit code on any step is a hard failure — do not proceed to PR creation.
 - Test results must be written to `./TestResults` so CI can pick them up.
+- **Only include steps that run a real, meaningful command.** `pre_flight` exists to catch actual
+  build/test failures before a PR is opened, not to perform theater. Do not add placeholder steps
+  (e.g. `Write-Output` or `Out-Null` no-ops) just to have a step present.
+- If the repository has no buildable/testable code (for example, a documentation-only or
+  guidance-only repository), **omit the `pre_flight` section entirely** rather than including
+  no-op steps. If it is useful to record why it was omitted, leave a short YAML comment explaining
+  the reason instead of a fake step.
 
 ---
 
@@ -168,6 +175,19 @@ instructions: |
   Use the repository account for all GitHub operations in this repository.
   When running gh commands, authenticate as the repo account, not the Copilot subscription account.
   Use the repo SSH identity for git push/pull/fetch.
+```
+
+**Do not duplicate instruction-file prose here.** The `instructions:` block in `github-app.yml` is
+for short, `github-app.yml`-specific policy (account/transport selection, as above) — it must not
+restate routing, tool-selection, or workflow guidance that already lives in
+`.github/instructions/*.md`. Where routing or workflow behavior is already documented there,
+reference the instruction file by path/name instead of copying its content, e.g.:
+
+```yaml
+instructions: |
+  Follow .github/instructions/mcp-tool-usage.md for MCP/tool selection order.
+  Follow .github/instructions/workflow-routing.md for task routing.
+  Use the repository account for all GitHub operations in this repository (see above).
 ```
 
 ### Rules
