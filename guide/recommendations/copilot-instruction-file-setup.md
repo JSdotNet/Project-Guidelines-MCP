@@ -1,6 +1,6 @@
 ---
 title: "Copilot Instruction-File Setup"
-date: 2026-07-29
+date: 2026-07-30
 status: Accepted
 tags: [copilot, instructions, mcp, agents, plugins, orchestration, recommendations]
 ---
@@ -37,11 +37,15 @@ Use a stable selection order:
 3. External or platform MCP servers for vendor, framework, or product documentation.
 4. Direct repository inspection and built-in tools for workspace state, code search, diffs, and local validation.
 
-For repositories using the JSdotNet Copilot stack, name the expected MCP servers explicitly in the instruction file:
+For repositories using the JSdotNet Copilot stack, name the expected MCP servers explicitly in the instruction file using their authoritative server IDs and commands (see Config Guideline: .mcp.json):
 
-- `jsdotnet-coding-guidelines` via `jsdotnet-project-guidelines-mcpserver` for repository guidance under `guide/`.
-- `jsdotnet-design-mcpserver` for design and UX guidance under `design/`.
+- `jsdotnet-project-guidelines` (command `jsdotnet-guidelines-mcpserver`) for repository guidance under `guide/`.
+- `jsdotnet-project-design` (command `jsdotnet-design-mcpserver`) for design and UX guidance under `design/`.
 - Additional external servers only when needed, such as `microsoft-learn` or `aspire`.
+
+**⚠️ Do not use the deprecated command `jsdotnet-project-guidelines-mcpserver`** (deprecated package
+`jsdotnet.project.guidelines.mcpserver`, last v1.0.6). If it appears in a generated instruction file
+or config, replace it with `jsdotnet-guidelines-mcpserver`.
 
 Also name the preferred orchestration and specialist surfaces explicitly so routing stays stable:
 
@@ -114,12 +118,29 @@ If the preferred orchestrator is unavailable:
 2. If no suitable specialist exists, perform the work with direct tools while following the same documented repository guidance from `jsdotnet-coding-guidelines` or local checked-in docs.
 3. Record that orchestration routing from the JSdotNet Copilot skill catalog was unavailable so the user understands why a lower-assurance path was used.
 
+## File Count: Consolidate by Default
+
+- Default to as few instruction files as reasonably possible. In most repositories, two files are
+  enough to cover this recommendation's scope: one for MCP/tool-usage authority and selection order,
+  and one for workflow/task routing (orchestration, agent, and skill selection).
+- Do not create a separate file per topic (for example, one file each for MCP servers, agents,
+  skills, and routing) when their combined content is small enough to read comfortably in one or two
+  files. Splitting into many narrow files fragments a single policy decision across files that must
+  all be kept in sync, which is itself a maintenance cost.
+- Only split further when a single file would clearly exceed a reasonable size for one sitting of
+  review (as a guide, several hundred lines of dense policy) or when it would mix genuinely unrelated
+  concerns (for example, tool/MCP selection versus release or packaging policy).
+- Before adding a new instruction file, check whether the content belongs as a new section in an
+  existing file instead.
+
 ## Anti-Patterns to Avoid
 
 - Turning the instruction file into a duplicate of ADRs, recommendations, or design documents.
 - Embedding full plugin, skill, or agent playbooks in the repository instruction file.
 - Listing tools or agents without a selection policy for when they should be used.
 - Defining fallback behavior that silently changes policy or hides the loss of an authoritative source.
+- Splitting one policy area (e.g., tool/MCP authority and selection) across more instruction files
+  than necessary instead of consolidating it into a single file.
 
 ## References
 
