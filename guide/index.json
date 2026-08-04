@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-07-30T00:00:00Z",
+    "generated": "2026-08-04T00:00:00Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -316,6 +316,21 @@
                 "domain-driven-design",
                 "value-objects",
                 "design"
+            ]
+        },
+        {
+            "id": "aspire-local-start-script",
+            "title": "Aspire Local Start Script",
+            "description": "Defines a canonical scripts/Start-Aspire.ps1 entry point every Aspire-adopting repo must ship to trust dev certs, build, and run the AppHost consistently for local development.",
+            "category": "recommendations",
+            "relativePath": "recommendations/aspire-local-start-script.md",
+            "tags": [
+                "aspire",
+                "scripts",
+                "developer-experience",
+                "orchestration",
+                "tooling",
+                "recommendations"
             ]
         },
         {
