@@ -425,3 +425,5 @@ FodyWeavers.xsd
 
 # Work in progress
 .wip
+# Publish MCP server default output (see .mcp.json)
+.publish/

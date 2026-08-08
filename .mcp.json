@@ -19,6 +19,20 @@
       "tools": [
         "*"
       ]
+    },
+    "jsdotnet-publish-results": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "src/JSdotNet.MCP.Publish/JSdotNet.MCP.Publish.csproj",
+        "--",
+        "--Publish:RootPath=.publish"
+      ],
+      "tools": [
+        "*"
+      ]
     }
   }
 }
