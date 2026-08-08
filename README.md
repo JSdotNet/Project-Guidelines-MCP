@@ -357,10 +357,10 @@ JSdotNet.MCP.Guidelines.slnx
 dotnet build JSdotNet.MCP.slnx
 
 # Run all tests
-dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj
+dotnet test JSdotNet.MCP.slnx
 
 # Run tests with coverage
-dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+dotnet test JSdotNet.MCP.slnx --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
 
 # Generate coverage report
 reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
@@ -400,11 +400,16 @@ Semantic Versioning Strategy (GitHubFlow):
 
 Configuration: `GitVersion.yml` at repository root.
 
-### NuGet Package
+### NuGet Packages
 
 Published to NuGet.org:
 
-- **JSdotNet.MCP.Guidelines** – MCP Server .NET global tool
+- **JSdotNet.MCP.Guidelines** – coding guidelines MCP server (`jsdotnet-guidelines-mcpserver`)
+- **JSdotNet.MCP.Design** – design/UX guidance MCP server (`jsdotnet-design-mcpserver`)
+- **JSdotNet.MCP.Publish** – publish-results MCP server (`jsdotnet-publish-mcpserver`)
+
+Each package is published independently: the release workflow only pushes a package when its own
+source (or the shared `JSdotNet.MCP.Shared` project) changed on `main`.
 
 Package features:
 
