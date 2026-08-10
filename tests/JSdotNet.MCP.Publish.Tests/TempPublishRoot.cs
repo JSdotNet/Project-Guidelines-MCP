@@ -7,7 +7,7 @@ public sealed class TempPublishRoot : IDisposable
 {
     public TempPublishRoot(bool allowOverwriteByDefault = false)
     {
-        RootPath = Path.Combine(Path.GetTempPath(), "jsdotnet-publish-tests", Guid.NewGuid().ToString("N"));
+        RootPath = Path.Join(Path.GetTempPath(), "jsdotnet-publish-tests", Guid.NewGuid().ToString("N"));
         Publisher = new FileResultPublisher(new PublishOptions
         {
             RootPath = RootPath,
