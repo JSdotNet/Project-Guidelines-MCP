@@ -114,16 +114,29 @@ public sealed class FileResultPublisher : IResultPublisher
 
     private static string Normalize(string relativePath) => relativePath.Replace('\\', '/').Trim();
 
+    private static bool IsWindowsAbsolutePath(string path)
+    {
+        if (path.Length < 3 || path[1] != ':')
+            return false;
+
+        return char.IsAsciiLetter(path[0]) && (path[2] == '\\' || path[2] == '/');
+    }
+
     /// <summary>Resolves a caller-supplied relative path to an absolute path inside the root.</summary>
     internal string ResolvePath(string relativePath)
     {
         if (string.IsNullOrWhiteSpace(relativePath))
             throw new ArgumentException("A relative file path is required.", nameof(relativePath));
 
-        var candidate = Normalize(relativePath);
-
-        if (candidate.StartsWith('/') || Path.IsPathRooted(candidate) || Path.IsPathFullyQualified(candidate))
+        var rawCandidate = relativePath.Trim();
+        if (rawCandidate.StartsWith('/') ||
+            rawCandidate.StartsWith('\\') ||
+            Path.IsPathRooted(rawCandidate) ||
+            Path.IsPathFullyQualified(rawCandidate) ||
+            IsWindowsAbsolutePath(rawCandidate))
             throw new ArgumentException("Path must be relative to the configured publish location.", nameof(relativePath));
+
+        var candidate = Normalize(rawCandidate);
 
         if (candidate.Split('/').Any(segment => segment == ".."))
             throw new ArgumentException("Path may not contain '..' segments.", nameof(relativePath));
