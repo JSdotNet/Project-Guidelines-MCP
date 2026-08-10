@@ -321,7 +321,7 @@
         {
             "id": "agent-skill-authoring",
             "title": "Agent Skill Authoring: Scope, Preconditions, and Descriptions",
-            "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers scope-positive phrasing, Stage 0 scope discovery for missing inputs, legitimate stop conditions, anti-patterns, and a pass/fail audit checklist.",
+            "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers narrowing scope by work type rather than process maturity, when negative scope is legitimate, Stage 0 scope discovery for missing inputs, stop conditions that route to a successor, anti-patterns, and a pass/fail audit checklist.",
             "category": "recommendations",
             "relativePath": "recommendations/agent-skill-authoring.md",
             "tags": [

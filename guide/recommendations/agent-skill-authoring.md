@@ -34,25 +34,78 @@ Skill selection has **two gates**, and a skill is invoked only if it passes both
 Two consequences follow, and they drive every rule below.
 
 - **Gate 1 failures are unrecoverable.** The corrective wording in the body is never read, because
-  the body is never opened. Any narrowing in the `description` is therefore final.
+  the body is never opened. Narrowing in the `description` is therefore final — which is why *what it
+  narrows on* matters so much (R1).
 - **Gate 2 failures look like correct reasoning.** An agent that reads "this skill assumes the
   specification is already approved" and concludes the skill does not apply to an ad-hoc request has
   reasoned *correctly from the text*. The defect is in the text, not the agent.
 
-A precondition written as a disqualifier is a licence to skip the skill. That licence then propagates
-into Gate 1 whenever the same qualifier is summarised into the `description`.
+A precondition that gates on prior process is a licence to skip the skill. That licence then
+propagates into Gate 1 whenever the same qualifier is summarised into the `description`.
 
 ---
 
 ## Rules
 
-### R1 — Descriptions state when the skill applies, never when it does not
+### R1 — Narrow by work type, never by process maturity
 
-The `description` must not contain a scope-narrowing qualifier: *"once X is known"*, *"assumes X"*,
-*"only after X"*, *"for approved X"*, *"when X has already been agreed"*.
+**Negative scope is legitimate when it routes by work type and names a successor; it is a defect when
+it gates on how much process has happened first.**
 
-The `description` is the only text read before the body is opened. A qualifier placed there removes
-the skill from consideration permanently, for exactly the requests most likely to need it.
+That sentence is the rule. Everything below is how to apply it.
+
+Descriptions must narrow. A description that narrows nothing over-triggers on every request in the
+catalogue and is as useless as one that excludes itself. The question is never *whether* a
+description narrows, but **on which axis**.
+
+| Axis | What it describes | Verdict |
+|---|---|---|
+| **Work type** | What kind of work this is: the artefact, technology, or operation involved | **Legitimate** — makes the picker sharper |
+| **Process maturity** | How much process has already happened around the request: what is written down, approved, agreed, or decided | **Defect** — creates the dead zone |
+
+Compare, on the same surface vocabulary:
+
+- *"assumes the feature specification and acceptance criteria are already approved"* — narrows by
+  **process maturity**. The skill becomes unreachable for any request that arrives without paperwork,
+  which is most of them. **Defect.**
+- *"use when an Aspire AppHost is detected"* / *"only when no AppHost exists"* — narrows by **work
+  type**. The condition is a fact about the repository, checkable from the codebase, and independent
+  of how the request was raised. **Legitimate and load-bearing** — without it the skill fires on
+  every repository in the catalogue.
+
+The distinguishing test: **can the condition be satisfied by looking at the code and the request, or
+only by someone having done process work first?** Code and request → work type. Prior process →
+process maturity.
+
+#### Negative scope is permitted
+
+A description may state what the skill is **not** for. Under R5, an exclusion that names its
+successor is exemplary, not a defect:
+
+> DO NOT USE FOR: AppHost wiring on an existing AppHost (use `aspireify`), start/stop/wait (use
+> `aspire-orchestration`), deploy/publish (use `aspire-deployment`).
+
+Every exclusion here routes by work type and names where the work goes instead. Nothing is stranded.
+This is the shape to imitate. R1 and R5 agree on it: negative scope that names a successor passes
+both.
+
+Contrast a process-maturity exclusion, which strands the work:
+
+> ...once the feature scope is already known.
+
+No successor, no route, and the excluded requests have nowhere to go — so the agent implements them
+inline, ungoverned.
+
+#### Words are evidence, not the test
+
+The phrases *"once"*, *"assumes"*, *"already"*, *"only after"*, and *"approved"* frequently mark
+process-maturity narrowing, so treat them as prompts to inspect the clause. They are not themselves
+the defect: *"only when no AppHost exists"* contains "only when" and is correct. Always resolve the
+verdict on the axis, never on the vocabulary.
+
+The stakes are asymmetric because the `description` is the only text read before the body is opened.
+Process-maturity narrowing placed there removes the skill from consideration permanently, for exactly
+the requests most likely to need it.
 
 ### R2 — The description must cover the full range the body handles
 
@@ -67,8 +120,10 @@ reader inferring that "feature implementation" includes a one-line change.
 Write preconditions as *"this skill covers X, Y, Z"*, not *"this skill assumes X, Y, Z are already
 done"*.
 
-A precondition an agent can fail is a precondition an agent will use to exit. State what the skill is
-responsible for producing and validating, and let the stages describe how each input is obtained.
+Apply the R1 axis here too. A precondition on a **checkable state of the code or environment** is
+legitimate — it tells the agent what situation the skill handles. A precondition on **an artefact
+having been written, approved, or agreed** is a gate the agent will use to exit. State what the skill
+is responsible for producing and validating, and let the stages describe how each input is obtained.
 
 ### R4 — A missing input routes to a discovery stage, never to an exit
 
@@ -84,8 +139,12 @@ Genuine stop conditions exist and must not be removed. A stop condition is legit
 hold:
 
 1. It names the specific skill, agent, or orchestration that takes over.
-2. It is stated in terms of a **decision that must be made elsewhere**, not a **document that has not
-   been written yet**.
+2. It is stated in terms of **work that belongs elsewhere** — a different work type, or a decision
+   that must be made first — and never in terms of **a document that has not been written yet**.
+
+Both R1-legitimate exclusion shapes satisfy clause 2: routing by work type ("AppHost wiring → use
+`aspireify`") and escalating a decision ("this needs a new architectural decision → use `orch-adr`").
+Process-maturity gates satisfy neither.
 
 An exit with no named successor is a defect. So is an exit that instructs the agent to ask the user
 to run something the agent could invoke itself.
@@ -156,7 +215,7 @@ Rules for the stage:
 
 ## Anti-Patterns
 
-### Anti-pattern 1: a narrowing qualifier in the frontmatter description
+### Anti-pattern 1: narrowing the description by process maturity
 
 Real wording from `orch-feature`, before:
 
@@ -164,9 +223,21 @@ Real wording from `orch-feature`, before:
 > canvas. Focuses on coding, validation, review, and personal approval **once the feature scope is
 > already known.**
 
-The trailing clause removed the skill from the picker for every request that did not arrive with a
-written scope — which is most of them. **Fix:** drop the qualifier and state coverage of ad-hoc and
-incremental requests explicitly.
+The trailing clause narrows by process maturity (R1): it removed the skill from the picker for every
+request that did not arrive with a written scope — which is most of them — and named no successor for
+the excluded work. **Fix:** drop the qualifier and state coverage of ad-hoc and incremental requests
+explicitly.
+
+Contrast a **passing** description that narrows just as hard, but on work type, from `aspire-init`:
+
+> **USE FOR:** aspire init, aspire new, add Aspire to existing repo, scaffold Aspire app, no AppHost
+> detected. **DO NOT USE FOR:** AppHost wiring on an existing AppHost (use `aspireify`), start/stop/wait
+> (use `aspire-orchestration`), deploy/publish (use `aspire-deployment`), repo that already has an
+> AppHost.
+
+Both descriptions exclude work. The difference is the axis and the routing: every exclusion here is a
+checkable fact about the repository, and each one names where the work goes instead. Nothing is
+stranded. This passes R1 and R5 together.
 
 ### Anti-pattern 2: a precondition written as a disqualifier
 
@@ -179,11 +250,11 @@ Given a request such as *"make sub-items draggable"*, an agent reads this and co
 skill does not apply. **Fix:** replace with a Stage 0 that derives the specification and acceptance
 criteria when they are absent, and proceeds directly when they are present.
 
-### Anti-pattern 3: a shared instructions file that repeats the disqualifier
+### Anti-pattern 3: a shared instructions file that repeats the gate
 
-A shared phase or instruction file that restates the same precondition for a whole family of skills
-overrides any fix made in an individual `SKILL.md`. Audit shared files first: a rule stated there
-applies everywhere and is the highest-leverage place for this defect to hide.
+A shared phase or instruction file that restates the same process-maturity precondition for a whole
+family of skills overrides any fix made in an individual `SKILL.md`. Audit shared files first: a rule
+stated there applies everywhere and is the highest-leverage place for this defect to hide.
 
 ### Anti-pattern 4: an exit with no invocable successor
 
@@ -192,11 +263,12 @@ applies everywhere and is the highest-leverage place for this defect to hide.
 This ends the turn without producing anything and asks the human to do work the agent could do.
 **Fix:** either derive the input (R4) or invoke the successor directly (R5).
 
-### Anti-pattern 5: scoping by process maturity instead of work type
+### Anti-pattern 5: describing scope in words that hide the axis
 
-Phrases like "for approved work", "for planned features", or "for specified changes" describe how
-mature the *process* around the request is, not what *kind of work* it is. Pickers match on work
-type. Scope by work type.
+Phrases like "for approved work", "for planned features", or "for specified changes" read as scope
+statements but describe how mature the *process* around the request is, not what *kind of work* it
+is. They fail R1. Restate them as the work type the skill actually handles — and if an exclusion is
+genuinely needed, route it to a successor (R5).
 
 ---
 
@@ -204,17 +276,20 @@ type. Scope by work type.
 
 Apply per `SKILL.md`. Any **fail** requires a fix before the skill is considered compliant.
 
-| # | Check | Fail condition |
-|---|---|---|
-| 1 | Frontmatter `description` narrowing | Contains "once", "assumes", "already", "only after", "approved", or an equivalent qualifier that restricts scope |
-| 2 | Description covers the edges | The body handles small, incremental, or ad-hoc requests but the `description` does not say so |
-| 3 | Body preconditions | Body contains "assumes", "already approved", "already known", "not to discover", or an equivalent gate |
-| 4 | Missing inputs have a producer | Any input the skill declares as required has no stage that produces it when absent |
-| 5 | Exits name a successor | Any stop condition does not name the specific skill, agent, or orchestration that takes over |
-| 6 | Shared files clean | An included or shared instruction/phase file reintroduces a disqualifier |
-| 7 | No mutual exclusion | A sibling fallback skill's description excludes this skill's work while this skill also excludes it |
+| # | Check | How to decide | Fail condition |
+|---|---|---|---|
+| 1 | `description` narrowing axis | Scan for "once", "assumes", "already", "only after", "approved", "planned", "specified". For each hit, ask: is the condition checkable from the codebase and the request, or does it require someone to have done process work first? | The clause narrows by **process maturity**. Work-type narrowing passes, including negative scope ("do not use for X, use Y") when each exclusion names a successor |
+| 2 | Description covers the edges | Compare the request shapes the body handles against those the `description` names | The body handles small, incremental, or ad-hoc requests but the `description` does not say so |
+| 3 | Body precondition axis | Same test as row 1, applied to precondition and scope statements in the body | A precondition gates on an artefact being written, approved, or agreed. A precondition on a checkable state of the code or environment passes, provided it names what to do when unmet (row 5) |
+| 4 | Missing inputs have a producer | For each input the skill declares as required, find the stage that produces it when absent | No such stage exists |
+| 5 | Exits name a successor | Read every stop condition and exit path | Any exit does not name the specific skill, agent, or orchestration that takes over |
+| 6 | Shared files clean | Read every included or shared instruction/phase file with rows 1 and 3 | A shared file reintroduces process-maturity narrowing |
+| 7 | No mutual exclusion | Check the sibling fallback skill's description against this skill's | The fallback excludes this skill's work while this skill also excludes it |
 
-A reviewer should be able to reach a verdict on each row from the file text alone.
+Rows 1 and 3 turn on the **axis**, never the vocabulary. The listed words are prompts to inspect a
+clause, not fail conditions in themselves: *"only when no AppHost exists"* contains "only when" and
+passes, because the condition is a fact about the repository. A reviewer should still be able to
+reach a verdict on each row from the file text alone.
 
 ---
 
