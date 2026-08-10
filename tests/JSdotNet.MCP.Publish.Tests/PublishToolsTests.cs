@@ -21,6 +21,15 @@ public sealed class PublishToolsTests
             => Task.FromResult<IReadOnlyList<UsageLogEntry>>(Entries.TakeLast(count).ToList());
     }
 
+    private sealed class ThrowingUsageLog(Exception exception) : IUsageLog
+    {
+        public ValueTask RecordAsync(UsageLogEntry entry, CancellationToken ct = default)
+            => ValueTask.FromException(exception);
+
+        public Task<IReadOnlyList<UsageLogEntry>> GetRecentAsync(int count, CancellationToken ct = default)
+            => Task.FromResult<IReadOnlyList<UsageLogEntry>>([]);
+    }
+
     private static (PublishTools Tools, RecordingUsageLog Log) CreateTools(TempPublishRoot temp)
     {
         var log = new RecordingUsageLog();
@@ -117,5 +126,34 @@ public sealed class PublishToolsTests
 
         var element = JsonSerializer.Deserialize<JsonElement>(json);
         Assert.Equal(temp.Publisher.RootPath, element.GetProperty("rootPath").GetString());
+    }
+
+    [Fact]
+    public async Task GetPublishLocation_IgnoresUsageLogIoFailures()
+    {
+        using var temp = new TempPublishRoot();
+        var tools = new PublishTools(
+            temp.Publisher,
+            new ThrowingUsageLog(new IOException("disk full")),
+            NullLogger<PublishTools>.Instance);
+
+        var json = await tools.GetPublishLocationAsync(TestContext.Current.CancellationToken);
+
+        var element = JsonSerializer.Deserialize<JsonElement>(json);
+        Assert.Equal(temp.Publisher.RootPath, element.GetProperty("rootPath").GetString());
+    }
+
+    [Fact]
+    public async Task GetPublishLocation_PropagatesUsageLogCancellation()
+    {
+        using var temp = new TempPublishRoot();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+        var tools = new PublishTools(
+            temp.Publisher,
+            new ThrowingUsageLog(new OperationCanceledException(cts.Token)),
+            NullLogger<PublishTools>.Instance);
+
+        await Assert.ThrowsAsync<OperationCanceledException>(() => tools.GetPublishLocationAsync(cts.Token));
     }
 }

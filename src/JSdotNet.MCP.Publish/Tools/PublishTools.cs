@@ -180,7 +180,15 @@ public sealed class PublishTools(IResultPublisher publisher, IUsageLog usageLog,
                 succeeded,
                 errorMessage), ct);
         }
-        catch (Exception ex)
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (IOException ex)
+        {
+            logger.LogError(ex, "Failed to write usage log entry for {ToolName}", toolName);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             logger.LogError(ex, "Failed to write usage log entry for {ToolName}", toolName);
         }
