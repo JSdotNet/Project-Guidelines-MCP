@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-08-04T00:00:00Z",
+    "generated": "2026-08-10T00:00:00Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -316,6 +316,22 @@
                 "domain-driven-design",
                 "value-objects",
                 "design"
+            ]
+        },
+        {
+            "id": "agent-skill-authoring",
+            "title": "Agent Skill Authoring: Scope, Preconditions, and Descriptions",
+            "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers scope-positive phrasing, Stage 0 scope discovery for missing inputs, legitimate stop conditions, anti-patterns, and a pass/fail audit checklist.",
+            "category": "recommendations",
+            "relativePath": "recommendations/agent-skill-authoring.md",
+            "tags": [
+                "skills",
+                "agent-skills",
+                "authoring",
+                "copilot",
+                "orchestration",
+                "routing",
+                "recommendations"
             ]
         },
         {
