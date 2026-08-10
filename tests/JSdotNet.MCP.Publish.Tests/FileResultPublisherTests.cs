@@ -114,6 +114,7 @@ public sealed class FileResultPublisherTests
     [InlineData("nested/../../escape.txt")]
     [InlineData("/etc/passwd")]
     [InlineData(@"C:\Windows\system.ini")]
+    [InlineData(@"\Windows\system.ini")]
     public async Task Publish_RejectsUnsafePaths(string relativePath)
     {
         using var temp = new TempPublishRoot();
