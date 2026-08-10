@@ -128,7 +128,7 @@ public sealed class FileResultPublisher : IResultPublisher
         if (candidate.Split('/').Any(segment => segment == ".."))
             throw new ArgumentException("Path may not contain '..' segments.", nameof(relativePath));
 
-        var fullPath = Path.GetFullPath(Path.Combine(RootPath, candidate));
+        var fullPath = Path.GetFullPath(Path.Join(RootPath, candidate));
         var rootPrefix = RootPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
 
         if (!fullPath.StartsWith(rootPrefix, StringComparison.Ordinal))
