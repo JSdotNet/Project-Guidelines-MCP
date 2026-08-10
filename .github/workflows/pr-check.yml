@@ -46,7 +46,8 @@ jobs:
           for project in \
             tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj \
             tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj \
-            tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj; do
+            tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj \
+            tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj; do
             dotnet test "$project" --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
           done
         env:

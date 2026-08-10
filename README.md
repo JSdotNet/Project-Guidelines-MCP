@@ -43,6 +43,18 @@ dotnet run --project .\src\JSdotNet.MCP.Design\JSdotNet.MCP.Design.csproj
 
 When run from the repository root, the server automatically discovers `design/` locally. For GitHub-backed usage, it resolves documents from the repository's `design/` path on GitHub.
 
+### Publish Results Server
+
+A third MCP server (`src/JSdotNet.MCP.Publish`) lets an agent publish its results to a **configurable file location** instead of serving documentation.
+
+```powershell
+dotnet run --project .\src\JSdotNet.MCP.Publish\JSdotNet.MCP.Publish.csproj -- --Publish:RootPath=D:\reports
+```
+
+Tools: `publish_result`, `append_result`, `list_published`, `read_published`, `delete_published`, `get_publish_location`, `get_usage_logs`.
+
+The publish root is resolved from `Publish:RootPath` (command line or `Publish__RootPath` environment variable), then `JSDOTNET_PUBLISH_PATH`, and finally a per-user default folder (`%LOCALAPPDATA%\JSdotNet\PublishedResults`). All tool paths are relative to that root — absolute paths and `..` segments are rejected. See [src/JSdotNet.MCP.Publish/README.md](src/JSdotNet.MCP.Publish/README.md) for details.
+
 ### Install as GitHub Copilot MCP Tool
 
 The MCP Server can be integrated with GitHub Copilot to provide AI agents with access to design guidelines during code generation.
@@ -345,10 +357,10 @@ JSdotNet.MCP.Guidelines.slnx
 dotnet build JSdotNet.MCP.slnx
 
 # Run all tests
-dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj
+dotnet test JSdotNet.MCP.slnx
 
 # Run tests with coverage
-dotnet test tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+dotnet test JSdotNet.MCP.slnx --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
 
 # Generate coverage report
 reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
@@ -388,11 +400,16 @@ Semantic Versioning Strategy (GitHubFlow):
 
 Configuration: `GitVersion.yml` at repository root.
 
-### NuGet Package
+### NuGet Packages
 
 Published to NuGet.org:
 
-- **JSdotNet.MCP.Guidelines** – MCP Server .NET global tool
+- **JSdotNet.MCP.Guidelines** – coding guidelines MCP server (`jsdotnet-guidelines-mcpserver`)
+- **JSdotNet.MCP.Design** – design/UX guidance MCP server (`jsdotnet-design-mcpserver`)
+- **JSdotNet.MCP.Publish** – publish-results MCP server (`jsdotnet-publish-mcpserver`)
+
+Each package is published independently: the release workflow only pushes a package when its own
+source (or the shared `JSdotNet.MCP.Shared` project) changed on `main`.
 
 Package features:
 

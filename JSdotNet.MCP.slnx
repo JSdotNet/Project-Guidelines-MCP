@@ -3,10 +3,12 @@
     <Project Path="src/JSdotNet.MCP.Shared/JSdotNet.MCP.Shared.csproj" />
     <Project Path="src/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj" />
     <Project Path="src/JSdotNet.MCP.Design/JSdotNet.MCP.Design.csproj" />
+    <Project Path="src/JSdotNet.MCP.Publish/JSdotNet.MCP.Publish.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj" />
     <Project Path="tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj" />
     <Project Path="tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj" />
+    <Project Path="tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj" />
   </Folder>
 </Solution>
