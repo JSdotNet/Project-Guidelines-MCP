@@ -7,7 +7,7 @@ public sealed class PublishOptionsTests
     [Fact]
     public void ResolveRootPath_PrefersConfiguredPath()
     {
-        var configured = Path.Combine(Path.GetTempPath(), "configured-publish-root");
+        var configured = Path.Join(Path.GetTempPath(), "configured-publish-root");
 
         var resolved = PublishOptions.ResolveRootPath(configured);
 
@@ -17,7 +17,9 @@ public sealed class PublishOptionsTests
     [Fact]
     public void ResolveRootPath_FallsBackToEnvironmentVariable()
     {
-        var expected = Path.Combine(Path.GetTempPath(), "env-publish-root");
+        var expected = Path.Join(
+            Path.GetTempPath().TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar),
+            "env-publish-root");
         var original = Environment.GetEnvironmentVariable(PublishOptions.RootPathEnvironmentVariable);
         Environment.SetEnvironmentVariable(PublishOptions.RootPathEnvironmentVariable, expected);
         try
