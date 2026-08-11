@@ -2,7 +2,7 @@
   "name": "jsdotnet-project-guidelines",
   "displayName": "JSdotNet Project Coding Guidelines",
   "version": "2.0.0",
-  "description": "Six skills for working with the jsdotnet-coding-guidelines MCP server: ADRs, architecture patterns, coding standards, and documented decisions. Covers guidance discovery, gap analysis, code review, decision validation, migration planning, and server smoke-testing.",
+  "description": "Eight skills for working with the jsdotnet-coding-guidelines MCP server and JSdotNet Copilot setup: ADRs, architecture patterns, coding standards, documented decisions, Azure Foundry model catalog selection, and server smoke-testing.",
   "publisher": "JSdotNet",
   "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
   "repository": {
@@ -48,6 +48,12 @@
       "description": "Analyze MCP usage logs, identify improvement opportunities, and propose new ADRs or documentation enhancements as GitHub issues."
     },
     {
+      "id": "copilot-model-selection",
+      "path": "../../skills/copilot-model-selection.md",
+      "title": "Copilot Model Selection",
+      "description": "Choose Azure Foundry model catalog/deployment entries for Copilot sessions, configure token limits, and avoid Claude 5 provider failures caused by deprecated sampling parameters."
+    },
+    {
       "id": "test-guidelines-server",
       "path": "../../skills/test-guidelines-server.md",
       "title": "Test Coding Guidelines Server",
@@ -63,7 +69,9 @@
     "csharp",
     "dotnet",
     "mcp",
-    "copilot-skills"
+    "copilot-skills",
+    "model-selection",
+    "azure-foundry-openai"
   ],
   "categories": [
     "Documentation",
