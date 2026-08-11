@@ -1,6 +1,6 @@
 # JSdotNet Project Coding Guidelines Plugin
 
-This plugin provides seven skills for working with the **`jsdotnet-coding-guidelines`** MCP server — the authoritative source of Architecture Decision Records (ADRs), design documents, recommendations, and project structure templates for JSdotNet .NET projects.
+This plugin provides eight skills for working with the **`jsdotnet-coding-guidelines`** MCP server and JSdotNet Copilot setup — the authoritative source of Architecture Decision Records (ADRs), design documents, recommendations, project structure templates, and related Azure Foundry catalog configuration guidance for JSdotNet .NET projects.
 
 1. **coding-guidelines-mcp** — Reference guide for the coding guidelines MCP server: tool reference, categories, tags, and example workflows
 2. **gap-analysis** — Analyze project structure against guidelines, identify architectural gaps
@@ -8,7 +8,8 @@ This plugin provides seven skills for working with the **`jsdotnet-coding-guidel
 4. **decision-validation** — Validate architectural decisions before implementation
 5. **migration-planning** — Plan incremental refactoring to align code with guidelines
 6. **feedback-loop** — Track MCP usage and propose documentation improvements
-7. **test-guidelines-server** — Smoke-test the coding guidelines MCP server end-to-end
+7. **copilot-model-selection** — Select recommended Azure Foundry model catalog entries and avoid incompatible reasoning-model parameters
+8. **test-guidelines-server** — Smoke-test the coding guidelines MCP server end-to-end
 
 > For UX/design token guidance (color, typography, spacing, motion), use the companion **`jsdotnet-design-ux-guidelines`** plugin (`plugins/design/`).
 
@@ -98,7 +99,15 @@ Invoke skill: feedback-loop
 
 Analyzes usage logs, identifies documentation gaps, and drafts improvement issues.
 
-### 7. Test the Server
+### 7. Select a Copilot Model
+
+```
+Invoke skill: copilot-model-selection
+```
+
+Recommends Azure Foundry model catalog/deployment entries, token limits, and provider-safe parameter settings for Copilot sessions.
+
+### 8. Test the Server
 
 ```
 Invoke skill: test-guidelines-server
@@ -118,6 +127,7 @@ Verifies the server is connected and all tools return expected content.
 | **decision-validation** | Making significant architectural decisions | coding-guidelines-mcp, migration-planning |
 | **migration-planning** | Planning refactoring to align with guidelines | gap-analysis, decision-validation, code-review |
 | **feedback-loop** | Analyzing usage, proposing improvements | coding-guidelines-mcp, gap-analysis |
+| **copilot-model-selection** | Choosing Azure Foundry catalog entries or provider-safe model settings | coding-guidelines-mcp |
 | **test-guidelines-server** | After install/upgrade or when tools return unexpected results | coding-guidelines-mcp |
 
 ---
@@ -168,7 +178,8 @@ plugins/guidelines/
     decision-validation.md          <- Skill 4: Validate decisions pre-implementation
     migration-planning.md           <- Skill 5: Incremental refactoring planner
     feedback-loop.md                <- Skill 6: Usage analysis + issue creation
-    test-guidelines-server.md       <- Skill 7: Smoke-test the coding guidelines server
+    copilot-model-selection.md      <- Skill 7: Copilot model selection guidance
+    test-guidelines-server.md       <- Skill 8: Smoke-test the coding guidelines server
   README.md                         <- This file
 ```
 
