@@ -88,7 +88,7 @@ This is the recommended approach for general use. Documents are automatically fe
      "servers": {
        "jsdotnet-coding-guidelines": {
          "type": "stdio",
-         "command": "jsdotnet-project-guidelines-mcpserver",
+         "command": "jsdotnet-guidelines-mcpserver",
          "args": []
        }
      }
@@ -122,7 +122,7 @@ This is the recommended approach for general use. Documents are automatically fe
    - Click "Add Server"
    - Configure:
      - **Name:** `jsdotnet-coding-guidelines`
-     - **Command:** `jsdotnet-project-guidelines-mcpserver`
+     - **Command:** `jsdotnet-guidelines-mcpserver`
 
 3. **Restart Visual Studio** to apply changes
 
@@ -164,7 +164,7 @@ Copilot CLI reads `.mcp.json` from your project root automatically. This repo sh
      "mcpServers": {
        "jsdotnet-coding-guidelines": {
          "type": "stdio",
-         "command": "jsdotnet-project-guidelines-mcpserver",
+         "command": "jsdotnet-guidelines-mcpserver",
          "args": [],
          "tools": ["*"]
        }
@@ -189,7 +189,7 @@ Copilot CLI reads `.mcp.json` from your project root automatically. This repo sh
 /mcp add
 ```
 
-Follow the prompts: type `stdio`, command `jsdotnet-project-guidelines-mcpserver`, tools `*`.
+Follow the prompts: type `stdio`, command `jsdotnet-guidelines-mcpserver`, tools `*`.
 
 **Update**:
 
@@ -206,6 +206,79 @@ dotnet tool uninstall --global JSdotNet.MCP.Guidelines
 ```
 
 Then remove the entry from `.mcp.json` or run `/mcp delete jsdotnet-coding-guidelines` inside a Copilot CLI session to remove the user-level entry.
+
+---
+
+#### Scenario 1c: Claude Code Setup
+
+Claude Code reads MCP servers from two places: the project's `.mcp.json` (this repo ships one) and a
+user-level `mcpServers` block in `~/.claude.json` (`%USERPROFILE%\.claude.json` on Windows). Use the
+user level to make the servers available in **every** project without copying config around.
+
+1. **Install the global tools**:
+
+   ```bash
+   dotnet tool install --global JSdotNet.MCP.Guidelines
+   ```
+
+   ```bash
+   dotnet tool install --global JSdotNet.MCP.Design
+   ```
+
+   ```bash
+   dotnet tool install --global JSdotNet.MCP.Publish
+   ```
+
+2. **Register them at user level**. With the `claude` CLI on your PATH:
+
+   ```bash
+   claude mcp add -s user jsdotnet-coding-guidelines -- jsdotnet-guidelines-mcpserver
+   ```
+
+   Otherwise add a top-level `mcpServers` block to `%USERPROFILE%\.claude.json` directly:
+
+   ```json
+   {
+     "mcpServers": {
+       "jsdotnet-coding-guidelines": {
+         "type": "stdio",
+         "command": "jsdotnet-guidelines-mcpserver",
+         "args": [],
+         "tools": ["*"]
+       },
+       "jsdotnet-design-ux-guidelines": {
+         "type": "stdio",
+         "command": "jsdotnet-design-mcpserver",
+         "args": [],
+         "tools": ["*"]
+       },
+       "jsdotnet-publish-results": {
+         "type": "stdio",
+         "command": "jsdotnet-publish-mcpserver",
+         "args": [],
+         "tools": ["*"]
+       }
+     }
+   }
+   ```
+
+   Keep the server IDs exactly as shown — the skills in `plugins/` refer to them by name.
+
+3. **Restart Claude Code** (or start a new session) to pick up the change.
+
+4. **Verify** with `/mcp` in a session, or ask "list the available guides".
+
+**Publish root**: with no `args`, `jsdotnet-publish-mcpserver` writes to the per-user default
+(`%LOCALAPPDATA%\JSdotNet\PublishedResults`). Add `"args": ["--Publish:RootPath=D:\\reports"]` to
+point it elsewhere — use an absolute path at user level, since a relative one resolves against
+whatever directory the session was started in.
+
+**Scope precedence**: a server defined in a project's `.mcp.json` overrides a user-level server with
+the same ID. In this repository, `.mcp.json` deliberately runs the design and publish servers from
+source via `dotnet run`, so those two use the working-tree build here and the installed global tools
+everywhere else. Note that the first `dotnet run` startup in a clean clone has to restore and build,
+which can exceed the MCP startup timeout — build the solution once (`dotnet build JSdotNet.MCP.slnx`)
+before starting a session.
 
 ---
 
