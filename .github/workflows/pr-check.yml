@@ -48,7 +48,17 @@ jobs:
             tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj \
             tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj \
             tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj; do
-            dotnet test "$project" --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+            project_name="$(basename "$(dirname "$project")")"
+            dotnet test "$project" --configuration Release --no-build --verbosity normal --results-directory "./coverage/$project_name" -- \
+              --coverlet \
+              --coverlet-output-format cobertura \
+              --coverlet-exclude "[*.Tests]*" \
+              --coverlet-exclude "[*]*.Program" \
+              --coverlet-exclude "[*]*GitHubDocumentCatalog" \
+              --coverlet-exclude-by-attribute Obsolete \
+              --coverlet-exclude-by-attribute GeneratedCode \
+              --coverlet-exclude-by-attribute CompilerGenerated \
+              --coverlet-include-directory "$PWD/src"
           done
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -59,7 +69,7 @@ jobs:
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"coverage/**/coverage.cobertura.xml" \
+            -reports:"coverage/**/coverage.cobertura.*.xml" \
             -targetdir:"./coverage-merged" \
             -reporttypes:Cobertura
         env:

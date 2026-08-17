@@ -4,11 +4,14 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <!-- Required for xunit v4 (Microsoft.Testing.Platform) with dotnet test on .NET 10+ -->
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <!-- Use MTP MSBuild Test target instead of VSTest on .NET 10+ SDK -->
+    <UseMSBuildTestInfrastructure>true</UseMSBuildTestInfrastructure>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="coverlet.MTP">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
