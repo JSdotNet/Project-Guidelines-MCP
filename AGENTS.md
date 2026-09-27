@@ -40,62 +40,17 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `src/` | MCP server production code |
 | `tests/` | MCP server test projects |
 | `JSdotNet.MCP.slnx` | Solution file |
+| `.agents/rules/` | Path-scoped rules, wrapped per host in `.claude/rules/` and `.github/instructions/` |
 | `AGENTS.md` | This file; `CLAUDE.md` and `.github/copilot-instructions.md` wrap it per host |
 
-## `guide/index.json`
+## Path-scoped rules
 
-`guide/index.json` is the MCP server's document registry; without a current one the server
-falls back to expensive directory traversal. Whenever you add, modify, or remove a file in
-`guide/`, regenerate it:
+Rules for one kind of file live in [.agents/rules/](.agents/rules/README.md), wrapped per host
+under `.claude/rules/` and `.github/instructions/`:
 
-1. Walk every markdown file in the `guide/` subdirectories.
-2. Read `title` and `tags` from its front matter.
-3. Emit an entry with `id`, `title`, `category`, `relativePath`, `tags`.
-4. Update the `generated` timestamp and save.
-
-```json
-{
-  "version": "1.0",
-  "generated": "2025-11-19T10:30:00Z",
-  "documents": [
-    {
-      "id": "document-id",
-      "title": "Document Title",
-      "category": "adrs",
-      "relativePath": "adrs/document.md",
-      "tags": ["tag1", "tag2"]
-    }
-  ]
-}
-```
-
-## Doc taxonomy
-
-Every doc opens with front matter carrying `title`, `date`, `status` and `tags`. Update `date`
-on a meaningful content change, not on a typo, grammar, or formatting-only edit.
-
-- **ADRs (`guide/adrs`)** — title `ADR NNNN: Concise Title`; `status` is Proposed, Accepted,
-  Deprecated, or Superseded by NNNN; sections Context, Decision, Consequences
-  (Positive/Negative), References. Once accepted, change only the status; record a change as a
-  superseding ADR. Write the decision in present tense and justify it rather than restating
-  the context.
-- **Designs (`guide/designs`)** — exploratory or future-facing and free to evolve. Use Mermaid
-  diagrams and the sections Problem, Forces, Proposed Solution, Variants, Risks.
-- **Recommendations (`guide/recommendations`)** — prescriptive, stable, narrowly scoped
-  guidance (e.g. "Error handling approach"); link the originating ADR where one exists.
-- **Structures (`guide/structures`)** — canonical directory/file scaffolds (API service,
-  background worker, library pack) with minimal code shells and comments marking where domain
-  logic goes.
-- **Config (`guide/config`)** — one standard configuration file per doc, named
-  `<file>.md` after the file it governs.
-
-## MCP server invariants (`src/`)
-
-- Serve guidance only; keep business logic out of the server.
-- Include source doc ids in every response for traceability.
-- `FileSystemDocumentCatalog` serves the local `guide/` when running locally;
-  `GitHubDocumentCatalog` fetches from GitHub when installed as a global tool.
-- Cache results; make no redundant GitHub API calls.
+- `guide/` taxonomy, front matter and `guide/index.json`: [guide.md](.agents/rules/guide.md).
+- `design/` style-guide authoring and `design/index.json`: [design-content.md](.agents/rules/design-content.md).
+- `src/` and `tests/` server invariants and coverage floor: [mcp-server.md](.agents/rules/mcp-server.md).
 
 ## Contribution workflow
 
@@ -104,9 +59,6 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
   that the consequences are clear.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, …).
 - Merge needs a passing CI build and review from at least one maintainer.
-- Keep merged line coverage over `src/` at 80% or more; CI fails the build below it. `Program`
-  classes and `GitHubDocumentCatalog` are excluded, so today the gate measures
-  `JSdotNet.MCP.Shared` and `JSdotNet.MCP.Publish`.
 - Create every pull request with the `pr-jsdotnet` skill
   ([.github/skills/pr-jsdotnet/SKILL.md](.github/skills/pr-jsdotnet/SKILL.md)), never the
   built-in PR tool, so it is authored with JSdotNet credentials via `gh pr create`.
