@@ -104,8 +104,9 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
   that the consequences are clear.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, …).
 - Merge needs a passing CI build and review from at least one maintainer.
-- Keep line coverage at 80% or more for `JSdotNet.MCP.Shared` and `JSdotNet.MCP.Guidelines`;
-  CI enforces it through coverlet.
+- Keep merged line coverage over `src/` at 80% or more; CI fails the build below it. `Program`
+  classes and `GitHubDocumentCatalog` are excluded, so today the gate measures
+  `JSdotNet.MCP.Shared` and `JSdotNet.MCP.Publish`.
 - Create every pull request with the `pr-jsdotnet` skill
   ([.github/skills/pr-jsdotnet/SKILL.md](.github/skills/pr-jsdotnet/SKILL.md)), never the
   built-in PR tool, so it is authored with JSdotNet credentials via `gh pr create`.
