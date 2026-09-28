@@ -365,19 +365,17 @@ When you add, rename, edit, or remove markdown files in `guide/`, also update `g
 ## Repo structure
 
 ```
-guide/
- adrs/
- designs/
- recommendations/
- structures/
-src/
- Project.Guidelines.guide/
- Project.Guidelines.McpServer/
-tests/
- Project.Guidelines.McpServer.Tests/
-JSdotNet.MCP.Guidelines.slnx
-.github/
- copilot-instructions.md
+AGENTS.md                         the repository's standing rules (the one root instruction file)
+CLAUDE.md                         @AGENTS.md import for Claude Code
+.github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
+.agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
+.devbook/                         this repository's own arc42, domain, tech, design and ai record
+guide/                            adrs/, designs/, recommendations/, structures/, config/ and index.json
+design/                           UX style guide served by the design server
+plugins/                          guidelines and design agent plugins
+src/                              JSdotNet.MCP.Shared, .Guidelines, .Design, .Publish
+tests/                            one test project per src/ project
+JSdotNet.MCP.slnx
 ```
 
 ## ADRs
@@ -401,6 +399,8 @@ JSdotNet.MCP.Guidelines.slnx
 
 ## Recommendations
 
+- [Instruction-File Setup: One AGENTS.md, Wrapped per Host](guide/recommendations/copilot-instruction-file-setup.md)
+- [Devbook Adoption: Start with the devbook Plugin Alone](guide/recommendations/devbook-adoption.md)
 - [Blazor Frontend Framework Guidance](guide/recommendations/blazor-frontend-framework-guidance.md)
 - [C# Coding Style](guide/recommendations/csharp-coding-style.md)
 - [Object Calisthenics for Domain Code](guide/recommendations/object-calisthenics-for-domain.md)

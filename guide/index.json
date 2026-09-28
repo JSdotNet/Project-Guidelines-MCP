@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-08-10T00:00:00Z",
+    "generated": "2026-09-28T00:00:00Z",
     "documents": [
         {
             "id": "0001-adopt-dotnet-10",
@@ -440,17 +440,36 @@
         },
         {
             "id": "copilot-instruction-file-setup",
-            "title": "Copilot Instruction-File Setup",
-            "description": "Defines a concise policy for repository Copilot instruction files: explicit MCP server names, JSdotNet Copilot skill-catalog based orchestration routing, named specialist agents, and fallback behavior when MCP servers, skills, plugins, or agents are unavailable.",
+            "title": "Instruction-File Setup: One AGENTS.md, Wrapped per Host",
+            "description": "Prescribes one root AGENTS.md as the only authored instruction file, CLAUDE.md as an @AGENTS.md import and .github/copilot-instructions.md as a one-sentence pointer, path-scoped rules authored once under .agents/rules/ with a wrapper per host, MCP-first selection with disclosed fallback, and the migration from a Copilot-only file.",
             "category": "recommendations",
             "relativePath": "recommendations/copilot-instruction-file-setup.md",
             "tags": [
-                "copilot",
                 "instructions",
+                "agents-md",
+                "claude-code",
+                "copilot",
+                "path-scoped-rules",
                 "mcp",
-                "agents",
-                "plugins",
-                "orchestration",
+                "routing",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "devbook-adoption",
+            "title": "Devbook Adoption: Start with the devbook Plugin Alone",
+            "description": "Recommends recording a project's own architecture, domain, technology, design and AI adoption in .devbook/ with the devbook plugin alone - devbook:init to adopt, devbook:update to move forward, devbook:validate in CI - and treats the delivery engine and layered plugins as an optional step up.",
+            "category": "recommendations",
+            "relativePath": "recommendations/devbook-adoption.md",
+            "tags": [
+                "devbook",
+                "documentation",
+                "arc42",
+                "domain",
+                "agents-md",
+                "claude-code",
+                "copilot",
+                "ci",
                 "recommendations"
             ]
         },
@@ -599,7 +618,7 @@
         },
         {
             "id": "testing-unit",
-            "title": "Unit Testing with xUnit, Moq and Bogus",
+            "title": "Unit testing with xUnit, Moq and Bogus",
             "description": "Defines unit-test�specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
             "category": "recommendations",
             "relativePath": "recommendations/testing-unit.md",

@@ -96,13 +96,29 @@ public sealed class GuidesCatalogTests
         Assert.Equal("recommendations/copilot-instruction-file-setup.md", doc.RelativePath.Replace('\\', '/'));
 
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
-        Assert.Contains("plugins/copilot-app/skills", content);
+        Assert.Contains("## AGENTS.md: the One Root File", content);
+        Assert.Contains("## Host Wrappers", content);
+        Assert.Contains("## Path-Scoped Rules", content);
         Assert.Contains("## Tool and MCP Selection Policy", content);
-        Assert.Contains("## Agent Usage Policy", content);
-        Assert.Contains("## Repo-Specific Orchestration Routing", content);
-        Assert.Contains("orch-feature", content);
-        Assert.Contains("architecture:architect", content);
+        Assert.Contains("@AGENTS.md", content);
+        Assert.Contains(".agents/rules/<topic>.md", content);
         Assert.Contains("jsdotnet-project-guidelines-mcpserver", content);
+    }
+
+    [Fact]
+    public async Task DevbookAdoptionGuide_IsDiscoverableAndReadable()
+    {
+        var catalog = new FileSystemDocumentCatalog();
+
+        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "devbook-adoption");
+        Assert.Equal("recommendations/devbook-adoption.md", doc.RelativePath.Replace('\\', '/'));
+
+        var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
+        Assert.Contains("claude plugin marketplace add JSdotNet/devbook", content);
+        Assert.Contains("devbook:init", content);
+        Assert.Contains("devbook:update", content);
+        Assert.Contains("devbook:validate", content);
+        Assert.Contains("## The Optional Step Up", content);
     }
 
     [Fact]
