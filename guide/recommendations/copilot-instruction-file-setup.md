@@ -1,148 +1,191 @@
 ---
-title: "Copilot Instruction-File Setup"
-date: 2026-07-30
+title: "Instruction-File Setup: One AGENTS.md, Wrapped per Host"
+date: 2026-09-28
 status: Accepted
-tags: [copilot, instructions, mcp, agents, plugins, orchestration, recommendations]
+tags: [instructions, agents-md, claude-code, copilot, path-scoped-rules, mcp, routing, recommendations]
 ---
-# Recommendation: Copilot Instruction-File Setup
+# Recommendation: Instruction-File Setup — One AGENTS.md, Wrapped per Host
 
 ## Purpose
 
-Define a concise, maintainable setup for repository Copilot instruction files that focuses on tool selection, agent routing, and repository-specific orchestration without duplicating guidance already available elsewhere.
+Define how a repository gives Claude Code and GitHub Copilot the same standing instructions from a
+single authored copy: one root `AGENTS.md`, a thin wrapper per host, and path-scoped rules for
+anything that applies to one kind of file only.
+
+This replaces the earlier advice to keep a Copilot-only `.github/copilot-instructions.md`. A
+host-specific root file drifts from its sibling the moment a second host is used; one root file with a
+pointer per host cannot drift.
 
 ## Recommendation
 
-- Keep repository instruction files short and policy-focused.
-- Use instruction files to define **selection and routing**, not to restate architecture, coding, testing, or operational guidance that already exists in repository MCP documents or installed plugin/skill/agent instructions.
-- Treat repository MCP documents as the authoritative source for durable project guidance and installed plugins, skills, or agents as the authoritative source for workflow-specific execution behavior.
-- Base repository-specific orchestration routing on the installed JSdotNet Copilot skill catalog published at `https://github.com/JSdotNet/Copilot/tree/main/plugins/copilot-app/skills`.
+- Author the repository's standing rules **once**, in a root `AGENTS.md`.
+- Make `CLAUDE.md` an `@AGENTS.md` import and `.github/copilot-instructions.md` a one-sentence pointer
+  at `AGENTS.md`. Neither restates a rule.
+- Author a rule that applies to one kind of file once under `.agents/rules/<topic>.md`, with one
+  wrapper per host under `.claude/rules/` and `.github/instructions/`.
+- Keep instruction files to **selection and routing**: which source is authoritative, which tool or
+  skill handles which task, and what happens when one is unavailable. Architecture, coding, testing and
+  operational guidance stays in the MCP-served documents.
+- Commit all of it. Nothing personal or machine-local belongs in an instruction file.
+- Record the project's own architecture, domain, technology, design and AI adoption in `.devbook/`, not
+  in `AGENTS.md` — see *Recommendation: Devbook Adoption*.
 
-## What Belongs in Repository Instruction Files
+## The Layout
 
-Repository instruction files should define only the minimum policy needed for reliable tool use:
+```
+AGENTS.md                                     the standing rules. One copy.
+CLAUDE.md                                     @AGENTS.md + one paragraph
+.github/copilot-instructions.md               one sentence: read AGENTS.md
+.agents/rules/<topic>.md                      a path-scoped rule. One copy. Host-neutral.
+  ├── .claude/rules/<topic>.md                wrapper: paths:   → pointer
+  └── .github/instructions/<topic>.instructions.md
+                                              wrapper: applyTo: → pointer
+.devbook/                                     the project's own record (optional; see Devbook Adoption)
+```
 
-- Which MCP servers are authoritative for which topics.
-- Which installed plugins, skills, or agents should be selected for specific task categories.
-- Which workflows must be routed through repository-specific orchestrators before implementation or release actions.
-- What fallback path to use when an MCP server, plugin, skill, or agent is unavailable.
+| File | Holds | Never holds |
+|---|---|---|
+| `AGENTS.md` | Guidance authority and fallback, repository structure, contribution workflow, dependency rules, one pointer per path-scoped rule | A rule for one kind of file; a restated ADR or recommendation |
+| `CLAUDE.md` | `@AGENTS.md` and a paragraph saying so | Any rule |
+| `.github/copilot-instructions.md` | One sentence pointing at `AGENTS.md` | Any rule |
+| `.agents/rules/<topic>.md` | One topic's rules, with `name`, `description` and `paths` front matter | Rules for the whole repository |
 
-Keep everything else in the repository's MCP-served documents or in the installed tool's own instruction surface.
+## AGENTS.md: the One Root File
+
+`AGENTS.md` is the cross-host standard for a repository's root instructions, and both hosts can be
+pointed at it. Write it imperative and concise; delete any sentence that does not change what an agent
+does.
+
+It carries only what applies to the whole repository:
+
+- Which MCP server is authoritative for which topic, the order to consult sources in, and the fallback
+  when a server is unreachable (see *Tool and MCP Selection Policy*).
+- The repository structure, as a table of paths and what each holds.
+- The contribution workflow: branch names, commit convention, merge requirements, and the pull-request
+  skill when one is required.
+- Dependency rules.
+- One line per path-scoped rule, naming the rule and the paths it covers.
+
+A plugin that writes its own section into `AGENTS.md` (devbook does) keeps it between its own markers;
+edit outside the markers only.
+
+## Host Wrappers
+
+Each host gets a wrapper whose only job is to load `AGENTS.md`.
+
+`CLAUDE.md` — Claude Code expands the import at launch:
+
+```markdown
+@AGENTS.md
+
+`AGENTS.md` holds this repository's standing rules; the import above expands it at launch, so
+everything it says applies here. Claude-specific notes, if any are ever needed, go below.
+```
+
+`.github/copilot-instructions.md` — GitHub Copilot reads this file on every request:
+
+```markdown
+Read [AGENTS.md](../AGENTS.md) and follow it. It holds this repository's standing rules, and
+everything it says applies here. Copilot-specific notes, if any are ever needed, go below.
+```
+
+Add a host-specific note below the wrapper text only when it is true of that host alone. A rule that
+applies to both hosts belongs in `AGENTS.md`.
+
+## Path-Scoped Rules
+
+A rule that applies to one kind of file — the documents under `docs/`, the server code under `src/` —
+is authored once and wrapped per host, so it loads only when an agent works on a matching file and
+never crowds the root file.
+
+- The rule: `.agents/rules/<topic>.md`, with `name`, `description` and a `paths` glob list in its front
+  matter, and a body of at most 60 lines.
+- The Claude Code wrapper: `.claude/rules/<topic>.md`, with `paths` copied verbatim.
+- The Copilot wrapper: `.github/instructions/<topic>.instructions.md`, with `applyTo` set to the
+  `paths` list joined with commas and `description` copied from the rule.
+- Each wrapper's body is one sentence: "Read `.agents/rules/<topic>.md` and follow it before editing
+  this file." It never restates the rule.
+- Check that `applyTo` equals `paths.join(",")` for every pair before committing.
+- Keep a `README.md` in `.agents/rules/` with a table of topics, their paths, and what each covers.
+
+A rule fires when a host **reads** a matching file, so creating a new file from scratch may not trigger
+it; open a sibling first or read the rule directly. `.agents/rules/` is a convention rather than a
+ratified standard — `AGENTS.md` defines no globs, and glob-scoped rules are an open proposal
+([agents.md#179](https://github.com/agentsmd/agents.md/issues/179)) whose `name` / `description` /
+`paths` shape this convention follows.
 
 ## Tool and MCP Selection Policy
 
 Use a stable selection order:
 
-1. Repository MCP guidance for repository-specific architecture, design, coding, testing, structure, and governance decisions.
-2. Repository-specific orchestration skills and specialist agents selected from the JSdotNet Copilot skill catalog.
-3. External or platform MCP servers for vendor, framework, or product documentation.
-4. Direct repository inspection and built-in tools for workspace state, code search, diffs, and local validation.
+1. Repository MCP guidance for architecture, design, coding, testing, structure and governance.
+2. Installed skills and agents whose declared specialty matches the task.
+3. External or platform MCP servers for vendor, framework or product documentation.
+4. Direct repository inspection and built-in tools for workspace state, code search, diffs and local
+   validation.
 
-For repositories using the JSdotNet Copilot stack, name the expected MCP servers explicitly in the instruction file using their authoritative server IDs and commands (see Config Guideline: .mcp.json):
-
-- `jsdotnet-project-guidelines` (command `jsdotnet-guidelines-mcpserver`) for repository guidance under `guide/`.
-- `jsdotnet-project-design` (command `jsdotnet-design-mcpserver`) for design and UX guidance under `design/`.
-- Additional external servers only when needed, such as `microsoft-learn` or `aspire`.
+Name the expected MCP servers in `AGENTS.md` by their authoritative server IDs, and take those IDs and
+commands from *Config Guideline: .mcp.json* rather than restating the table.
 
 **⚠️ Do not use the deprecated command `jsdotnet-project-guidelines-mcpserver`** (deprecated package
-`jsdotnet.project.guidelines.mcpserver`, last v1.0.6). If it appears in a generated instruction file
-or config, replace it with `jsdotnet-guidelines-mcpserver`.
-
-Also name the preferred orchestration and specialist surfaces explicitly so routing stays stable:
-
-- Skills: `orch-architecture`, `orch-adr`, `orch-feature`, `orch-bug`, `orch-create-module`, `orch-create-service`, `orch-update-packages`, `orch-setup`, `create-github-issue`, `update-github-issue`, `pr-jsdotnet`.
-- Agents: `architecture:architect`, `csharp-coding:coding`, `documentation:documentation`, `product-owner:product-owner`, `domain-design:domain-architect`, `ux-design:ux-designer`.
+`jsdotnet.project.guidelines.mcpserver`, last v1.0.6). If it appears in a generated instruction file or
+config, replace it with `jsdotnet-guidelines-mcpserver`.
 
 Rules:
 
-- Query the authoritative repository MCP server before answering repository-policy questions from memory.
-- Cite the relevant document ID, ADR number, or relative path when the instruction file requires grounded guidance.
-- Do not copy large sections of MCP guidance into the instruction file; link or route to it instead.
-- Keep tool selection rules at the policy level. Do not duplicate detailed usage instructions that are already maintained by the server, plugin, or skill.
+- Query the authoritative MCP server before answering a repository-policy question from memory.
+- Cite the document ID, ADR number or relative path behind every architectural answer.
+- Link or route to MCP guidance; never copy it into an instruction file.
 
 ### MCP Fallback
 
 If the repository MCP server is unavailable:
 
-1. Read the checked-in document index and referenced markdown files directly if they are present in the repository.
-2. If the local documents are also unavailable, state that the guidance could not be verified.
-3. Do not invent repository policy from memory when the authoritative source cannot be reached.
+1. Read the checked-in document index and the markdown files it references, when they are present.
+2. If those are unavailable too, state that the guidance could not be verified.
+3. Never invent repository policy from memory when the authoritative source cannot be reached.
 
-## Agent Usage Policy
+## Agent and Flow Routing
 
-- Prefer an installed repository-specific plugin, skill, or agent when the task matches its declared specialty.
-- Use general-purpose agents only when no specialized option applies or when the specialized option is unavailable.
-- Route to one specialist per scope; do not duplicate the same responsibility across multiple agents or instruction files.
-- Keep agent instructions in the repository file limited to **when to select** the agent, not **how the agent internally performs** its workflow.
+- Name a skill or agent in `AGENTS.md` only when the repository requires it for a task category — for
+  example, the skill every pull request must be created with.
+- Route only to what the repository actually installs. A plugin that routes tasks itself — the devbook
+  delivery engine's `flow-*` skills arrive with their own routing context — needs no copy of that
+  routing in `AGENTS.md`.
+- Say **when** to select a skill or agent, never **how** it performs its work; that stays in the skill.
+- When a preferred skill or agent is unavailable, keep the same governance checkpoints with the closest
+  lower-level option and state the reduced assurance explicitly.
 
-For JSdotNet Copilot repositories, prefer orchestration skills from `plugins/copilot-app/skills` before dropping to specialist agents directly. For example:
+## Migrating from a Copilot-Only File
 
-- Use `orch-architecture` or `orch-adr` before architecture or decision-record changes.
-- Use `orch-feature` or `orch-bug` before implementation work that spans planning, coding, and validation.
-- Use `orch-create-module` or `orch-create-service` for new bounded scopes.
-- Use `orch-update-packages` for dependency updates.
-- Use `pr-jsdotnet`, `create-github-issue`, or `update-github-issue` for repository workflow automation when those skills are installed.
-
-Only route directly to agents such as `architecture:architect` or `csharp-coding:coding` when no orchestrator skill is the better entry point for the task.
-
-### Agent/Plugin/Skill Fallback
-
-If a preferred plugin, skill, or agent is unavailable:
-
-1. Use the closest lower-level repository-approved option, such as a more general agent or direct built-in tools.
-2. Preserve the same governance checkpoints called out by the repository, such as consulting MCP guidance first or keeping required review steps.
-3. State any reduced assurance explicitly when the fallback removes specialist validation or automation.
-
-## Repo-Specific Orchestration Routing
-
-Repository instruction files should explicitly route governed workflows to the repository's approved orchestration entry points. Typical examples include:
-
-- Architecture documentation and decision records.
-- Feature, bug, and module/service creation workflows.
-- Dependency or package update workflows.
-- Release, packaging, or distribution workflows.
-- Pull request, issue, and review-comment automation workflows.
-
-Rules:
-
-- Prefer naming the approved orchestrator, plugin, skill, or agent for each workflow category.
-- Describe the routing trigger and required preconditions, such as consulting repository guidance before changing governed assets.
-- Do not duplicate the orchestrator's internal checklist in the instruction file when that behavior is already maintained by the orchestrator itself.
-- Keep routing repository-specific: only include orchestration paths that are actually installed or supported for that repository.
-- For JSdotNet Copilot-based repositories, treat `https://github.com/JSdotNet/Copilot/tree/main/plugins/copilot-app/skills` as the baseline source for orchestration routing names and responsibilities.
-
-### Orchestration Fallback
-
-If the preferred orchestrator is unavailable:
-
-1. Fall back to the nearest named specialist agent, such as `architecture:architect`, `csharp-coding:coding`, `documentation:documentation`, or `product-owner:product-owner`, that can still honor the repository's guidance and checkpoints.
-2. If no suitable specialist exists, perform the work with direct tools while following the same documented repository guidance from `jsdotnet-coding-guidelines` or local checked-in docs.
-3. Record that orchestration routing from the JSdotNet Copilot skill catalog was unavailable so the user understands why a lower-assurance path was used.
-
-## File Count: Consolidate by Default
-
-- Default to as few instruction files as reasonably possible. In most repositories, two files are
-  enough to cover this recommendation's scope: one for MCP/tool-usage authority and selection order,
-  and one for workflow/task routing (orchestration, agent, and skill selection).
-- Do not create a separate file per topic (for example, one file each for MCP servers, agents,
-  skills, and routing) when their combined content is small enough to read comfortably in one or two
-  files. Splitting into many narrow files fragments a single policy decision across files that must
-  all be kept in sync, which is itself a maintenance cost.
-- Only split further when a single file would clearly exceed a reasonable size for one sitting of
-  review (as a guide, several hundred lines of dense policy) or when it would mix genuinely unrelated
-  concerns (for example, tool/MCP selection versus release or packaging policy).
-- Before adding a new instruction file, check whether the content belongs as a new section in an
-  existing file instead.
+1. Move the repository-wide content of `.github/copilot-instructions.md` into a new root `AGENTS.md`,
+   rewritten imperative and concise. Drop version history and speculative sections.
+2. Move each rule that applies to one kind of file into `.agents/rules/<topic>.md` with its two
+   wrappers, leaving a one-line pointer in `AGENTS.md`.
+3. Reduce `.github/copilot-instructions.md` to the pointer above and add `CLAUDE.md` beside it.
+4. Check that nothing from the old file was lost except what was dropped on purpose, and list the drops
+   in the commit message.
 
 ## Anti-Patterns to Avoid
 
-- Turning the instruction file into a duplicate of ADRs, recommendations, or design documents.
-- Embedding full plugin, skill, or agent playbooks in the repository instruction file.
-- Listing tools or agents without a selection policy for when they should be used.
-- Defining fallback behavior that silently changes policy or hides the loss of an authoritative source.
-- Splitting one policy area (e.g., tool/MCP authority and selection) across more instruction files
-  than necessary instead of consolidating it into a single file.
+- A rule stated in two places — in `AGENTS.md` and a path-scoped rule, or in a wrapper and its rule.
+- A host-specific root file carrying rules the other host never sees.
+- An instruction file that duplicates ADRs, recommendations, design documents or skill playbooks.
+- Listing tools or agents without saying when each is selected.
+- A fallback that silently changes policy or hides the loss of an authoritative source.
+- A personal preference, local path or machine-specific setting in a committed instruction file.
+
+## Worked Example
+
+[JSdotNet/Project-Guidelines-MCP](https://github.com/JSdotNet/Project-Guidelines-MCP) uses exactly this
+layout: its `AGENTS.md` is the only root instruction file, `CLAUDE.md` and
+`.github/copilot-instructions.md` wrap it, and `.agents/rules/` holds the `guide`, `design-content` and
+`mcp-server` rules beside the `devbook-*` rules that `devbook:init` installed.
 
 ## References
 
+- Recommendation: Devbook Adoption
+- Recommendation: Agent Skill Authoring
 - Config Guideline: .mcp.json
 - Config Guideline: github-app.yml
+- AGENTS.md: https://agents.md

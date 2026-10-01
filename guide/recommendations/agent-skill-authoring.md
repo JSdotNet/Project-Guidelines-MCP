@@ -1,6 +1,6 @@
 ---
 title: "Agent Skill Authoring: Scope, Preconditions, and Descriptions"
-date: 2026-08-10
+date: 2026-09-28
 status: Accepted
 tags: [skills, agent-skills, authoring, copilot, orchestration, routing, recommendations]
 ---
@@ -296,7 +296,7 @@ reach a verdict on each row from the file text alone.
 ## References
 
 - Recommendation: Building an MCP Server with Included Skills
-- Recommendation: Copilot Instruction-File Setup
+- Recommendation: Instruction-File Setup
 - Config Guideline: .mcp.json
 - Agent Skills specification: https://agentskills.io/specification
 - GitHub Copilot CLI — add skills: https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills
