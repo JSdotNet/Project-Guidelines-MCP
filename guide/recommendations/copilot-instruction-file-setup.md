@@ -1,6 +1,6 @@
 ---
 title: "Instruction-File Setup: One AGENTS.md, Wrapped per Host"
-date: 2026-09-28
+date: 2026-10-06
 status: Accepted
 tags: [instructions, agents-md, claude-code, copilot, path-scoped-rules, mcp, routing, recommendations]
 ---
@@ -180,7 +180,7 @@ If the repository MCP server is unavailable:
 [JSdotNet/Project-Guidelines-MCP](https://github.com/JSdotNet/Project-Guidelines-MCP) uses exactly this
 layout: its `AGENTS.md` is the only root instruction file, `CLAUDE.md` and
 `.github/copilot-instructions.md` wrap it, and `.agents/rules/` holds the `guide`, `design-content` and
-`mcp-server` rules beside the `devbook-*` rules that `devbook:init` installed.
+`mcp-server` rules.
 
 ## References
 

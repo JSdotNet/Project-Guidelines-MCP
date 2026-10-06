@@ -369,7 +369,6 @@ AGENTS.md                         the repository's standing rules (the one root 
 CLAUDE.md                         @AGENTS.md import for Claude Code
 .github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-.devbook/                         this repository's own arc42, domain, tech, design and ai record
 guide/                            adrs/, designs/, recommendations/, structures/, config/ and index.json
 design/                           UX style guide served by the design server
 plugins/                          guidelines and design agent plugins
