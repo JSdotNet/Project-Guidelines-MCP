@@ -1,6 +1,6 @@
 ---
 title: "Devbook Adoption: Start with the devbook Plugin Alone"
-date: 2026-09-28
+date: 2026-10-06
 status: Accepted
 tags: [devbook, documentation, arc42, domain, agents-md, claude-code, copilot, ci, recommendations]
 ---
@@ -133,13 +133,6 @@ Starting with the whole stack front-loads configuration a project has not yet ne
 - Restating a published ADR or recommendation in `.devbook/`; cite it, and record only this project's
   own decisions there.
 - Editing devbook-managed files instead of running `devbook:update`.
-
-## Worked Example
-
-[JSdotNet/Project-Guidelines-MCP](https://github.com/JSdotNet/Project-Guidelines-MCP) runs this minimal
-shape: all five folders adopted with the `devbook` plugin alone, `devbook-meta.yml` in CI, the
-`devbook-*` rules beside its own `guide`, `design-content` and `mcp-server` rules, and no delivery
-engine.
 
 ## References
 
