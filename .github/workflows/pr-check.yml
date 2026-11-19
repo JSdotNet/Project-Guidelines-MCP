@@ -45,8 +45,7 @@ jobs:
         run: |
           for project in \
             tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj \
-            tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj \
-            tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj; do
+            tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj; do
             project_name="$(basename "$(dirname "$project")")"
             dotnet test "$project" --configuration Release --no-build --verbosity normal --results-directory "./coverage/$project_name" -- \
               --coverlet \

@@ -1,7 +1,7 @@
 # AGENTS.md
 
 This repository is the single source of truth for JSdotNet .NET C# project guidelines. The
-guidance lives in `defaults/` and is served by the MCP servers built from `src/`. This
+guidance lives in `defaults/` and is served by the MCP server built from `src/`. This
 file governs how to maintain **this repository** — not how to write .NET code.
 
 ## Guidance authority
@@ -35,8 +35,8 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `defaults/arc42/building-blocks/` | One page per building block of `05-building-block-view.md` |
 | `defaults/arc42/concepts/` | Prescriptive guidance and best practices |
 | `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
-| `defaults/design/` | UX style guide served by the design MCP server |
-| `plugins/` | Agent plugins (`guidelines`, `design`) and their skills |
+| `defaults/design/` | UX style guide, served as the `design` category |
+| `plugins/app-defaults/` | The one agent plugin: `skills/<name>/SKILL.md` and both host manifests, targeting server `jsdotnet-app-defaults` |
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |
 | `tests/` | MCP server test projects |
