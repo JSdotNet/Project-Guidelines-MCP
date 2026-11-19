@@ -65,7 +65,7 @@ under `.claude/rules/` and `.github/instructions/`:
 
 ## Dependencies
 
-- Manage every package version centrally (ADR 0002).
+- Manage every package version centrally (ADR 0001, `0001-platform-and-build`).
 - Pin versions of critical libraries (logging, DI, resilience) and update them in a dedicated
   `chore:` PR.
 - Prefer the BCL over a third-party package where they are equivalent.
