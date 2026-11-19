@@ -36,7 +36,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         }
     }
 
-    [McpServerTool(Name = "list_guides_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), 'structures' (canonical project scaffolds and templates), and 'config' (configuration file guidelines, e.g. github-app.yml). Use this when you know the type of guidance you need rather than searching by keyword.")]
+    [McpServerTool(Name = "list_guides_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), 'structures' (canonical project scaffolds and templates), 'config' (configuration file guidelines, e.g. github-app.yml), and 'design' (the UX style guide: tokens, color, typography, components). Use this when you know the type of guidance you need rather than searching by keyword.")]
     public async Task<string> ListGuidesByTypeAsync([Description("Category to filter by")] string category, CancellationToken ct)
     {
         string[] ids = [];

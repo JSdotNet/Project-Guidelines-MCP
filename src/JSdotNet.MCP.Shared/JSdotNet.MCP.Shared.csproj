@@ -6,4 +6,8 @@
     <PackageReference Include="ModelContextProtocol" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="JSdotNet.MCP.Shared.Tests" />
+  </ItemGroup>
+
 </Project>

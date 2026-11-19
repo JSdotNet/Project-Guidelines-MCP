@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 using JSdotNet.MCP.Shared.Abstractions;
 using JSdotNet.MCP.Shared.Infrastructure;
 
-namespace JSdotNet.MCP.Guidelines.Tests;
+namespace JSdotNet.AppDefaults.Mcp.Tests;
 
 /// <summary>
-/// Integration tests that exercise the real defaults/ document catalog, filtered the way the
-/// guidelines server filters it.
+/// Integration tests that exercise the real defaults/ document catalog the server serves.
 /// </summary>
-public sealed class GuidesCatalogTests
+public sealed class DefaultsCatalogTests
 {
     [Fact]
     public async Task ListDocuments_ReturnsItems()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var docs = await catalog.ListDocumentsAsync();
         Assert.NotEmpty(docs);
         Assert.Contains(docs, d => d.Id == "0001-platform-and-build");
@@ -25,7 +24,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task GetContent_ReturnsMarkdown()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var id = (await catalog.ListDocumentsAsync()).First().Id;
         var content = await catalog.GetContentAsync(id, TestContext.Current.CancellationToken);
         Assert.False(string.IsNullOrWhiteSpace(content));
@@ -35,7 +34,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task Search_FindsExpected()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var results = await catalog.SearchAsync("central package management");
         Assert.Contains(results, r => r.Id == "0001-platform-and-build");
     }
@@ -43,7 +42,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task Search_CaseInsensitive_FindsResults()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var results = await catalog.SearchAsync("CENTRAL PACKAGE MANAGEMENT");
         Assert.NotEmpty(results);
     }
@@ -51,7 +50,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task Search_ByTag_FindsExpected()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var results = await catalog.SearchByTagAsync("dotnet");
         Assert.NotEmpty(results);
         Assert.Contains(results, r => r.Id == "0001-platform-and-build");
@@ -60,7 +59,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task ListDocuments_ReturnsSortedByCategory()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var docs = await catalog.ListDocumentsAsync();
         var categories = docs.Select(d => d.Category).ToList();
         Assert.Equal(categories.OrderBy(c => c).ToList(), categories);
@@ -69,7 +68,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task ListDocuments_AllDocumentsHaveValidIds()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         foreach (var doc in await catalog.ListDocumentsAsync())
         {
             Assert.False(string.IsNullOrWhiteSpace(doc.Id));
@@ -81,7 +80,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task GetContent_MultipleDocuments_AllReadable()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         foreach (var doc in (await catalog.ListDocumentsAsync()).Take(3))
         {
             var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
@@ -92,7 +91,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task CopilotInstructionGuide_IsDiscoverableAndReadable()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
         var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "copilot-instruction-file-setup");
         Assert.Equal("ai/copilot-instruction-file-setup.md", doc.RelativePath.Replace('\\', '/'));
@@ -110,7 +109,7 @@ public sealed class GuidesCatalogTests
     [Fact]
     public async Task DevbookAdoptionGuide_IsDiscoverableAndReadable()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
         var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "devbook-adoption");
         Assert.Equal("arc42/concepts/devbook-adoption.md", doc.RelativePath.Replace('\\', '/'));
@@ -140,11 +139,12 @@ public sealed class GuidesCatalogTests
     }
 
     [Fact]
-    public async Task ListDocuments_ExcludesDesignDocuments()
+    public async Task ListDocuments_IncludesDesignCategory()
     {
-        IDocumentCatalog catalog = CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog());
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
         var docs = await catalog.ListDocumentsAsync();
-        Assert.DoesNotContain(docs, d => d.Category == "design");
+        Assert.Contains(docs, d => d.Category == "design");
+        Assert.Contains(docs, d => d.Category == "adrs");
     }
 
     [Fact]

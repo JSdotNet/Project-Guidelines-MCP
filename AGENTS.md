@@ -9,7 +9,7 @@ file governs how to maintain **this repository** — not how to write .NET code.
 Architectural and coding guidance lives in `defaults/`, not here. For any question about
 architecture, patterns, C# style, testing, observability, or another technical decision:
 
-1. **MCP server first** — call `jsdotnet-coding-guidelines` (`search_guides`, `list_guides`,
+1. **MCP server first** — call `jsdotnet-app-defaults` (`search_guides`, `list_guides`,
    `get_guide`). Server setup: [defaults/ai/config/.mcp.json.md](defaults/ai/config/.mcp.json.md).
 2. **Local docs second** — when the server is unavailable, read `defaults/index.json` and the
    markdown files it references.
