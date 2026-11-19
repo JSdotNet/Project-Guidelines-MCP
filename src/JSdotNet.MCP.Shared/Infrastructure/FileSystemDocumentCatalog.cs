@@ -12,7 +12,7 @@ namespace JSdotNet.MCP.Shared.Infrastructure;
 
 /// <summary>
 /// Loads markdown documents from a local filesystem folder structure.
-/// Prefers guide/index.json if available; falls back to directory scanning.
+/// Prefers defaults/index.json if available; falls back to directory scanning.
 /// </summary>
 public sealed class FileSystemDocumentCatalog : IDocumentCatalog
 {
@@ -27,9 +27,29 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         _documents = new Lazy<IReadOnlyList<DocumentInfo>>(LoadDocuments);
     }
 
+    /// <summary>The folder, relative to the repository root, that holds the documents and their index.</summary>
+    public const string DefaultsFolder = "defaults";
+
+    /// <summary>
+    /// Resolves a configured documents path (<c>JSDOTNET_DOCS_PATH</c>): the <c>defaults/</c>
+    /// folder itself, or a repository root that contains one. Returns null when neither exists.
+    /// </summary>
+    public static string? ResolveDocumentsPath(string? configuredPath)
+    {
+        if (string.IsNullOrWhiteSpace(configuredPath) || !Directory.Exists(configuredPath))
+        {
+            return null;
+        }
+
+        var nested = Path.Join(configuredPath, DefaultsFolder);
+        return Directory.Exists(nested) && !File.Exists(Path.Join(configuredPath, "index.json"))
+            ? nested
+            : configuredPath;
+    }
+
     private static string ResolveDefaultRoot()
     {
-        // Search upwards from multiple starting points for a 'guide' folder with markdown files
+        // Search upwards from multiple starting points for a 'defaults' folder with markdown files
         foreach (var start in new[] { AppContext.BaseDirectory, Directory.GetCurrentDirectory(), Path.GetDirectoryName(typeof(FileSystemDocumentCatalog).Assembly.Location) ?? AppContext.BaseDirectory })
         {
             var candidate = FindUpForDocs(start);
@@ -38,8 +58,8 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
                 return candidate;
             }
         }
-        // Fallback: app base/guide (may be empty)
-        return Path.Join(AppContext.BaseDirectory, "guide");
+        // Fallback: app base/defaults (may be empty)
+        return Path.Join(AppContext.BaseDirectory, DefaultsFolder);
     }
 
     private static string? FindUpForDocs(string startDir)
@@ -47,7 +67,7 @@ public sealed class FileSystemDocumentCatalog : IDocumentCatalog
         var dir = new DirectoryInfo(startDir);
         while (dir is not null)
         {
-            var docs = Path.Join(dir.FullName, "guide");
+            var docs = Path.Join(dir.FullName, DefaultsFolder);
             if (Directory.Exists(docs) && Directory.GetFiles(docs, "*.md", SearchOption.AllDirectories).Length > 0)
             {
                 return docs;

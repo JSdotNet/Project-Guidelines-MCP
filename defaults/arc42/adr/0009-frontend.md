@@ -11,7 +11,7 @@ tags: [frontend, ui, blazor, react, vite, tailwind, design-tokens, css-variables
 The guidance listed five frontend frameworks with a styling sample for each, so every app
 re-decided the stack and its wiring. What has to be the same across apps is not the framework
 but how the UI is built, run, styled and connected to the API. Hard-coded colours and sizes
-drift from the style guide in `design/`.
+drift from the style guide in `defaults/design/`.
 
 ## Decision
 
@@ -21,7 +21,7 @@ drift from the style guide in `design/`.
 - It runs as an Aspire resource in the AppHost (ADR 0002): `AddDotnetProject` for Blazor,
   `AddViteApp` for React, and `.WithBrowserLogs()` on both.
 - It calls the API only through a client generated from the API's OpenAPI document (ADR 0004).
-- It takes colours, typography, spacing and motion from the `design/` tokens as CSS custom
+- It takes colours, typography, spacing and motion from the `defaults/design/` tokens as CSS custom
   properties. Components never hard-code a colour, font or size; a theme or dark mode swaps
   the property values, not the components.
 - It has a component catalog that shows every shared component in isolation, styled by the
@@ -61,7 +61,7 @@ Angular, Vue and Svelte are not options.
 
 ## References
 
-- [design/ style guide](../../design/README.md)
+- [defaults/design/ style guide](../../design/README.md)
 - [Tailwind CSS theme variables](https://tailwindcss.com/docs/theme)
 - [ASP.NET Core Blazor CSS isolation](https://learn.microsoft.com/aspnet/core/blazor/components/css-isolation)
 - [Aspire JavaScript hosting](https://aspire.dev/integrations/frameworks/javascript/)

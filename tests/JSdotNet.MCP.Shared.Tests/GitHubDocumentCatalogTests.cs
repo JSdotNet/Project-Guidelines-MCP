@@ -45,7 +45,7 @@ public sealed class GitHubDocumentCatalogTests
             repo: "TestRepo",
             branch: "main",
             httpClient: httpClient,
-            documentsPath: "guide",
+            documentsPath: "defaults",
             cacheDuration: cacheDuration);
     }
 

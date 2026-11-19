@@ -8,7 +8,7 @@
 
 | Server | MCP name | Serves | Contains |
 |--------|----------|--------|----------|
-| **Coding Guidelines** | `jsdotnet-coding-guidelines` | `guide/` | ADRs, designs, recommendations, structures, config |
+| **Coding Guidelines** | `jsdotnet-coding-guidelines` | `defaults/` | ADRs, designs, recommendations, structures, config |
 
 > For UX/design token guidance, use the separate `jsdotnet-design-ux-guidelines` server and its plugin.
 

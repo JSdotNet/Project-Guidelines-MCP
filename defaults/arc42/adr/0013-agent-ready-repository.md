@@ -58,7 +58,7 @@ answers nobody agreed on.
 - [AGENTS.md](https://agents.md/)
 - [Aspire agent skills](https://aspire.dev/get-started/ai-coding-agents/)
 - [dotnet/skills](https://github.com/dotnet/skills)
-- [guide/config/.mcp.json.md](../config/.mcp.json.md)
+- [defaults/ai/config/.mcp.json.md](../../ai/config/.mcp.json.md)
 - ADR 0002: Aspire, Configuration and Infrastructure
 
 Replaces: none; new in this set.

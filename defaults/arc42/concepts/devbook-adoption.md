@@ -12,7 +12,7 @@ Define how a project records its own architecture, domain, technology, design an
 `.devbook/`, and the smallest setup that keeps that record valid: the `devbook` plugin, its `init` and
 `update` skills, and its check in CI.
 
-The guidance this server publishes (`guide/`, `design/`) is what projects should do. `.devbook/` is what
+The guidance this server publishes (`defaults/`) is what projects should do. `.devbook/` is what
 one project actually is. Keep the two apart: a consuming project reads the published guidance through
 MCP and writes its own record in `.devbook/`.
 

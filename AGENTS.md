@@ -1,17 +1,17 @@
 # AGENTS.md
 
 This repository is the single source of truth for JSdotNet .NET C# project guidelines. The
-guidance lives in `guide/` and is served by the guidelines MCP server built from `src/`. This
+guidance lives in `defaults/` and is served by the MCP servers built from `src/`. This
 file governs how to maintain **this repository** — not how to write .NET code.
 
 ## Guidance authority
 
-Architectural and coding guidance lives in `guide/`, not here. For any question about
+Architectural and coding guidance lives in `defaults/`, not here. For any question about
 architecture, patterns, C# style, testing, observability, or another technical decision:
 
 1. **MCP server first** — call `jsdotnet-coding-guidelines` (`search_guides`, `list_guides`,
-   `get_guide`). Server setup: [guide/config/.mcp.json.md](guide/config/.mcp.json.md).
-2. **Local docs second** — when the server is unavailable, read `guide/index.json` and the
+   `get_guide`). Server setup: [defaults/ai/config/.mcp.json.md](defaults/ai/config/.mcp.json.md).
+2. **Local docs second** — when the server is unavailable, read `defaults/index.json` and the
    markdown files it references.
 3. **Disclose when neither is reachable** — say "I cannot verify this against the guidelines
    (MCP server unreachable)"; never answer from memory alone.
@@ -28,13 +28,13 @@ architecture, patterns, C# style, testing, observability, or another technical d
 
 | Path | Holds |
 |---|---|
-| `guide/index.json` | Document metadata index — update it whenever a doc changes |
-| `guide/adrs/` | ADRs 0001–0013 as `NNNN-title.md`, rewritten in place; `README.md` maps retired numbers |
-| `guide/designs/` | Deeper design explorations and diagrams |
-| `guide/recommendations/` | Prescriptive guidance and best practices |
-| `guide/structures/` | Example folder/file scaffolds and templates |
-| `guide/config/` | Standard configuration files (`.mcp.json`, `github-app.yml`) |
-| `design/` | UX style guide served by the design MCP server |
+| `defaults/` | The application defaults both MCP servers serve, shaped like a devbook `.devbook/` |
+| `defaults/index.json` | The one document metadata index — update it whenever a doc changes |
+| `defaults/arc42/adr/` | ADRs 0001–0013 as `NNNN-title.md`, rewritten in place; `README.md` maps retired numbers |
+| `defaults/arc42/building-blocks/` | Folder/file scaffolds, templates and design explorations |
+| `defaults/arc42/concepts/` | Prescriptive guidance and best practices |
+| `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
+| `defaults/design/` | UX style guide served by the design MCP server |
 | `plugins/` | Agent plugins (`guidelines`, `design`) and their skills |
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |
@@ -48,14 +48,14 @@ architecture, patterns, C# style, testing, observability, or another technical d
 Rules for one kind of file live in [.agents/rules/](.agents/rules/README.md), wrapped per host
 under `.claude/rules/` and `.github/instructions/`:
 
-- `guide/` taxonomy, front matter and `guide/index.json`: [guide.md](.agents/rules/guide.md).
-- `design/` style-guide authoring and `design/index.json`: [design-content.md](.agents/rules/design-content.md).
+- `defaults/` taxonomy, front matter and `defaults/index.json`: [defaults.md](.agents/rules/defaults.md).
+- `defaults/design/` style-guide authoring: [design-content.md](.agents/rules/design-content.md).
 - `src/` and `tests/` server invariants and coverage floor: [mcp-server.md](.agents/rules/mcp-server.md).
 
 ## Contribution workflow
 
 - Branches: `feature/<short-phrase>`, `fix/<issue-id>`, `guide/<topic>`, `adr/<NNNN-title>`.
-- ADRs: open a PR adding `guide/adrs/NNNN-title.md`, reserving the next number; review checks
+- ADRs: open a PR adding `defaults/arc42/adr/NNNN-title.md`, reserving the next number; review checks
   that the consequences are clear.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, …).
 - Merge needs a passing CI build and review from at least one maintainer.

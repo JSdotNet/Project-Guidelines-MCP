@@ -17,7 +17,7 @@ This plugin provides eight skills for working with the **`jsdotnet-coding-guidel
 
 ## What the Coding Guidelines MCP Server Serves
 
-The `jsdotnet-coding-guidelines` server serves documents from the `guide/` folder, organized in five categories:
+The `jsdotnet-coding-guidelines` server serves documents from the `defaults/` folder, organized in five categories:
 
 | Category | Contents |
 |---|---|

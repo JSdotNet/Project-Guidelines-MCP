@@ -14,7 +14,7 @@ This plugin provides five skills for working with the **`jsdotnet-design-ux-guid
 
 ## What the Design MCP Server Serves
 
-The `jsdotnet-design-ux-guidelines` server serves **six style-guide documents** from the `design/` folder:
+The `jsdotnet-design-ux-guidelines` server serves **six style-guide documents** from the `defaults/design/` folder:
 
 | Document | Contents |
 |---|---|
