@@ -13,8 +13,8 @@
     <Authors>Eduard Keilholz</Authors>
     <Company>JSdotNet</Company>
     <Description>Model Context Protocol (MCP) server serving the JSdotNet application defaults: ADRs, building blocks, recommendations, configuration and design guidance for .NET applications, as tools, prompts and defaults:// resources.</Description>
-    <PackageProjectUrl>https://github.com/JSdotNet/Project-Guidelines-MCP</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/JSdotNet/Project-Guidelines-MCP</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JSdotNet/app-defaults</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>

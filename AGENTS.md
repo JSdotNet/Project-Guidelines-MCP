@@ -1,7 +1,9 @@
 # AGENTS.md
 
-This repository is the single source of truth for JSdotNet .NET C# project guidelines. The
-guidance lives in `defaults/` and is served by the MCP server built from `src/`. This
+This repository, `JSdotNet/app-defaults`, holds the application defaults: the one golden setup
+every new JSdotNet .NET application starts from. The defaults live in `defaults/`, shaped so a
+project's `.devbook/` links them instead of copying them; the `jsdotnet-app-defaults` MCP server
+built from `src/` serves them, and `aspire/` publishes them as the Aspire config source. This
 file governs how to maintain **this repository** — not how to write .NET code.
 
 ## Guidance authority
@@ -40,7 +42,8 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |
 | `tests/` | MCP server test projects |
-| `JSdotNet.MCP.slnx` | Solution file |
+| `docs/` | Repository docs that are not defaults: `install.md`, the per-host server setup |
+| `JSdotNet.AppDefaults.slnx` | Solution file |
 | `.agents/rules/` | Path-scoped rules, wrapped per host in `.claude/rules/` and `.github/instructions/` |
 | `AGENTS.md` | This file; `CLAUDE.md` and `.github/copilot-instructions.md` wrap it per host |
 

@@ -174,7 +174,7 @@ Content here.
         var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir != null)
         {
-            if (File.Exists(Path.Join(dir.FullName, "JSdotNet.MCP.slnx")))
+            if (File.Exists(Path.Join(dir.FullName, "JSdotNet.AppDefaults.slnx")))
                 return dir.FullName;
 
             dir = dir.Parent;

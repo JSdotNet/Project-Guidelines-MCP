@@ -179,7 +179,7 @@ public sealed class DefaultsCatalogTests
         var dir = new System.IO.DirectoryInfo(Directory.GetCurrentDirectory());
         while (dir is not null)
         {
-            if (File.Exists(Path.Combine(dir.FullName, "JSdotNet.MCP.slnx")))
+            if (File.Exists(Path.Combine(dir.FullName, "JSdotNet.AppDefaults.slnx")))
                 return dir.FullName;
             dir = dir.Parent;
         }

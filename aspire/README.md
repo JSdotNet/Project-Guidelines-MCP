@@ -7,9 +7,9 @@ integration and the defaults skills to every new app (ADR 0002).
 ## Use it
 
 ```powershell
-$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP.git'
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/app-defaults.git'
 $env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
-$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP/blob/main/aspire/README.md'
+$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/app-defaults/blob/main/aspire/README.md'
 aspire new
 ```
 
@@ -17,7 +17,7 @@ Pick **JSdotNet app defaults** in the template picker and accept the source when
 Without the source, run the template directly:
 
 ```powershell
-aspire new --template-repository https://github.com/JSdotNet/Project-Guidelines-MCP --template-path aspire/templates
+aspire new --template-repository https://github.com/JSdotNet/app-defaults --template-path aspire/templates
 ```
 
 `aspire agent init` then registers the defaults skills in the agent's own plugin settings, and

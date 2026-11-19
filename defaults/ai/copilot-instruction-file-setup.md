@@ -177,7 +177,7 @@ If the repository MCP server is unavailable:
 
 ## Worked Example
 
-[JSdotNet/Project-Guidelines-MCP](https://github.com/JSdotNet/Project-Guidelines-MCP) uses exactly this
+[JSdotNet/app-defaults](https://github.com/JSdotNet/app-defaults) uses exactly this
 layout: its `AGENTS.md` is the only root instruction file, `CLAUDE.md` and
 `.github/copilot-instructions.md` wrap it, and `.agents/rules/` holds the `guide`, `design-content` and
 `mcp-server` rules.

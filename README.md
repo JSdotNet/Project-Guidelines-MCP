@@ -1,18 +1,47 @@
-# JSdotNet Project Guidelines
+# JSdotNet App Defaults
 
-Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, building blocks, concepts, AI setup and a UX style guide under `defaults/`. An MCP Server in `src/` exposes these documents for tools/agents.
+The default setup for a new JSdotNet .NET application: one golden setup, with one answer per
+concern and no alternatives listed. The decisions live in [defaults/](defaults/) as ADRs and
+arc42 chapters a project's `.devbook/` links to instead of copying. The `jsdotnet-app-defaults`
+MCP server serves them to agents, and [aspire/](aspire/) publishes them as an Aspire 17 config
+source, so `aspire new` scaffolds an app that already follows them.
 
-> Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
-> Original repository: https://github.com/nikneem/hexmaster-design-guidelines
+> Credits: this project builds on the original HexMaster Design Guidelines work by Eduard
+> Keilholz ([nikneem/hexmaster-design-guidelines](https://github.com/nikneem/hexmaster-design-guidelines))
+> and contributors.
 
-## MCP Server (C#, .NET 11)
+## The golden setup
 
-One MCP server, `jsdotnet-app-defaults` (package `JSdotNet.AppDefaults.Mcp`), serves every
-document under `defaults/`. Design is one category of that catalog, not a second server.
+| Concern | Default | ADR |
+|---|---|---|
+| Runtime | The newest GA .NET release, STS included (today .NET 11, C# 15); `global.json` pinned with `latestFeature`; no preview features | [0001](defaults/arc42/adr/0001-platform-and-build.md) |
+| Build and packages | `.slnx` only; `Directory.Build.props` with `TreatWarningsAsErrors` always on and CS8509 an error; Central Package Management with lock files and transitive pinning; C# file-based apps in `scripts/` | [0001](defaults/arc42/adr/0001-platform-and-build.md) |
+| Orchestration | Aspire 17, mandatory: a `Microsoft.NET.Sdk` AppHost with `Aspire.Hosting.Dotnet` and `AddDotnetProject`, started with `aspire run`; this repository is the Aspire config source | [0002](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) |
+| Configuration and infrastructure | Aspire parameters and secrets per environment; the AppHost is the infrastructure code, `aspire publish` generates it and `aspire deploy` applies it | [0002](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) |
+| Solution shape | Modular monolith with feature slices; a small app has one module; data access in `{Module}.Data.{Provider}`; tests under root `tests/` | [0003](defaults/arc42/adr/0003-solution-structure.md) |
+| HTTP API | Minimal APIs with endpoint classes, native OpenAPI and Scalar; built-in `AddValidation()` at the edge; Problem Details for every error | [0004](defaults/arc42/adr/0004-http-api.md) |
+| Application flow | Hand-rolled CQRS handlers (no mediator) returning a `Result<T>` union | [0005](defaults/arc42/adr/0005-application-layer.md) |
+| Persistence and messaging | EF Core only, database chosen per app in its own ADR; a concurrency token on every aggregate; integration events through a transactional outbox, broker chosen per app | [0006](defaults/arc42/adr/0006-persistence-and-messaging.md) |
+| Observability and resilience | OpenTelemetry and the standard resilience handler from ServiceDefaults; the Aspire dashboard locally; `[LoggerMessage]` logging | [0007](defaults/arc42/adr/0007-observability-and-resilience.md) |
+| Security | External OIDC identity provider, full JWT validation, zero-trust authorization policies | [0008](defaults/arc42/adr/0008-security.md) |
+| Frontend | Rules, not a framework: its own app under `src/App/`, an Aspire resource, a client generated from OpenAPI, `defaults/design/` tokens as CSS variables; Blazor or React + Vite, picked in the app's own ADR | [0009](defaults/arc42/adr/0009-frontend.md) |
+| Tests | xUnit v3 on Microsoft Testing Platform with NSubstitute and Bogus; integration tests on `WebApplicationFactory` with throwaway containers; Playwright E2E through `aspire start` | [0010](defaults/arc42/adr/0010-testing.md) |
+| MCP in an app | C# SDK 2.x, stateless Streamable HTTP in the Api host, its own skill, OAuth 2.1 with agent and user identities checked on every call, audited | [0011](defaults/arc42/adr/0011-setting-up-mcp.md) |
+| Agents in an app | Microsoft Agent Framework on `Microsoft.Extensions.AI`, models from Foundry behind one adapter, tools only from the app's own MCP tools or handlers | [0012](defaults/arc42/adr/0012-agents-in-applications.md) |
+| Agent-ready repository | One `AGENTS.md` wrapped per host, path-scoped rules, Aspire skills CLI first, this server through `dnx` | [0013](defaults/arc42/adr/0013-agent-ready-repository.md) |
 
-### Use it from a project
+The arc42 chapters around the ADRs — [constraints](defaults/arc42/02-constraints.md),
+[solution strategy](defaults/arc42/04-solution-strategy.md),
+[building blocks](defaults/arc42/05-building-block-view.md),
+[deployment](defaults/arc42/07-deployment-view.md) and
+[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — and the
+[UX style guide](defaults/design/) fill in the detail. Retired ADR numbers are mapped in
+[defaults/arc42/adr/README.md](defaults/arc42/adr/README.md).
 
-Requires the .NET 11 SDK (`global.json` pins 11.0.100, rolling forward to the latest feature band); `dnx` runs the package without installing it:
+## Use it from a project
+
+**The MCP server.** Add it to the project's `.mcp.json`; `dnx` (in the .NET SDK) runs the
+`JSdotNet.AppDefaults.Mcp` package without a global install:
 
 ```json
 {
@@ -26,239 +55,75 @@ Requires the .NET 11 SDK (`global.json` pins 11.0.100, rolling forward to the la
 }
 ```
 
-The package has package type `McpServer` and ships `.mcp/server.json`, so MCP hosts and the MCP
-Registry can read its metadata. It fetches the documents from this repository's `defaults/` on
-GitHub; set `JSDOTNET_DOCS_PATH` to a local `defaults/` folder (or a repository root holding one)
-to serve those instead, and `GITHUB_TOKEN` to raise the GitHub rate limit.
+It serves the tools `list_guides`, `search_guides` and `get_guide`, every document as a
+`defaults://` resource, and the prompts `new-app`, `review-against-defaults` and `propose-adr`.
+Per-host setup (Claude Code, GitHub Copilot CLI, VS Code, Visual Studio, the Copilot coding
+agent), the agent plugin and running from source are in [docs/install.md](docs/install.md).
 
-### What it serves
-
-| Primitive | Names |
-|---|---|
-| Tools | `list_guides`, `list_guides_by_type` (`adrs`, `designs`, `recommendations`, `structures`, `config`, `design`), `search_guides`, `search_guides_by_tag`, `get_guide`, `get_usage_logs` |
-| Resources | every document at `defaults://<relative path without .md>`, e.g. `defaults://arc42/adr/0001-platform-and-build` |
-| Prompts | `new-app`, `review-against-defaults`, `propose-adr` |
-
-List and read results carry `ttlMs` (five minutes). `ServerInfo.Version` reports the package
-version GitVersion stamps at build time.
-
-### Run from source
-
-From the repository root, serving the local `defaults/`:
+**The Aspire config source.** Point the Aspire CLI at this repository and `aspire new`,
+`aspire agent init` and `aspire add` offer the golden-setup template, the shared hosting
+integration and the defaults skills:
 
 ```powershell
-$env:JSDOTNET_DOCS_PATH = "."; dotnet run --project .\src\JSdotNet.AppDefaults.Mcp\JSdotNet.AppDefaults.Mcp.csproj
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/app-defaults.git'
+$env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
+$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/app-defaults/blob/main/aspire/README.md'
 ```
 
-This repository's own [.mcp.json](.mcp.json) starts it that way. The server uses stdio: logs go
-to stderr, JSON-RPC to stdout. See [src/JSdotNet.AppDefaults.Mcp/README.md](src/JSdotNet.AppDefaults.Mcp/README.md).
+The source follows `main`; set `ASPIRE_INIT_SOURCE_REF` to a reviewed commit id to pin it.
+[aspire/README.md](aspire/README.md) says what accepting the source changes and how to opt out.
 
-## Aspire config source
+**From a devbook project.** A decision the organization already records is linked, not
+copied. In the project's `.devbook/arc42/09-architecture-decisions.md`, link these ADRs and
+record only the app's own decisions — its database, broker, identity provider and frontend
+framework — as its own ADRs:
 
-This repository is an [Aspire 17 configuration source](https://aspire.dev/extensibility/config-sources/).
-Point `aspire new` and `aspire agent init` at it and a new app starts from the defaults:
+```markdown
+## Organization defaults
+
+This application follows the JSdotNet app defaults at commit `<sha>`:
+[ADRs 0001–0013](https://github.com/JSdotNet/app-defaults/tree/<sha>/defaults/arc42/adr).
+Deviations are recorded below as this application's own ADRs.
+```
+
+Its other arc42 chapters link the matching `defaults/arc42/` chapter the same way. How to adopt
+devbook itself is the [devbook](https://github.com/JSdotNet/devbook) repository's to say.
+
+## Start a new app
 
 ```powershell
-$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP.git'
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/app-defaults.git'
 $env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
-$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP/blob/main/aspire/README.md'
 aspire new
 ```
 
-The source follows `main`; set `ASPIRE_INIT_SOURCE_REF` to a reviewed full commit id to pin it.
+Pick **JSdotNet app defaults** and accept the source. Without the source, run the template
+directly:
 
-[aspire/aspire.config.json](aspire/aspire.config.json) supplies three sections:
-
-| Section | Supplies |
-|---|---|
-| `templateSources` | The golden-setup template [aspire/templates/app-defaults](aspire/templates/app-defaults/): AppHost on `Microsoft.NET.Sdk` with `AddDotnetProject`, ServiceDefaults, one module (Api, module, `Data.SqlServer`), tests, the ADR 0001 build files, `.editorconfig`, `AGENTS.md` with its host wrappers and a `dnx` `.mcp.json` |
-| `integrationSources` | `JSdotNet.AppDefaults.Hosting`, the shared resource definitions, built from [aspire/integrations](aspire/integrations/JSdotNet.AppDefaults.Hosting/) and published to nuget.org |
-| `skillSources` | The `app-defaults` plugin from this repository's [marketplace](.claude-plugin/marketplace.json) |
-
-[aspire/README.md](aspire/README.md) is the page `ASPIRE_INIT_SOURCE_README_URL` points at: what
-accepting the source changes, how to opt out, and how its content is reviewed.
-
-## Plugin
-
-`plugins/app-defaults/` is the one agent plugin. Its skills sit in `skills/<name>/SKILL.md`
-folders and target the `jsdotnet-app-defaults` server; it ships a Claude Code manifest
-(`.claude-plugin/plugin.json`) and a GitHub Copilot manifest (`.github/plugin/plugin.json`). See
-[plugins/app-defaults/README.md](plugins/app-defaults/README.md).
-
-The publish-results MCP server (`JSdotNet.MCP.Publish`) lives in its own repository,
-[JSdotNet/mcp-publish](https://github.com/JSdotNet/mcp-publish).
-
-### Registering new documents
-
-This repository uses `defaults/index.json` as the canonical registry for MCP document discovery.
-
-When you add, rename, edit, or remove markdown files in `defaults/`, also update `defaults/index.json` so metadata and paths stay in sync.
-
-## Repo structure
-
-```
-AGENTS.md                         the repository's standing rules (the one root instruction file)
-CLAUDE.md                         @AGENTS.md import for Claude Code
-.github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
-.agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-defaults/                         arc42/ (chapters 02, 04, 05, 07, 08, workspace.dsl, adr/, building-blocks/), ai/, design/ and index.json
-defaults/design/                  UX style guide, served as the `design` category
-aspire/                           Aspire 17 config source: aspire.config.json, templates/, integrations/
-.claude-plugin/marketplace.json   the plugin marketplace the config source's skillSources names
-plugins/app-defaults/             the one agent plugin: skills/<name>/SKILL.md plus both host manifests
-src/                              JSdotNet.MCP.Shared, JSdotNet.AppDefaults.Mcp
-tests/                            one test project per src/ project
-JSdotNet.MCP.slnx
+```powershell
+aspire new --template-repository https://github.com/JSdotNet/app-defaults --template-path aspire/templates
 ```
 
-## ADRs
+The template scaffolds the golden setup: an AppHost with `AddDotnetProject`, ServiceDefaults,
+one module (Api, module, `Data.SqlServer`), the test projects, the ADR 0001 build files,
+`.editorconfig`, `AGENTS.md` with its host wrappers and a `dnx` `.mcp.json`. Then run
+`aspire agent init` for the skills and record the app's own choices as ADRs.
 
-The decisions are a set of 13 ADRs, rewritten in place when a decision changes:
+## Change a default
 
-- [0001: Platform and Build](defaults/arc42/adr/0001-platform-and-build.md) (Accepted)
-- [0002: Aspire, Configuration and Infrastructure](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) (Accepted)
-- [0003: Solution Structure](defaults/arc42/adr/0003-solution-structure.md) (Accepted)
-- [0004: HTTP API](defaults/arc42/adr/0004-http-api.md) (Accepted)
-- [0005: Application Layer](defaults/arc42/adr/0005-application-layer.md) (Accepted)
-- [0006: Persistence and Messaging](defaults/arc42/adr/0006-persistence-and-messaging.md) (Accepted)
-- [0007: Observability and Resilience](defaults/arc42/adr/0007-observability-and-resilience.md) (Accepted)
-- [0008: Security](defaults/arc42/adr/0008-security.md) (Accepted)
-- [0009: Frontend](defaults/arc42/adr/0009-frontend.md) (Accepted)
-- [0010: Testing](defaults/arc42/adr/0010-testing.md) (Accepted)
-- [0011: Setting Up MCP](defaults/arc42/adr/0011-setting-up-mcp.md) (Accepted)
-- [0012: Agents in Applications](defaults/arc42/adr/0012-agents-in-applications.md) (Accepted)
-- [0013: Agent-Ready Repository](defaults/arc42/adr/0013-agent-ready-repository.md) (Accepted)
+A default changes through a pull request that rewrites the ADR in place (git keeps the old
+text) or, where no ADR covers the topic, adds the next number. Update
+[defaults/index.json](defaults/index.json) in the same change. Branch names, commit style, the
+rules per folder and the review bar are in [AGENTS.md](AGENTS.md).
 
-The old numbers 0001 to 0019 are retired and never reused; [defaults/arc42/adr/README.md](defaults/arc42/adr/README.md) maps each one to the ADR that replaced it.
-
-## Architecture
-
-The arc42 chapters a project links to from its own `.devbook/arc42/`:
-
-| Chapter | Holds |
-|---|---|
-| [02 Constraints](defaults/arc42/02-constraints.md) | The fixed givens: .NET, Aspire, EF Core, Azure |
-| [04 Solution Strategy](defaults/arc42/04-solution-strategy.md) | Goals to approach, pragmatic domain-driven design, module extraction |
-| [05 Building Block View](defaults/arc42/05-building-block-view.md) | The one solution structure, dependency rules and naming |
-| [07 Deployment View](defaults/arc42/07-deployment-view.md) | `aspire deploy` to Azure Container Apps, per-environment secrets, pipeline, Dependabot, auto-merge, rollback |
-| [08 Crosscutting Concepts](defaults/arc42/08-crosscutting-concepts.md) | Caching, feature flags, idempotency, API versioning, logging and audit, background jobs, validation, testing, code style and domain code, time, concurrency, real-time updates, secrets at rest |
-| [workspace.dsl](defaults/arc42/workspace.dsl) | The C4 seed (Structurizr DSL) a project starts from |
-
-Building blocks, one page each: [Module](defaults/arc42/building-blocks/module.md),
-[Domain model](defaults/arc42/building-blocks/domain-model.md),
-[Api](defaults/arc42/building-blocks/api.md),
-[Data.{Provider}](defaults/arc42/building-blocks/data-provider.md),
-[AppHost](defaults/arc42/building-blocks/apphost.md),
-[ServiceDefaults](defaults/arc42/building-blocks/service-defaults.md),
-[Test harness](defaults/arc42/building-blocks/test-harness.md),
-[Notifications](defaults/arc42/building-blocks/notifications.md),
-[File storage](defaults/arc42/building-blocks/file-storage.md).
-
-## Recommendations
-
-The short recommendations are folded into [08 Crosscutting Concepts](defaults/arc42/08-crosscutting-concepts.md)
-and [07 Deployment View](defaults/arc42/07-deployment-view.md); what remains is the agent setup in `defaults/ai/`:
-
-- [Instruction-File Setup: One AGENTS.md, Wrapped per Host](defaults/ai/copilot-instruction-file-setup.md)
-- [Agent Skill Authoring](defaults/ai/agent-skill-authoring.md)
-
-A project that keeps a `.devbook/` links these chapters and ADRs from its own arc42 chapters
-instead of copying them; how to adopt devbook is the [devbook](https://github.com/JSdotNet/devbook) repository's to say.
-
----
-
-## Development
-
-### Building and Testing
-
-```bash
-# Build the solution
-dotnet build JSdotNet.MCP.slnx
-
-# Run all tests
-dotnet test JSdotNet.MCP.slnx
-
-# Run tests with coverage
-dotnet test JSdotNet.MCP.slnx --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
-
-# Generate coverage report
-reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
+```powershell
+dotnet build JSdotNet.AppDefaults.slnx
 ```
 
-### Code Coverage Requirements
-
-- **Core Library** (`JSdotNet.MCP.Shared`): ≥80% line coverage
-- **Tests**: All tests must pass
-- Coverage reports are automatically generated in CI/CD
-
----
-
-## CI/CD Workflows
-
-### Build and Publish Workflow
-
-**Workflow**: `.github/workflows/publish-nuget.yml`
-
-Triggers on push to `main` branch when files in `src/` change.
-
-Steps:
-
-1. **Versioning** – GitVersion generates semantic version
-2. **Build** – Compiles solution in Release configuration with version info
-3. **Test** – Runs all unit tests with 80% coverage enforcement
-4. **Coverage Report** – Generates coverage summary
-5. **Package** – Creates NuGet package for the MCP Server
-6. **Publish** – Pushes package to NuGet.org
-7. **Release** – Creates GitHub release with version tag and artifacts
-
-Semantic Versioning Strategy (GitHubFlow):
-
-- **Main branch**: 1.0.0, 1.0.1, 1.0.2... (patch increments)
-- **Feature branches** (`feature/*`): 1.1.0-alpha.1, 1.1.0-alpha.2... (minor with alpha pre-release)
-- **Release branches** (`release/*`): 1.0.0-beta.1, 1.0.0-beta.2... (beta pre-release)
-
-Configuration: `GitVersion.yml` at repository root.
-
-### NuGet Packages
-
-Published to NuGet.org:
-
-- **JSdotNet.AppDefaults.Mcp** – application defaults MCP server (`jsdotnet-app-defaults`), run with `dnx JSdotNet.AppDefaults.Mcp --yes`
-
-The release workflow pushes the package only when its source (or the shared
-`JSdotNet.MCP.Shared` project) changed on `main`.
-
-Package features:
-
-- .NET 11 tool, runnable with `dnx`
-- Automatic document discovery from filesystem or GitHub
-- ModelContextProtocol SDK integration
-- MIT license
-
-### Setup Requirements
-
-To enable automated publishing, add the following GitHub secret:
-
-- `NUGET_API_KEY` – NuGet.org API key with push permissions
-
-Navigate to: Repository Settings → Secrets and variables → Actions → New repository secret
-
-### Local Version Testing
-
-To check what version GitVersion would generate locally:
-
-```bash
-# Install GitVersion tool
-dotnet tool install --global GitVersion.Tool
-
-# Run in repository root
-dotnet-gitversion
+```powershell
+dotnet test JSdotNet.AppDefaults.slnx
 ```
 
-## Notes
-
-- All code and examples target `.NET 11`.
-- The MCP Server uses the `FileSystemDocumentCatalog` for local development and `GitHubDocumentCatalog` for published scenarios.
-- Coverage threshold is enforced at 80% for core library code.
-- CI/CD pipeline only triggers on changes to `src/` folder when pushed to `main` branch.
-
+Merging to `main` publishes the `JSdotNet.AppDefaults.Mcp` package through
+[publish-nuget.yml](.github/workflows/publish-nuget.yml) when its source changed; the server
+reads documents from `main`, so a merged default reaches every project at once.
