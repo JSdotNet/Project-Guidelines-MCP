@@ -18,7 +18,8 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 | Folder | Holds | `category` |
 |---|---|---|
 | `defaults/arc42/adr/` | ADRs | `adrs` |
-| `defaults/arc42/building-blocks/` | Structures and designs, until they merge into one view | `structures`, `designs` |
+| `defaults/arc42/02-constraints.md`, `04-solution-strategy.md` | arc42 chapters on givens and approach | `designs` |
+| `defaults/arc42/05-building-block-view.md`, `building-blocks/` | The one solution structure and one page per block | `structures` |
 | `defaults/arc42/concepts/` | Recommendations, until they fold into chapter 08 | `recommendations` |
 | `defaults/ai/` | Instruction-file setup and skill authoring | `recommendations` |
 | `defaults/ai/config/` | One standard configuration file per doc, named `<file>.md` | `config` |
@@ -31,10 +32,11 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
   absorbed number is retired, never reused, and
   [adr/README.md](../../defaults/arc42/adr/README.md) maps it to the ADR that absorbed it.
   Write the decision in present tense and justify it rather than restating the context.
-- **Designs** — exploratory and free to evolve; Mermaid diagrams and the sections Problem,
-  Forces, Proposed Solution, Variants, Risks.
-- **Structures** — canonical directory/file scaffolds with minimal code shells and comments
-  marking where domain logic goes.
+- **arc42 chapters** — named `NN-chapter-name.md` after the arc42 chapter they fill; one
+  answer per concern, no variants. `workspace.dsl` beside them is the C4 seed and is not
+  indexed.
+- **Building blocks** — one block per file: its responsibility, layout, a minimal code shell
+  using `Company.Product` placeholders or the `Contoso.Orders` example, and its rules.
 - **Recommendations** — prescriptive, stable, narrowly scoped guidance; link the originating
   ADR where one exists.
 
