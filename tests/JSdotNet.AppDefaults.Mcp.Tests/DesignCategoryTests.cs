@@ -5,9 +5,12 @@ using JSdotNet.MCP.Shared.Abstractions;
 using JSdotNet.MCP.Shared.Infrastructure;
 using Xunit;
 
-namespace JSdotNet.MCP.Design.Tests;
+namespace JSdotNet.AppDefaults.Mcp.Tests;
 
-public sealed class DesignServerTests
+/// <summary>
+/// The design documents are the <c>design</c> category of the one defaults catalog.
+/// </summary>
+public sealed class DesignCategoryTests
 {
     [Fact]
     public async Task DesignCatalog_LoadsDesignDocs()
@@ -59,19 +62,31 @@ public sealed class DesignServerTests
     }
 
     [Fact]
-    public async Task DesignCatalog_ServesOnlyDesignDocuments()
+    public async Task DesignCategory_HoldsOnlyDesignPaths()
     {
         var docs = await DesignCatalog().ListDocumentsAsync();
 
-        Assert.All(docs, d => Assert.Equal("design", d.Category));
+        Assert.All(docs, d => Assert.StartsWith("design/", d.RelativePath.Replace('\\', '/')));
         Assert.DoesNotContain(docs, d => d.Id == "0001-platform-and-build");
     }
 
-    private static IDocumentCatalog DesignCatalog()
+    private static DesignDocuments DesignCatalog()
     {
         var defaultsRoot = FindFolder("defaults");
         Assert.NotNull(defaultsRoot);
-        return CategoryFilteredDocumentCatalog.DesignOnly(new FileSystemDocumentCatalog(defaultsRoot!));
+        return new DesignDocuments(new FileSystemDocumentCatalog(defaultsRoot!));
+    }
+
+    // The design slice of the catalog, as list_guides_by_type("design") selects it.
+    private sealed class DesignDocuments(IDocumentCatalog inner)
+    {
+        public async Task<IReadOnlyList<DocumentInfo>> ListDocumentsAsync()
+            => [.. (await inner.ListDocumentsAsync(TestContext.Current.CancellationToken)).Where(d => d.Category == "design")];
+
+        public async Task<IReadOnlyList<DocumentInfo>> SearchAsync(string query)
+            => [.. (await inner.SearchAsync(query, TestContext.Current.CancellationToken)).Where(d => d.Category == "design")];
+
+        public Task<string> GetContentAsync(string id, CancellationToken ct) => inner.GetContentAsync(id, ct);
     }
 
     private static string? FindFolder(string name)
