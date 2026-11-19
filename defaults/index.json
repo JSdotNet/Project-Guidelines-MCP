@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-11-19T12:00:00Z",
+    "generated": "2026-11-19T12:02:09Z",
     "documents": [
         {
             "id": "0001-platform-and-build",
@@ -273,46 +273,6 @@
             ]
         },
         {
-            "id": "modular-monolith-architecture-design",
-            "title": "Modular Monolith Architecture Design",
-            "description": "Architecture intent and trade-off guide for modular monoliths: boundary rules, in-process contract communication, consistency strategy, observability ownership, risks, and extraction path guidance.",
-            "category": "designs",
-            "relativePath": "arc42/building-blocks/modular-monolith-architecture-design.md",
-            "tags": [
-                "design",
-                "modular-monolith",
-                "architecture",
-                "boundaries",
-                "integration"
-            ]
-        },
-        {
-            "id": "modular-solution-structure",
-            "title": "Modular Solution Structure Design",
-            "description": "",
-            "category": "designs",
-            "relativePath": "arc42/building-blocks/modular-solution-structure.md",
-            "tags": [
-                "design",
-                "modular",
-                "architecture",
-                "aspire"
-            ]
-        },
-        {
-            "id": "pragmatic-domain-driven-design",
-            "title": "Pragmatic Domain-Driven Design Approach",
-            "description": "Practical DDD guidance for modular monoliths: when to use entities vs value objects, aggregate boundaries, domain events, bounded contexts, and how DDD concepts map to the module/feature-slice structure.",
-            "category": "designs",
-            "relativePath": "arc42/building-blocks/pragmatic-domain-driven-design.md",
-            "tags": [
-                "ddd",
-                "domain-driven-design",
-                "value-objects",
-                "design"
-            ]
-        },
-        {
             "id": "agent-skill-authoring",
             "title": "Agent Skill Authoring: Scope, Preconditions, and Descriptions",
             "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers narrowing scope by work type rather than process maturity, when negative scope is legitimate, Stage 0 scope discovery for missing inputs, stop conditions that route to a successor, anti-patterns, and a pass/fail audit checklist.",
@@ -326,6 +286,193 @@
                 "orchestration",
                 "routing",
                 "recommendations"
+            ]
+        },
+        {
+            "id": "02-constraints",
+            "title": "02 Constraints",
+            "description": "Fixes the givens every app starts from: the newest GA .NET, Aspire 17, EF Core in Data.{Provider} projects and Azure as the target deployed by aspire deploy.",
+            "category": "designs",
+            "relativePath": "arc42/02-constraints.md",
+            "tags": [
+                "arc42",
+                "constraints",
+                "dotnet",
+                "aspire",
+                "ef-core",
+                "azure"
+            ]
+        },
+        {
+            "id": "04-solution-strategy",
+            "title": "04 Solution Strategy",
+            "description": "Maps each goal to its approach — one modular-monolith shape with feature slices, Result<T> handlers, pragmatic domain-driven design — and the path for extracting a module.",
+            "category": "designs",
+            "relativePath": "arc42/04-solution-strategy.md",
+            "tags": [
+                "arc42",
+                "solution-strategy",
+                "modular-monolith",
+                "feature-slices",
+                "cqrs",
+                "ddd",
+                "domain-model"
+            ]
+        },
+        {
+            "id": "05-building-block-view",
+            "title": "05 Building Block View",
+            "description": "Prescribes the one solution structure: the src/ and tests/ tree, the Contoso.Orders example, the blocks, the dependency rules and the naming conventions.",
+            "category": "structures",
+            "relativePath": "arc42/05-building-block-view.md",
+            "tags": [
+                "arc42",
+                "building-blocks",
+                "solution-structure",
+                "modular-monolith",
+                "feature-slices",
+                "naming",
+                "slnx"
+            ]
+        },
+        {
+            "id": "module",
+            "title": "Building Block: Module",
+            "description": "Prescribes a module's implementation and Abstractions projects, its feature-slice layout, handler and registration shape, and its boundary rules.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/module.md",
+            "tags": [
+                "building-blocks",
+                "module",
+                "feature-slices",
+                "cqrs",
+                "abstractions",
+                "structure"
+            ]
+        },
+        {
+            "id": "domain-model",
+            "title": "Building Block: Domain Model",
+            "description": "Prescribes aggregate roots that guard invariants through Result-returning methods, value objects only where they earn it, domain events, specifications and their tests.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/domain-model.md",
+            "tags": [
+                "building-blocks",
+                "ddd",
+                "domain-model",
+                "aggregates",
+                "value-objects",
+                "domain-events",
+                "invariants"
+            ]
+        },
+        {
+            "id": "api",
+            "title": "Building Block: Api",
+            "description": "Prescribes a module Api project: one endpoint class per feature slice, an exhaustive Result<T> to Problem Details mapping and a Program.cs that only composes.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/api.md",
+            "tags": [
+                "building-blocks",
+                "api",
+                "minimal-api",
+                "endpoints",
+                "openapi",
+                "problem-details",
+                "structure"
+            ]
+        },
+        {
+            "id": "data-provider",
+            "title": "Building Block: Data.{Provider}",
+            "description": "Prescribes the {Module}.Data.{Provider} project: EF Core mapping outside the entities, one repository per aggregate, concurrency tokens, the outbox and migrations.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/data-provider.md",
+            "tags": [
+                "building-blocks",
+                "data",
+                "ef-core",
+                "persistence",
+                "migrations",
+                "outbox",
+                "repository",
+                "structure"
+            ]
+        },
+        {
+            "id": "apphost",
+            "title": "Building Block: AppHost",
+            "description": "Prescribes the Microsoft.NET.Sdk AppHost with Aspire.Hosting.Dotnet and AddDotnetProject, the migration runner, resource commands and browser logs.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/apphost.md",
+            "tags": [
+                "building-blocks",
+                "aspire",
+                "apphost",
+                "orchestration",
+                "deployment",
+                "structure"
+            ]
+        },
+        {
+            "id": "service-defaults",
+            "title": "Building Block: ServiceDefaults",
+            "description": "Prescribes the ServiceDefaults project as the one place for OpenTelemetry, health endpoints, service discovery and the standard HTTP resilience handler.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/service-defaults.md",
+            "tags": [
+                "building-blocks",
+                "aspire",
+                "service-defaults",
+                "opentelemetry",
+                "health-checks",
+                "resilience",
+                "structure"
+            ]
+        },
+        {
+            "id": "test-harness",
+            "title": "Building Block: Test Harness",
+            "description": "Prescribes a Fake* adapter for integration tests and a harness project the AppHost starts in run mode for every external service the app does not own.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/test-harness.md",
+            "tags": [
+                "building-blocks",
+                "testing",
+                "harness",
+                "fakes",
+                "integration-tests",
+                "aspire"
+            ]
+        },
+        {
+            "id": "notifications",
+            "title": "Building Block: Notifications",
+            "description": "Prescribes notifications as stored records sent and retried by a background worker, with push carrying only a nudge and the client re-reading through the API.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/notifications.md",
+            "tags": [
+                "building-blocks",
+                "notifications",
+                "background-jobs",
+                "push",
+                "retries",
+                "outbox"
+            ]
+        },
+        {
+            "id": "file-storage",
+            "title": "Building Block: File Storage",
+            "description": "Prescribes an IFileStorage port with an Azure Blob Storage adapter hosted through Aspire, metadata in the module database and no public containers.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/file-storage.md",
+            "tags": [
+                "building-blocks",
+                "file-storage",
+                "blob-storage",
+                "azure",
+                "ports-and-adapters",
+                "aspire"
             ]
         },
         {
@@ -637,63 +784,6 @@
                 "minimal-api",
                 "domain",
                 "recommendations"
-            ]
-        },
-        {
-            "id": "feature-slices-module-structure",
-            "title": "Feature Slices Module Structure",
-            "description": "Copy-paste scaffold for a complete module: full folder tree (DomainModels/, Features/, Observability/, Services/, Extensions/), Abstractions project with DataTransferObjects/, Api project with Program.cs wiring, Data project, and Tests project with Moq/xUnit examples.",
-            "category": "structures",
-            "relativePath": "arc42/building-blocks/feature-slices-module-structure.md",
-            "tags": [
-                "feature-slices",
-                "modules",
-                "cqrs",
-                "minimal-api",
-                "structure",
-                "modular-monolith",
-                "abstractions"
-            ]
-        },
-        {
-            "id": "folder-structure-reference",
-            "title": "Folder Structure Reference",
-            "description": "High-level solution folder map and navigation guide that points to detailed structure documents for module, feature-slice, and endpoint-specific layouts.",
-            "category": "structures",
-            "relativePath": "arc42/building-blocks/folder-structure-reference.md",
-            "tags": [
-                "structure",
-                "folders",
-                "templates",
-                "modular-monolith",
-                "feature-slices"
-            ]
-        },
-        {
-            "id": "minimal-api-endpoint-organization",
-            "title": "Minimal API Endpoint Organization",
-            "description": "Template for organizing Minimal API endpoints within a module's .Api project: Endpoints/ folder, static MapXxxEndpoints extension methods, MapGroup with tags, and how endpoints delegate to ICommandHandler / IQueryHandler.",
-            "category": "structures",
-            "relativePath": "arc42/building-blocks/minimal-api-endpoint-organization.md",
-            "tags": [
-                "api",
-                "minimal-api",
-                "structure",
-                "web"
-            ]
-        },
-        {
-            "id": "simple-solution-structure",
-            "title": "Simple Solution Structure Design",
-            "description": "Visual blueprint of a non-modular single-solution profile: core/api/data projects without module folders. Aspire is optional; test topology is flexible with Unit plus optional Integration and/or E2E tests (or Unit only for very small solutions).",
-            "category": "structures",
-            "relativePath": "arc42/building-blocks/simple-solution-structure.md",
-            "tags": [
-                "design",
-                "architecture",
-                "aspire",
-                "single-module",
-                "structure"
             ]
         },
         {

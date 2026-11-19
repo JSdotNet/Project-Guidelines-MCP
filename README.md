@@ -369,7 +369,7 @@ AGENTS.md                         the repository's standing rules (the one root 
 CLAUDE.md                         @AGENTS.md import for Claude Code
 .github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-defaults/                         arc42/ (adr/, building-blocks/, concepts/), ai/, design/ and index.json
+defaults/                         arc42/ (chapters 02, 04, 05, workspace.dsl, adr/, building-blocks/, concepts/), ai/, design/ and index.json
 defaults/design/                  UX style guide served by the design server
 plugins/                          guidelines and design agent plugins
 src/                              JSdotNet.MCP.Shared, .Guidelines, .Design, .Publish
@@ -397,10 +397,26 @@ The decisions are a set of 13 ADRs, rewritten in place when a decision changes:
 
 The old numbers 0001 to 0019 are retired and never reused; [defaults/arc42/adr/README.md](defaults/arc42/adr/README.md) maps each one to the ADR that replaced it.
 
-## Designs
+## Architecture
 
-- [Modular Monolith Architecture Design](defaults/arc42/building-blocks/modular-monolith-architecture-design.md)
-- [Pragmatic Domain-Driven Design Approach](defaults/arc42/building-blocks/pragmatic-domain-driven-design.md)
+The arc42 chapters a project links to from its own `.devbook/arc42/`:
+
+| Chapter | Holds |
+|---|---|
+| [02 Constraints](defaults/arc42/02-constraints.md) | The fixed givens: .NET, Aspire, EF Core, Azure |
+| [04 Solution Strategy](defaults/arc42/04-solution-strategy.md) | Goals to approach, pragmatic domain-driven design, module extraction |
+| [05 Building Block View](defaults/arc42/05-building-block-view.md) | The one solution structure, dependency rules and naming |
+| [workspace.dsl](defaults/arc42/workspace.dsl) | The C4 seed (Structurizr DSL) a project starts from |
+
+Building blocks, one page each: [Module](defaults/arc42/building-blocks/module.md),
+[Domain model](defaults/arc42/building-blocks/domain-model.md),
+[Api](defaults/arc42/building-blocks/api.md),
+[Data.{Provider}](defaults/arc42/building-blocks/data-provider.md),
+[AppHost](defaults/arc42/building-blocks/apphost.md),
+[ServiceDefaults](defaults/arc42/building-blocks/service-defaults.md),
+[Test harness](defaults/arc42/building-blocks/test-harness.md),
+[Notifications](defaults/arc42/building-blocks/notifications.md),
+[File storage](defaults/arc42/building-blocks/file-storage.md).
 
 ## Recommendations
 
@@ -415,14 +431,6 @@ The old numbers 0001 to 0019 are retired and never reused; [defaults/arc42/adr/R
 - [Integration Testing](defaults/arc42/concepts/testing-integration.md)
 - [Testing Shared Instructions](defaults/arc42/concepts/testing-shared.md)
 - [Unit Testing with xUnit, Moq, and Bogus](defaults/arc42/concepts/testing-unit.md)
-
-## Structures
-
-- [Feature Slices Module Structure](defaults/arc42/building-blocks/feature-slices-module-structure.md)
-- [Folder Structure Reference](defaults/arc42/building-blocks/folder-structure-reference.md)
-- [Minimal API Endpoint Organization](defaults/arc42/building-blocks/minimal-api-endpoint-organization.md)
-- [Modular Solution Structure Template](defaults/arc42/building-blocks/modular-solution-structure-template.md)
-- [Simple Solution Structure Design](defaults/arc42/building-blocks/simple-solution-structure.md)
 
 ---
 
