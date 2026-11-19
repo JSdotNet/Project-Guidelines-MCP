@@ -38,7 +38,7 @@ public class IndexJsonTests
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = await catalog.ListDocumentsAsync();
+            var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Single(docs);
@@ -84,7 +84,7 @@ public class IndexJsonTests
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var results = await catalog.SearchAsync("Uniqueterm");
+            var results = await catalog.SearchAsync("Uniqueterm", TestContext.Current.CancellationToken);
 
             // Assert
             Assert.NotEmpty(results);
@@ -120,7 +120,7 @@ Content here.
 
             // Act
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = await catalog.ListDocumentsAsync();
+            var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Single(docs);
@@ -142,7 +142,7 @@ Content here.
 
         // Act - This will attempt to fetch from GitHub
         var catalog = new GitHubDocumentCatalog(cache);
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
         // Assert - Should have loaded from index.json in the repo
         // ID format doesn't include leading zero padding
@@ -158,10 +158,10 @@ Content here.
         var catalog = new GitHubDocumentCatalog(cache);
 
         // Act - First call
-        var docs1 = await catalog.ListDocumentsAsync();
+        var docs1 = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
         // Act - Second call (should hit cache)
-        var docs2 = await catalog.ListDocumentsAsync();
+        var docs2 = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotEmpty(docs1);
