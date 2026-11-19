@@ -18,9 +18,8 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 | Folder | Holds | `category` |
 |---|---|---|
 | `defaults/arc42/adr/` | ADRs | `adrs` |
-| `defaults/arc42/02-constraints.md`, `04-solution-strategy.md` | arc42 chapters on givens and approach | `designs` |
+| `defaults/arc42/02-constraints.md`, `04-solution-strategy.md`, `07-deployment-view.md`, `08-crosscutting-concepts.md` | arc42 chapters on givens, approach, deployment and crosscutting concepts | `designs` |
 | `defaults/arc42/05-building-block-view.md`, `building-blocks/` | The one solution structure and one page per block | `structures` |
-| `defaults/arc42/concepts/` | Recommendations, until they fold into chapter 08 | `recommendations` |
 | `defaults/ai/` | Instruction-file setup and skill authoring | `recommendations` |
 | `defaults/ai/config/` | One standard configuration file per doc, named `<file>.md` | `config` |
 | `defaults/design/` | The UX style guide | `design` |

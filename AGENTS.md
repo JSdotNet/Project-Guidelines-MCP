@@ -30,12 +30,12 @@ architecture, patterns, C# style, testing, observability, or another technical d
 |---|---|
 | `defaults/` | The application defaults both MCP servers serve, shaped like a devbook `.devbook/` |
 | `defaults/index.json` | The one document metadata index — update it whenever a doc changes |
-| `defaults/arc42/` | arc42 chapters `02`, `04` and `05`, and the C4 seed `workspace.dsl` |
+| `defaults/arc42/` | arc42 chapters `02`, `04`, `05`, `07` and `08`, and the C4 seed `workspace.dsl` |
 | `defaults/arc42/adr/` | ADRs 0001–0013 as `NNNN-title.md`, rewritten in place; `README.md` maps retired numbers |
 | `defaults/arc42/building-blocks/` | One page per building block of `05-building-block-view.md` |
-| `defaults/arc42/concepts/` | Prescriptive guidance and best practices |
 | `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
 | `defaults/design/` | UX style guide, served as the `design` category |
+| `aspire/` | Aspire 17 config source: `aspire.config.json`, the golden-setup template and the hosting integration |
 | `plugins/app-defaults/` | The one agent plugin: `skills/<name>/SKILL.md` and both host manifests, targeting server `jsdotnet-app-defaults` |
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |

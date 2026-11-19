@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aspire\Company.Product.ServiceDefaults\Company.Product.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Company.Product\Company.Product.csproj" />
+    <ProjectReference Include="..\Company.Product.Data.SqlServer\Company.Product.Data.SqlServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+  </ItemGroup>
+
+</Project>

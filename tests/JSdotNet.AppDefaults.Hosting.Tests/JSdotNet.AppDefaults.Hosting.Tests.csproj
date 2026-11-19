@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\aspire\integrations\JSdotNet.AppDefaults.Hosting\JSdotNet.AppDefaults.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>
