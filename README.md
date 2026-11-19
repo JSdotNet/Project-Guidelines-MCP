@@ -53,6 +53,31 @@ $env:JSDOTNET_DOCS_PATH = "."; dotnet run --project .\src\JSdotNet.AppDefaults.M
 This repository's own [.mcp.json](.mcp.json) starts it that way. The server uses stdio: logs go
 to stderr, JSON-RPC to stdout. See [src/JSdotNet.AppDefaults.Mcp/README.md](src/JSdotNet.AppDefaults.Mcp/README.md).
 
+## Aspire config source
+
+This repository is an [Aspire 17 configuration source](https://aspire.dev/extensibility/config-sources/).
+Point `aspire new` and `aspire agent init` at it and a new app starts from the defaults:
+
+```powershell
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP.git'
+$env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
+$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/Project-Guidelines-MCP/blob/main/aspire/README.md'
+aspire new
+```
+
+The source follows `main`; set `ASPIRE_INIT_SOURCE_REF` to a reviewed full commit id to pin it.
+
+[aspire/aspire.config.json](aspire/aspire.config.json) supplies three sections:
+
+| Section | Supplies |
+|---|---|
+| `templateSources` | The golden-setup template [aspire/templates/app-defaults](aspire/templates/app-defaults/): AppHost on `Microsoft.NET.Sdk` with `AddDotnetProject`, ServiceDefaults, one module (Api, module, `Data.SqlServer`), tests, the ADR 0001 build files, `.editorconfig`, `AGENTS.md` with its host wrappers and a `dnx` `.mcp.json` |
+| `integrationSources` | `JSdotNet.AppDefaults.Hosting`, the shared resource definitions, built from [aspire/integrations](aspire/integrations/JSdotNet.AppDefaults.Hosting/) and published to nuget.org |
+| `skillSources` | The `app-defaults` plugin from this repository's [marketplace](.claude-plugin/marketplace.json) |
+
+[aspire/README.md](aspire/README.md) is the page `ASPIRE_INIT_SOURCE_README_URL` points at: what
+accepting the source changes, how to opt out, and how its content is reviewed.
+
 ### Publish Results Server
 
 A second MCP server (`src/JSdotNet.MCP.Publish`) lets an agent publish its results to a **configurable file location** instead of serving documentation.
@@ -80,6 +105,8 @@ CLAUDE.md                         @AGENTS.md import for Claude Code
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
 defaults/                         arc42/ (chapters 02, 04, 05, 07, 08, workspace.dsl, adr/, building-blocks/), ai/, design/ and index.json
 defaults/design/                  UX style guide served by the design server
+aspire/                           Aspire 17 config source: aspire.config.json, templates/, integrations/
+.claude-plugin/marketplace.json   the plugin marketplace the config source's skillSources names
 plugins/                          guidelines and design agent plugins
 src/                              JSdotNet.MCP.Shared, JSdotNet.AppDefaults.Mcp, JSdotNet.MCP.Publish
 tests/                            one test project per src/ project
