@@ -107,19 +107,35 @@ public sealed class DefaultsCatalogTests
     }
 
     [Fact]
-    public async Task DevbookAdoptionGuide_IsDiscoverableAndReadable()
+    public async Task CrosscuttingConcepts_IsDiscoverableAndHoldsEveryConcern()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
-        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "devbook-adoption");
-        Assert.Equal("arc42/concepts/devbook-adoption.md", doc.RelativePath.Replace('\\', '/'));
+        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "08-crosscutting-concepts");
+        Assert.Equal("arc42/08-crosscutting-concepts.md", doc.RelativePath.Replace('\\', '/'));
 
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
-        Assert.Contains("claude plugin marketplace add JSdotNet/devbook", content);
-        Assert.Contains("devbook:init", content);
-        Assert.Contains("devbook:update", content);
-        Assert.Contains("devbook:validate", content);
-        Assert.Contains("## The Optional Step Up", content);
+        foreach (var section in new[]
+        {
+            "## Caching", "## Feature flags", "## Idempotency", "## API versioning",
+            "## Logging and audit", "## Background jobs", "## Testing",
+            "## Code style and domain code", "## Time", "## Concurrency",
+            "## Real-time updates", "## Secrets at rest",
+        })
+        {
+            Assert.Contains(section, content);
+        }
+    }
+
+    [Fact]
+    public async Task Recommendations_FoldedIntoChapters_AreNoLongerListed()
+    {
+        IDocumentCatalog catalog = new FileSystemDocumentCatalog();
+
+        var docs = await catalog.ListDocumentsAsync();
+
+        Assert.DoesNotContain(docs, d => d.RelativePath.Replace('\\', '/').StartsWith("arc42/concepts/", StringComparison.Ordinal));
+        Assert.Single(docs, d => d.Id == "07-deployment-view");
     }
 
     [Fact]

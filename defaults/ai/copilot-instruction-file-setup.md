@@ -28,7 +28,7 @@ pointer per host cannot drift.
   operational guidance stays in the MCP-served documents.
 - Commit all of it. Nothing personal or machine-local belongs in an instruction file.
 - Record the project's own architecture, domain, technology, design and AI adoption in `.devbook/`, not
-  in `AGENTS.md` — see *Recommendation: Devbook Adoption*.
+  in `AGENTS.md`.
 
 ## The Layout
 
@@ -184,7 +184,6 @@ layout: its `AGENTS.md` is the only root instruction file, `CLAUDE.md` and
 
 ## References
 
-- Recommendation: Devbook Adoption
 - Recommendation: Agent Skill Authoring
 - Config Guideline: .mcp.json
 - Config Guideline: github-app.yml

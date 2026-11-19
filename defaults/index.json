@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-11-19T12:02:09Z",
+    "generated": "2026-11-19T12:15:39Z",
     "documents": [
         {
             "id": "0001-platform-and-build",
@@ -476,107 +476,50 @@
             ]
         },
         {
-            "id": "aspire-local-start-script",
-            "title": "Aspire Local Start Script",
-            "description": "Defines a canonical scripts/Start-Aspire.ps1 entry point every Aspire-adopting repo must ship to trust dev certs, build, and run the AppHost consistently for local development.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/aspire-local-start-script.md",
+            "id": "07-deployment-view",
+            "title": "07 Deployment View",
+            "description": "Makes Aspire the infrastructure code deployed with aspire deploy to Azure Container Apps, with per-environment secrets, a GitHub Actions pipeline, weekly grouped Dependabot updates with an Aspire group, auto-merge gated by required checks, and the rule to roll back only while the schema is unchanged.",
+            "category": "designs",
+            "relativePath": "arc42/07-deployment-view.md",
             "tags": [
+                "arc42",
+                "deployment",
                 "aspire",
-                "scripts",
-                "developer-experience",
-                "orchestration",
-                "tooling",
-                "recommendations"
+                "aspire-deploy",
+                "azure-container-apps",
+                "bicep",
+                "secrets",
+                "ci-cd",
+                "github-actions",
+                "dependabot",
+                "auto-merge",
+                "rollback"
             ]
         },
         {
-            "id": "api-idempotency-for-commands",
-            "title": "API Idempotency for Commands",
-            "description": "Guidance for idempotent command endpoints using idempotency keys or business keys so retries do not duplicate externally visible side effects.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/api-idempotency-for-commands.md",
+            "id": "08-crosscutting-concepts",
+            "title": "08 Crosscutting Concepts",
+            "description": "Prescribes one answer per crosscutting concern, each linked to its ADR: caching, feature flags, idempotency, API versioning, logging and audit, background jobs, validation, testing, code style and domain code, time, concurrency, real-time updates as nudge-and-re-read, and secrets at rest.",
+            "category": "designs",
+            "relativePath": "arc42/08-crosscutting-concepts.md",
             "tags": [
-                "api",
+                "arc42",
+                "crosscutting-concepts",
+                "caching",
+                "feature-flags",
                 "idempotency",
-                "commands",
-                "payments",
-                "reliability",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "api-versioning-and-contract-evolution",
-            "title": "API Versioning and Contract Evolution",
-            "description": "Recommends additive-first API evolution, deliberate deprecation, and consistent versioning only when backward compatibility cannot be preserved.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/api-versioning-and-contract-evolution.md",
-            "tags": [
-                "api",
-                "versioning",
-                "contracts",
-                "backward-compatibility",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "background-jobs-and-hosted-services",
-            "title": "Background Jobs and Hosted Services",
-            "description": "Guidance for BackgroundService and worker-style processing, including idempotency, cancellation, durable dispatch, retries at boundaries, and observability requirements.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/background-jobs-and-hosted-services.md",
-            "tags": [
+                "api-versioning",
+                "logging",
+                "audit",
                 "background-jobs",
-                "hosted-services",
-                "workers",
-                "idempotency",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "blazor-frontend-framework-guidance",
-            "title": "Blazor Frontend Framework Guidance",
-            "description": "Practical guidance for Blazor frontend setup, feature-based component structure, backend integration patterns, state management, caching strategy, and security recommendations.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/blazor-frontend-framework-guidance.md",
-            "tags": [
-                "blazor",
-                "frontend",
-                "components",
-                "data-binding",
-                "state-management",
-                "caching",
-                "security",
-                "web-api",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "caching-strategy",
-            "title": "Caching Strategy",
-            "description": "Defines cache-aside as the default caching model, limits caching to read-oriented and externally derived data, and requires explicit TTL and invalidation ownership.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/caching-strategy.md",
-            "tags": [
-                "caching",
-                "performance",
-                "redis",
-                "cache-aside",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "csharp-coding-style",
-            "title": "C# Coding Style",
-            "description": "Prescribes C# coding conventions for .NET projects: file-scoped namespaces, sealed classes by default, nameof in exceptions, var usage, guard clauses, and modern C# features.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/csharp-coding-style.md",
-            "tags": [
-                "csharp",
-                "coding-style",
-                "conventions",
-                "dotnet",
-                "recommendations"
+                "testing",
+                "code-style",
+                "domain",
+                "time",
+                "concurrency",
+                "real-time",
+                "secrets",
+                "validation"
             ]
         },
         {
@@ -593,196 +536,6 @@
                 "path-scoped-rules",
                 "mcp",
                 "routing",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "devbook-adoption",
-            "title": "Devbook Adoption: Start with the devbook Plugin Alone",
-            "description": "Recommends recording a project's own architecture, domain, technology, design and AI adoption in .devbook/ with the devbook plugin alone - devbook:init to adopt, devbook:update to move forward, devbook:validate in CI - and treats the delivery engine and layered plugins as an optional step up.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/devbook-adoption.md",
-            "tags": [
-                "devbook",
-                "documentation",
-                "arc42",
-                "domain",
-                "agents-md",
-                "claude-code",
-                "copilot",
-                "ci",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "database-migration-workflow",
-            "title": "Database Migration Workflow",
-            "description": "Defines a reviewable migration workflow with module-owned migrations, business-intent naming, explicit data-loss review, and no destructive production startup migrations.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/database-migration-workflow.md",
-            "tags": [
-                "database",
-                "migrations",
-                "ef-core",
-                "deployment",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "ci-cd-pipeline-for-continuous-deployment",
-            "title": "CI/CD Pipeline for Continuous Deployment",
-            "description": "Defines a production-grade CI/CD baseline for .NET services with required PR checks, automatic deployment from main, progressive rollout, post-deploy verification, and rollback readiness.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/ci-cd-pipeline-for-continuous-deployment.md",
-            "tags": [
-                "ci-cd",
-                "pipeline",
-                "continuous-deployment",
-                "github-actions",
-                "devops",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "feature-flags-and-rollout-safety",
-            "title": "Feature Flags and Rollout Safety",
-            "description": "Guidance for short-lived feature flags, rollout ownership, observability-backed releases, and avoiding flag sprawl or policy bypasses.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/feature-flags-and-rollout-safety.md",
-            "tags": [
-                "feature-flags",
-                "rollout",
-                "deployment",
-                "safety",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "logging-and-audit-logging",
-            "title": "Logging and Audit Logging",
-            "description": "Separates diagnostic logging from audit logging and defines the minimum fields, retention concerns, and redaction expectations for each.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/logging-and-audit-logging.md",
-            "tags": [
-                "logging",
-                "audit",
-                "observability",
-                "security",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "object-calisthenics-for-domain",
-            "title": "Object Calisthenics for Domain Code",
-            "description": "Applies the 9 Object Calisthenics rules to domain classes: one level of indentation, no else, wrap primitives, first-class collections, one dot per line, no abbreviations, small entities, two instance variables max, and no getters/setters.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/object-calisthenics-for-domain.md",
-            "tags": [
-                "domain",
-                "csharp",
-                "object-calisthenics",
-                "clean-code",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "specification-pattern-usage",
-            "title": "Specification Pattern for Business Rules",
-            "description": "Defines when to use the Specification pattern versus inline aggregate invariants: use for complex, reusable, or combinable rules; keep simple field checks inline.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/specification-pattern-usage.md",
-            "tags": [
-                "domain",
-                "ddd",
-                "specification-pattern",
-                "business-rules",
-                "csharp",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "testing-architecture",
-            "title": "Architecture Testing for Layer and Module Boundaries",
-            "description": "Defines automated architecture tests for dependency direction, forbidden dependencies, and module boundary integrity using NetArchTest, including CI enforcement guidance.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/testing-architecture.md",
-            "tags": [
-                "architecture",
-                "testing",
-                "clean-architecture",
-                "netarchtest",
-                "boundaries",
-                "modular-monolith"
-            ]
-        },
-        {
-            "id": "testing-end-to-end",
-            "title": "End-to-End Testing",
-            "description": "Defines Aspire-orchestrated E2E testing as black-box by nature, focused on critical business journeys and observable outcomes, with clear scope separation from integration tests.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/testing-end-to-end.md",
-            "tags": [
-                "testing",
-                "e2e",
-                "quality",
-                "web-api",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "testing-integration",
-            "title": "Integration Testing",
-            "description": "Defines integration testing as primarily gray-box with black-box assertions, allows module-specific projects for large solutions, recommends shared integration tests for cross-module and smaller solutions, and restricts mocking to external dependencies.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/testing-integration.md",
-            "tags": [
-                "testing",
-                "integration-testing",
-                "aspnet",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "testing-shared",
-            "title": "Testing Shared Instructions",
-            "description": "Defines shared testing guidance across unit, integration, end-to-end, and architecture tests, including project layout, default test project structure, and CI execution order.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/testing-shared.md",
-            "tags": [
-                "testing",
-                "unit-testing",
-                "integration-testing",
-                "e2e",
-                "architecture",
-                "recommendations"
-            ]
-        },
-        {
-            "id": "testing-unit",
-            "title": "Unit testing with xUnit, Moq and Bogus",
-            "description": "Defines unit-test�specific practices including TDD workflow, test scope per class, parameterized tests, builder-first arrangement, assertion strategies, deterministic seeding, coverage targets, and over-mocking avoidance. Shared tooling and patterns are in Testing Shared Instructions.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/testing-unit.md",
-            "tags": [
-                "testing",
-                "xunit",
-                "moq",
-                "bogus",
-                "unit-testing",
-                "assertions"
-            ]
-        },
-        {
-            "id": "validation-strategy",
-            "title": "Validation Strategy",
-            "description": "Clarifies the split between boundary validation, application validation, and domain invariant enforcement, including FluentValidation-style boundary checks and consistent error reporting.",
-            "category": "recommendations",
-            "relativePath": "arc42/concepts/validation-strategy.md",
-            "tags": [
-                "validation",
-                "fluentvalidation",
-                "minimal-api",
-                "domain",
                 "recommendations"
             ]
         },
