@@ -35,6 +35,7 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `defaults/arc42/building-blocks/` | One page per building block of `05-building-block-view.md` |
 | `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
 | `defaults/design/` | UX style guide served by the design MCP server |
+| `aspire/` | Aspire 17 config source: `aspire.config.json`, the golden-setup template and the hosting integration |
 | `plugins/` | Agent plugins (`guidelines`, `design`) and their skills |
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |

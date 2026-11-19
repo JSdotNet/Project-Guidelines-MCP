@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\Company.Product.Core\Company.Product.Core.csproj" />
+    <ProjectReference Include="..\..\src\ModuleName\Company.Product\Company.Product.csproj" />
+    <ProjectReference Include="..\..\src\ModuleName\Company.Product.Abstractions\Company.Product.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\ModuleName\Company.Product.Data.SqlServer\Company.Product.Data.SqlServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NetArchTest.Rules" />
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+</Project>
