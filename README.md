@@ -379,17 +379,17 @@ JSdotNet.MCP.slnx
 
 ## ADRs
 
-- [0001: Adopt .NET 10 as Target Framework](guide/adrs/0001-adopt-dotnet-10.md) (Accepted)
-- [0002: Central Package Management for .NET Solutions](guide/adrs/0002-central-package-management.md) (Accepted)
-- [0003: .NET Aspire Recommendation for ASP.NET Services](guide/adrs/0003-recommend-aspire-for-aspnet-projects.md) (Accepted)
-- [0004: Standardize Result Objects for Expected Application Outcomes](guide/adrs/0004-standardize-result-objects-for-expected-failures.md) (Accepted)
-- [0005: Modular Monolith Project Structure](guide/adrs/0005-modular-monolith-structure.md) (Accepted)
-- [0006: CQRS Recommendation for ASP.NET API](guide/adrs/0006-cqrs-recommendation-for-aspnet-api.md) (Accepted)
-- [0007: Minimal APIs Over Controller-Based APIs](guide/adrs/0007-minimal-apis-over-controllers.md) (Accepted)
-- [0008: Adopt Vertical Slice Architecture for Feature Organization](guide/adrs/0008-vertical-slice-architecture.md) (Accepted)
-- [0009: Feature Slices Within Module Projects](guide/adrs/0009-feature-slices-module-structure.md) (Accepted)
-- [0010: Adopt OpenTelemetry for Comprehensive Observability](guide/adrs/0010-adopt-opentelemetry-for-observability.md) (Accepted)
-- [0011: Centralized Frontend Styling Variables](guide/adrs/0011-centralized-frontend-styling-variables.md) (Accepted)
+The ADRs are being consolidated into a renumbered set of 13. The first seven are in place:
+
+- [0001: Platform and Build](guide/adrs/0001-platform-and-build.md) (Accepted)
+- [0002: Aspire, Configuration and Infrastructure](guide/adrs/0002-aspire-configuration-and-infrastructure.md) (Accepted)
+- [0003: Solution Structure](guide/adrs/0003-solution-structure.md) (Accepted)
+- [0004: HTTP API](guide/adrs/0004-http-api.md) (Accepted)
+- [0005: Application Layer](guide/adrs/0005-application-layer.md) (Accepted)
+- [0006: Persistence and Messaging](guide/adrs/0006-persistence-and-messaging.md) (Accepted)
+- [0007: Observability and Resilience](guide/adrs/0007-observability-and-resilience.md) (Accepted)
+
+The older ADR files under `guide/adrs/` stay until the consolidation removes them; each new ADR ends with a `Replaces:` line naming the old numbers it absorbs. `guide/index.json` lists every ADR file.
 
 ## Designs
 
