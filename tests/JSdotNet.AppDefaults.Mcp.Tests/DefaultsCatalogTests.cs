@@ -16,7 +16,7 @@ public sealed class DefaultsCatalogTests
     public async Task ListDocuments_ReturnsItems()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
         Assert.NotEmpty(docs);
         Assert.Contains(docs, d => d.Id == "0001-platform-and-build");
     }
@@ -25,7 +25,7 @@ public sealed class DefaultsCatalogTests
     public async Task GetContent_ReturnsMarkdown()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var id = (await catalog.ListDocumentsAsync()).First().Id;
+        var id = (await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken)).First().Id;
         var content = await catalog.GetContentAsync(id, TestContext.Current.CancellationToken);
         Assert.False(string.IsNullOrWhiteSpace(content));
         Assert.Contains("#", content);
@@ -35,7 +35,7 @@ public sealed class DefaultsCatalogTests
     public async Task Search_FindsExpected()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var results = await catalog.SearchAsync("central package management");
+        var results = await catalog.SearchAsync("central package management", TestContext.Current.CancellationToken);
         Assert.Contains(results, r => r.Id == "0001-platform-and-build");
     }
 
@@ -43,7 +43,7 @@ public sealed class DefaultsCatalogTests
     public async Task Search_CaseInsensitive_FindsResults()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var results = await catalog.SearchAsync("CENTRAL PACKAGE MANAGEMENT");
+        var results = await catalog.SearchAsync("CENTRAL PACKAGE MANAGEMENT", TestContext.Current.CancellationToken);
         Assert.NotEmpty(results);
     }
 
@@ -51,7 +51,7 @@ public sealed class DefaultsCatalogTests
     public async Task Search_ByTag_FindsExpected()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var results = await catalog.SearchByTagAsync("dotnet");
+        var results = await catalog.SearchByTagAsync("dotnet", TestContext.Current.CancellationToken);
         Assert.NotEmpty(results);
         Assert.Contains(results, r => r.Id == "0001-platform-and-build");
     }
@@ -60,7 +60,7 @@ public sealed class DefaultsCatalogTests
     public async Task ListDocuments_ReturnsSortedByCategory()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
         var categories = docs.Select(d => d.Category).ToList();
         Assert.Equal(categories.OrderBy(c => c).ToList(), categories);
     }
@@ -69,7 +69,7 @@ public sealed class DefaultsCatalogTests
     public async Task ListDocuments_AllDocumentsHaveValidIds()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        foreach (var doc in await catalog.ListDocumentsAsync())
+        foreach (var doc in await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken))
         {
             Assert.False(string.IsNullOrWhiteSpace(doc.Id));
             Assert.False(string.IsNullOrWhiteSpace(doc.Title));
@@ -81,7 +81,7 @@ public sealed class DefaultsCatalogTests
     public async Task GetContent_MultipleDocuments_AllReadable()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        foreach (var doc in (await catalog.ListDocumentsAsync()).Take(3))
+        foreach (var doc in (await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken)).Take(3))
         {
             var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
             Assert.False(string.IsNullOrWhiteSpace(content));
@@ -93,7 +93,7 @@ public sealed class DefaultsCatalogTests
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
-        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "copilot-instruction-file-setup");
+        var doc = Assert.Single(await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken), d => d.Id == "copilot-instruction-file-setup");
         Assert.Equal("ai/copilot-instruction-file-setup.md", doc.RelativePath.Replace('\\', '/'));
 
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
@@ -111,7 +111,7 @@ public sealed class DefaultsCatalogTests
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
-        var doc = Assert.Single(await catalog.ListDocumentsAsync(), d => d.Id == "08-crosscutting-concepts");
+        var doc = Assert.Single(await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken), d => d.Id == "08-crosscutting-concepts");
         Assert.Equal("arc42/08-crosscutting-concepts.md", doc.RelativePath.Replace('\\', '/'));
 
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
@@ -132,7 +132,7 @@ public sealed class DefaultsCatalogTests
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
 
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
         Assert.DoesNotContain(docs, d => d.RelativePath.Replace('\\', '/').StartsWith("arc42/concepts/", StringComparison.Ordinal));
         Assert.Single(docs, d => d.Id == "07-deployment-view");
@@ -158,7 +158,7 @@ public sealed class DefaultsCatalogTests
     public async Task ListDocuments_IncludesDesignCategory()
     {
         IDocumentCatalog catalog = new FileSystemDocumentCatalog();
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
         Assert.Contains(docs, d => d.Category == "design");
         Assert.Contains(docs, d => d.Category == "adrs");
     }
@@ -167,7 +167,7 @@ public sealed class DefaultsCatalogTests
     public async Task IndexEntries_AllPointAtExistingFiles()
     {
         var catalog = new FileSystemDocumentCatalog(Path.Combine(FindRepoRoot()!, "defaults"));
-        foreach (var doc in await catalog.ListDocumentsAsync())
+        foreach (var doc in await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken))
         {
             var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
             Assert.False(string.IsNullOrWhiteSpace(content), doc.RelativePath);

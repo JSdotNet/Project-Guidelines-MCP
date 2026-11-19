@@ -59,8 +59,8 @@ public sealed class GitHubDocumentCatalogTests
         var handler = new CountingHandler(_ => HttpOk(ValidIndexJson));
         await using var catalog = BuildCatalog(handler, cache);
 
-        var first = await catalog.ListDocumentsAsync();
-        var second = await catalog.ListDocumentsAsync();
+        var first = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
+        var second = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
         Assert.Single(first);
         Assert.Single(second);
@@ -77,11 +77,11 @@ public sealed class GitHubDocumentCatalogTests
         var handler = new CountingHandler(_ => HttpOk(ValidIndexJson));
         await using var catalog = BuildCatalog(handler, cache, cacheDuration: TimeSpan.FromMilliseconds(50));
 
-        await catalog.ListDocumentsAsync(); // warm the cache — 1 HTTP call
+        await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken); // warm the cache — 1 HTTP call
 
         await Task.Delay(100, TestContext.Current.CancellationToken); // let the entry expire
 
-        await catalog.ListDocumentsAsync(); // cache miss — should trigger 2nd HTTP call
+        await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken); // cache miss — should trigger 2nd HTTP call
 
         Assert.Equal(2, handler.CallCount);
     }
@@ -110,11 +110,11 @@ public sealed class GitHubDocumentCatalogTests
         await using var catalog = BuildCatalog(handler, cache);
 
         // First call: both index.json (503, caught) and directory traversal (503) throw → ListDocumentsAsync raises
-        var ex = await Record.ExceptionAsync(async () => await catalog.ListDocumentsAsync());
+        var ex = await Record.ExceptionAsync(async () => await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken));
         Assert.NotNull(ex); // expected to throw — failure is NOT cached
 
         // Second call: GitHub is healthy; catalog retries (no permanent lock from Lazy)
-        var docs = await catalog.ListDocumentsAsync();
+        var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
         Assert.NotEmpty(docs);
     }
 
@@ -133,10 +133,10 @@ public sealed class GitHubDocumentCatalogTests
         });
         await using var catalog = BuildCatalog(handler, cache);
 
-        var ex = await Record.ExceptionAsync(async () => await catalog.SearchByTagAsync("testing"));
+        var ex = await Record.ExceptionAsync(async () => await catalog.SearchByTagAsync("testing", TestContext.Current.CancellationToken));
         Assert.NotNull(ex);
 
-        var results = await catalog.SearchByTagAsync("testing");
+        var results = await catalog.SearchByTagAsync("testing", TestContext.Current.CancellationToken);
         Assert.Single(results);
     }
 

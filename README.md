@@ -5,14 +5,14 @@ Design, architecture, style and structure guidelines for modern .NET (C#) projec
 > Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
 > Original repository: https://github.com/nikneem/hexmaster-design-guidelines
 
-## MCP Server (C#, .NET 10)
+## MCP Server (C#, .NET 11)
 
 One MCP server, `jsdotnet-app-defaults` (package `JSdotNet.AppDefaults.Mcp`), serves every
 document under `defaults/`. Design is one category of that catalog, not a second server.
 
 ### Use it from a project
 
-.NET 10 runs the package without installing it:
+Requires the .NET 11 SDK (`global.json` pins 11.0.100, rolling forward to the latest feature band); `dnx` runs the package without installing it:
 
 ```json
 {
@@ -230,7 +230,7 @@ The release workflow pushes the package only when its source (or the shared
 
 Package features:
 
-- .NET 10 tool, runnable with `dnx`
+- .NET 11 tool, runnable with `dnx`
 - Automatic document discovery from filesystem or GitHub
 - ModelContextProtocol SDK integration
 - MIT license
@@ -257,7 +257,7 @@ dotnet-gitversion
 
 ## Notes
 
-- All code and examples target `.NET 10`.
+- All code and examples target `.NET 11`.
 - The MCP Server uses the `FileSystemDocumentCatalog` for local development and `GitHubDocumentCatalog` for published scenarios.
 - Coverage threshold is enforced at 80% for core library code.
 - CI/CD pipeline only triggers on changes to `src/` folder when pushed to `main` branch.

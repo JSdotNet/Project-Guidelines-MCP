@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: '10.0.x'
+  DOTNET_VERSION: '11.0.x'
   SOLUTION_PATH: 'JSdotNet.MCP.slnx'
   DEFAULTS_PROJECT_PATH: 'src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj'
   HOSTING_PROJECT_PATH: 'aspire/integrations/JSdotNet.AppDefaults.Hosting/JSdotNet.AppDefaults.Hosting.csproj'
@@ -76,7 +76,7 @@ jobs:
           echo "AppDefaults changed: ${{ needs.detect-changes.outputs.defaults }}"
 
       - name: Restore dependencies
-        run: dotnet restore "${{ env.SOLUTION_PATH }}"
+        run: dotnet restore "${{ env.SOLUTION_PATH }}" --locked-mode
 
       - name: Build solution
         run: dotnet build "${{ env.SOLUTION_PATH }}" --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.fullSemVer }} /p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} /p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}

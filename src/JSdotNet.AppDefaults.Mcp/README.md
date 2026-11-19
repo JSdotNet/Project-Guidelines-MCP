@@ -12,7 +12,7 @@ the same catalog).
 
 ## Run it
 
-No install needed on .NET 10:
+No install needed on .NET 11:
 
 ```json
 {

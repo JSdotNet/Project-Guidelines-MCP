@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  DOTNET_VERSION: '10.0.x'
+  DOTNET_VERSION: '11.0.x'
   SOLUTION_PATH: 'JSdotNet.MCP.slnx'
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore "${{ env.SOLUTION_PATH }}"
+        run: dotnet restore "${{ env.SOLUTION_PATH }}" --locked-mode
 
       - name: Build solution
         run: dotnet build "${{ env.SOLUTION_PATH }}" --configuration Release --no-restore
