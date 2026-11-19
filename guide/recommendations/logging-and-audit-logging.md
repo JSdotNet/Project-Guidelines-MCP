@@ -40,5 +40,5 @@ Audit records must be queryable independently from normal application logs.
 
 ## References
 
-- ADR 0010: Adopt OpenTelemetry for Comprehensive Observability
-- ADR 0013: Authorization & Zero Trust Security Model
+- ADR 0007: Observability and Resilience
+- ADR 0008: Security

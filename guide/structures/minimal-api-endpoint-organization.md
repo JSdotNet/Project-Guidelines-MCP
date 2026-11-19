@@ -11,7 +11,7 @@ Type: Project Structure Template
 
 ## Purpose
 
-Provide a consistent, scalable pattern for organizing Minimal API endpoints in ASP.NET projects following ADR 0007 (Minimal APIs over Controllers).
+Provide a consistent, scalable pattern for organizing Minimal API endpoints in ASP.NET projects following ADR 0004 (HTTP API).
 
 ## Overview
 
@@ -128,7 +128,7 @@ app.Run();
 
 ### Endpoint lambdas stay thin
 
-- Delegate to handlers (see ADR 0006: CQRS recommendation).
+- Delegate to handlers (see ADR 0005: Application Layer).
 - Avoid business logic inside endpoint lambdas; keep them pure routing/binding/result mapping.
 
 ### Metadata and OpenAPI
@@ -179,7 +179,7 @@ var group = app.MapGroup("/orders")
 
 ## References
 
-- ADR 0001: Adopt .NET 10
-- ADR 0006: CQRS Recommendation for ASP.NET API
-- ADR 0007: Minimal APIs Over Controller-Based APIs
+- ADR 0001: Platform and Build
+- ADR 0005: Application Layer
+- ADR 0004: HTTP API
 - Recommendation: Unit Testing with xUnit, Moq, Bogus

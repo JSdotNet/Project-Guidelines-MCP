@@ -145,7 +145,7 @@ Step 3: Verify the token
 Step 4: Use the token in your code
   → CSS: var(--color-primary)
   → SCSS: $color-primary
-  → Framework variable: as documented in ADR 0011
+  → Framework variable: as documented in ADR 0009
 ```
 
 ---

@@ -129,7 +129,7 @@ Verify all tools return correct content and diagnose issues after install or upg
 
 3. Choose replacement brand/semantic color tokens
 4. Validate contrast in both light and dark modes
-5. Implement overrides per ADR 0011 (coding guidelines)
+5. Implement overrides per ADR 0009 (coding guidelines)
 ```
 
 ### Workflow 3: Debug a Design Token Issue

@@ -66,7 +66,7 @@ builder.Services.AddHttpClient<TodoApiClient>(client =>
 });
 ```
 
-### 4. Align styling with ADR 0011
+### 4. Align styling with ADR 0009
 
 - Keep design tokens centralized in one variables file.
 - Avoid hardcoded visual values in component-local styles.
@@ -74,7 +74,7 @@ builder.Services.AddHttpClient<TodoApiClient>(client =>
 
 ### 5. Integrate with .NET Aspire when solution is distributed
 
-If the frontend, APIs, and infrastructure resources are part of a distributed solution, use an Aspire AppHost as the single orchestration model (aligned with ADR 0003).
+If the frontend, APIs, and infrastructure resources are part of a distributed solution, use an Aspire AppHost as the single orchestration model (aligned with ADR 0002).
 
 Recommended:
 
@@ -377,7 +377,6 @@ public sealed class OrdersE2ETests
   - <https://learn.microsoft.com/aspnet/core/blazor/test>
 - Aspire Docs: What is Aspire?
   - <https://aspire.dev/get-started/what-is-aspire/>
-- ADR 0005: Modular Monolith Project Structure
-- ADR 0006: CQRS recommendation for ASP.NET API projects
-- ADR 0009: Feature slices within module projects
-- ADR 0011: Centralized frontend styling variables
+- ADR 0003: Solution Structure
+- ADR 0005: Application Layer
+- ADR 0009: Frontend

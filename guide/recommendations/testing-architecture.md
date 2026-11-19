@@ -24,7 +24,7 @@ Define a repeatable approach for automated architecture tests that enforce depen
 
 ### 1. Layer dependency direction
 
-For each module, enforce the direction established by ADR 0005 and ADR 0009:
+For each module, enforce the direction established by ADR 0003:
 
 - Domain-facing code must not depend on outer delivery or persistence concerns.
 - API and data adapter projects must not leak their frameworks into domain-centric code.
@@ -128,10 +128,9 @@ Rule changes should be made in the same pull request as the architecture decisio
 
 ## References
 
-- ADR 0005: Modular Monolith Project Structure
-- ADR 0006: Recommendation to Implement CQRS for ASP.NET API Projects
-- ADR 0008: Adopt Vertical Slice Architecture for Feature Organization
-- ADR 0009: Feature Slices Within Module Projects
+- ADR 0003: Solution Structure
+- ADR 0005: Application Layer
+- ADR 0010: Testing
 - Recommendation: Testing Shared
 - Recommendation: Unit Testing with xUnit, Moq and Bogus
 - Structure: Feature Slices Module Structure

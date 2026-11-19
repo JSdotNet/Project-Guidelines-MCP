@@ -29,7 +29,7 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | Path | Holds |
 |---|---|
 | `guide/index.json` | Document metadata index — update it whenever a doc changes |
-| `guide/adrs/` | ADRs as `NNNN-title.md`, numbered sequentially (0001, 0002, …) |
+| `guide/adrs/` | ADRs 0001–0013 as `NNNN-title.md`, rewritten in place; `README.md` maps retired numbers |
 | `guide/designs/` | Deeper design explorations and diagrams |
 | `guide/recommendations/` | Prescriptive guidance and best practices |
 | `guide/structures/` | Example folder/file scaffolds and templates |

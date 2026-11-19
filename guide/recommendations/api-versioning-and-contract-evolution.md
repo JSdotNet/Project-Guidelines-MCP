@@ -32,6 +32,5 @@ Define how HTTP APIs evolve without surprising consumers or creating unnecessary
 
 ## References
 
-- ADR 0007: Recommend Minimal APIs Over Controller-Based APIs
-- ADR 0017: HTTP Error Contract and Problem Details
-- ADR 0009: Feature Slices Within Module Projects
+- ADR 0004: HTTP API
+- ADR 0003: Solution Structure

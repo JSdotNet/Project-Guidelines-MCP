@@ -85,7 +85,7 @@ The style guide is built on four principles — always verify your implementatio
 The design server and the coding guidelines server are complementary:
 
 - **`jsdotnet-design-ux-guidelines`** defines *what* the tokens are and what they mean (this server).
-- **`jsdotnet-coding-guidelines`** defines *how* to declare and use tokens in code (SCSS variables, CSS custom properties, framework-specific integration) via ADR 0011.
+- **`jsdotnet-coding-guidelines`** defines *how* to declare and use tokens in code (SCSS variables, CSS custom properties, framework-specific integration) via ADR 0009.
 
 When implementing a UI feature, consult **both servers**: the design server for which tokens to use, the coding guidelines server for how to declare them.
 

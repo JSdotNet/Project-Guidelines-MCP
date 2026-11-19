@@ -11,7 +11,7 @@ Type: Project Structure Template
 
 ## Purpose
 
-Provide a concrete, copy-paste scaffold for implementing feature slices inside a module, following the conventions established in ADR 0009. Use this template when creating a new module or adding a new feature to an existing module.
+Provide a concrete, copy-paste scaffold for implementing feature slices inside a module, following the conventions established in ADR 0003. Use this template when creating a new module or adding a new feature to an existing module.
 
 ## Overview
 
@@ -503,9 +503,7 @@ public sealed class CreateOrderCommandHandlerTests
 
 ## References
 
-- ADR 0005: Modular Monolith Project Structure
-- ADR 0006: CQRS Recommendation for ASP.NET API Projects
-- ADR 0007: Minimal APIs Over Controller-Based APIs
-- ADR 0008: Vertical Slice Architecture for Feature Organization
-- ADR 0009: Feature Slices Within Module Projects
+- ADR 0003: Solution Structure
+- ADR 0005: Application Layer
+- ADR 0004: HTTP API
 - Structure: Minimal API Endpoint Organization

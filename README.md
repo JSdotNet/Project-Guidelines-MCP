@@ -379,7 +379,7 @@ JSdotNet.MCP.slnx
 
 ## ADRs
 
-The ADRs are being consolidated into a renumbered set of 13. The first seven are in place:
+The decisions are a set of 13 ADRs, rewritten in place when a decision changes:
 
 - [0001: Platform and Build](guide/adrs/0001-platform-and-build.md) (Accepted)
 - [0002: Aspire, Configuration and Infrastructure](guide/adrs/0002-aspire-configuration-and-infrastructure.md) (Accepted)
@@ -388,8 +388,14 @@ The ADRs are being consolidated into a renumbered set of 13. The first seven are
 - [0005: Application Layer](guide/adrs/0005-application-layer.md) (Accepted)
 - [0006: Persistence and Messaging](guide/adrs/0006-persistence-and-messaging.md) (Accepted)
 - [0007: Observability and Resilience](guide/adrs/0007-observability-and-resilience.md) (Accepted)
+- [0008: Security](guide/adrs/0008-security.md) (Accepted)
+- [0009: Frontend](guide/adrs/0009-frontend.md) (Accepted)
+- [0010: Testing](guide/adrs/0010-testing.md) (Accepted)
+- [0011: Setting Up MCP](guide/adrs/0011-setting-up-mcp.md) (Accepted)
+- [0012: Agents in Applications](guide/adrs/0012-agents-in-applications.md) (Accepted)
+- [0013: Agent-Ready Repository](guide/adrs/0013-agent-ready-repository.md) (Accepted)
 
-The older ADR files under `guide/adrs/` stay until the consolidation removes them; each new ADR ends with a `Replaces:` line naming the old numbers it absorbs. `guide/index.json` lists every ADR file.
+The old numbers 0001 to 0019 are retired and never reused; [guide/adrs/README.md](guide/adrs/README.md) maps each one to the ADR that replaced it.
 
 ## Designs
 

@@ -134,10 +134,8 @@ Default recommendation: start with schema-per-module plus strict access rules, t
 
 ## Mapping to Existing Guidance
 
-- ADR 0005: baseline modular monolith decision and top-level solution structure
-- ADR 0008: vertical slice as feature organization
-- ADR 0009: module-internal physical layout rules
-- ADR 0010: observability baseline (OpenTelemetry)
+- ADR 0003: modular monolith with feature slices per module, and the solution layout
+- ADR 0007: observability baseline (OpenTelemetry)
 - `structures/modular-solution-structure.md`: concrete scaffold for this design
 
 ## Evolution Path

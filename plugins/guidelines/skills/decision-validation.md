@@ -80,7 +80,7 @@ Invoke: guidelines-mcp
 Decision: Should we use CQRS?
 
 MCP Search Results:
-✓ ADR-0004: CQRS Decision
+✓ ADR-0005: Application Layer (CQRS)
   "Use CQRS when read/write patterns differ significantly"
   
 ✓ Recommendation: CQRS Trade-offs
@@ -147,7 +147,7 @@ Alignment check:
 ✓ CQRS handlers extend existing handler pattern
 ✓ Separate read repository follows existing abstraction
 ✓ Query handlers fit existing DI setup
-✓ Aligns with ADR-0004
+✓ Aligns with ADR-0005
 
 Conclusion: Good fit; no conflicts
 ```
@@ -216,7 +216,7 @@ Question: Why CQRS instead of just caching?
 Good answer:
 "Caching doesn't solve the core problem: tight coupling between
 read and write models. CQRS separates them, so we can scale
-reads independently. Aligns with ADR-0004."
+reads independently. Aligns with ADR-0005."
 
 Weak answer:
 "CQRS is modern and everyone uses it."
@@ -276,8 +276,8 @@ patterns are completely different"
 
 Step 2: Guidelines Check
 search_guides_by_tag("cqrs")
-get_guide("adr-0004-cqrs-pattern")
-Result: ADR-0004 recommends CQRS when read/write patterns differ
+get_guide("0005-application-layer")
+Result: ADR-0005 prescribes CQRS when read/write patterns differ
 
 Step 3: Alternatives
 - Option A: CQRS with eventual consistency (chosen)
@@ -291,7 +291,7 @@ Step 4: Consequences
 - Timeline: 4 weeks to implement
 
 Step 5: Validation
-✓ Aligns with ADR-0004
+✓ Aligns with ADR-0005
 ✓ Trade-offs well understood
 ✓ Team consensus obtained
 ✓ Timeline accepted
@@ -310,8 +310,8 @@ without database; no abstraction for persistence"
 
 Step 2: Guidelines Check
 search_guides_by_tag("repository")
-get_guide("adr-0003-repository-pattern")
-Result: ADR-0003 recommends repository for persistence abstraction
+get_guide("0006-persistence-and-messaging")
+Result: ADR-0006 prescribes repositories for persistence abstraction
 
 Step 3: Alternatives
 - Option A: Repository pattern (chosen)
@@ -325,7 +325,7 @@ Step 4: Consequences
 - Timeline: 1-2 weeks
 
 Step 5: Validation
-✓ Aligns with ADR-0003
+✓ Aligns with ADR-0006
 ✓ Low complexity, high benefit
 ✓ Team agrees
 ✓ Low risk

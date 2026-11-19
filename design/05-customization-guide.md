@@ -68,7 +68,7 @@ Add a `COLOR_TOKENS.md` (or equivalent) to your project repository that lists ev
 
 ## Override Mechanism
 
-Overrides are declared in the project's central token file, as specified in [ADR 0011](../guide/adrs/0011-centralized-frontend-styling-variables.md). The mechanism is framework-agnostic: replace the default value of only the permitted tokens and leave all others unchanged.
+Overrides are declared in the project's central token file, as specified in [ADR 0009](../guide/adrs/0009-frontend.md). The mechanism is framework-agnostic: replace the default value of only the permitted tokens and leave all others unchanged.
 
 **Conceptually**, the override looks like this:
 
@@ -83,7 +83,7 @@ Overrides are declared in the project's central token file, as specified in [ADR
   color-primary (dark):   #C0392B   <- accessible dark-mode variant
 ```
 
-The implementation details (SCSS variable override, CSS custom property override, design-token JSON merge) depend on the frontend technology. See [ADR 0011](../guide/adrs/0011-centralized-frontend-styling-variables.md) for framework-specific patterns.
+The implementation details (SCSS variable override, CSS custom property override, design-token JSON merge) depend on the frontend technology. See [ADR 0009](../guide/adrs/0009-frontend.md) for framework-specific patterns.
 
 ---
 
@@ -95,7 +95,7 @@ The implementation details (SCSS variable override, CSS custom property override
 4. **Derive semantic surface colors.** For each overridden semantic color, choose a calm surface tint for light mode and a dark desaturated surface tint for dark mode.
 5. **Validate all contrast pairs.** Check every combination listed in the Override Contract above.
 6. **Create `COLOR_TOKENS.md`.** Document all values and ratios in the project repository.
-7. **Implement via ADR 0011 mechanism.** Declare overrides in the project's token file only; do not touch typography, spacing, or motion files.
+7. **Implement via ADR 0009 mechanism.** Declare overrides in the project's token file only; do not touch typography, spacing, or motion files.
 8. **Peer review.** Another team member verifies the `COLOR_TOKENS.md` ratios and approves the override PR.
 
 ---

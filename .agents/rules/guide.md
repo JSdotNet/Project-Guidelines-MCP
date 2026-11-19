@@ -14,9 +14,11 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 
 - **ADRs (`guide/adrs`)** — `NNNN-title.md`, numbered sequentially; title
   `ADR NNNN: Concise Title`; `status` is Proposed, Accepted, Deprecated, or Superseded by NNNN;
-  sections Context, Decision, Consequences (Positive/Negative), References. Once accepted,
-  change only the status; record a change as a superseding ADR. Write the decision in present
-  tense and justify it rather than restating the context.
+  sections Context, Decision, Consequences (Positive/Negative), References. Rewrite an ADR in
+  place when its decision changes; git keeps the old text. When two ADRs overlap, merge them
+  into one; the absorbed number is retired, never reused, and
+  [adrs/README.md](../../guide/adrs/README.md) maps it to the ADR that absorbed it. Write the
+  decision in present tense and justify it rather than restating the context.
 - **Designs (`guide/designs`)** — exploratory or future-facing and free to evolve. Use Mermaid
   diagrams and the sections Problem, Forces, Proposed Solution, Variants, Risks.
 - **Recommendations (`guide/recommendations`)** — prescriptive, stable, narrowly scoped
@@ -46,11 +48,11 @@ change:
   "generated": "2025-11-19T10:30:00Z",
   "documents": [
     {
-      "id": "0001-adopt-dotnet-10",
-      "title": "ADR 0001: Adopt .NET 10 as Target Framework",
-      "description": "Mandates .NET 10 LTS as the target framework for all new projects.",
+      "id": "0001-platform-and-build",
+      "title": "ADR 0001: Platform and Build",
+      "description": "Follows the newest GA .NET release, pinned in global.json, with Central Package Management.",
       "category": "adrs",
-      "relativePath": "adrs/0001-adopt-dotnet-10.md",
+      "relativePath": "adrs/0001-platform-and-build.md",
       "tags": ["dotnet", "adr"]
     }
   ]

@@ -108,9 +108,9 @@ Step 4: Validate contrast
 Step 5: Verify semantic distinctness
   → All four semantic surfaces differ from each other and from color-background
 
-Step 6: Implement using the override mechanism defined in ADR 0011
-  → Check jsdotnet-coding-guidelines: get_guide("adr-0011-...")
-  → Apply as SCSS variable overrides or CSS custom property overrides per ADR 0011
+Step 6: Implement using the override mechanism defined in ADR 0009
+  → Check jsdotnet-coding-guidelines: get_guide("0009-frontend")
+  → Apply as SCSS variable overrides or CSS custom property overrides per ADR 0009
 
 Step 7: Test both modes
   → Render the application in light mode and dark mode
@@ -148,15 +148,15 @@ Run these checks with a contrast-checking tool:
 
 ---
 
-## Relationship to ADR 0011
+## Relationship to ADR 0009
 
-The *override mechanism* (how to declare SCSS overrides or CSS custom property overrides in your project) is defined in ADR 0011 in the coding guidelines:
+The *override mechanism* (how to declare SCSS overrides or CSS custom property overrides in your project) is defined in ADR 0009 in the coding guidelines:
 
 ```
-jsdotnet-coding-guidelines → get_guide("adr-0011-...")
+jsdotnet-coding-guidelines → get_guide("0009-frontend")
 ```
 
-This skill (design customization) governs **which tokens** may be overridden and **what values** are valid. ADR 0011 governs **how** to wire those overrides into your project's build system.
+This skill (design customization) governs **which tokens** may be overridden and **what values** are valid. ADR 0009 governs **how** to wire those overrides into your project's build system.
 
 ---
 

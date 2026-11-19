@@ -48,6 +48,5 @@ Avoid caching:
 
 ## References
 
-- ADR 0014: Persistence Strategy and Repository Boundaries
-- ADR 0015: Resilience Strategy for Outbound Dependencies
-- ADR 0016: Messaging and Integration-Event Delivery
+- ADR 0006: Persistence and Messaging
+- ADR 0007: Observability and Resilience

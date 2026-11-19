@@ -144,7 +144,7 @@ public class SubmitOrderCommandHandler : IRequestHandler<SubmitOrderCommand, Res
 - ✅ Load aggregates from repositories
 - ✅ Call domain model methods
 - ✅ Handle transaction boundaries
-- ✅ Handle domain failures through `Result` and propagate/translate per ADR 0004
+- ✅ Handle domain failures through `Result` and propagate/translate per ADR 0005
 - ❌ **NO** business logic or validation
 - ❌ **NO** direct property manipulation
 
@@ -516,7 +516,7 @@ var line = order.Lines.FirstOrDefault(l => l.Id == lineId);
 
 ## Command Handler Pattern
 
-**Handlers ensure valid state transitions and translate outcomes according to ADR 0004.**
+**Handlers ensure valid state transitions and translate outcomes according to ADR 0005.**
 
 ```csharp
 public record AddOrderLineCommand(Guid OrderId, Guid ProductId, int Quantity) : IRequest<Result<Guid>>;
@@ -862,8 +862,8 @@ public class OrderTests
 
 ## Related Documents
 
-- **ADR 0005**: Modular Monolith Project Structure
-- **ADR 0006**: CQRS Recommendation for ASP.NET API
+- **ADR 0003**: Solution Structure
+- **ADR 0005**: Application Layer
 - **Design**: Modular Solution Structure
 - **Recommendation**: Unit Testing with xUnit, Moq, Bogus
 
