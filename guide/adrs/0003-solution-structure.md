@@ -8,8 +8,8 @@ tags: [modular-monolith, feature-slices, vertical-slices, solution-structure, sl
 
 ## Context
 
-The guidance offered a simple and a modular solution shape, two slice layouts (ADR 0008 and
-0009) that were both Accepted, `.sln` and `.slnx`, and module-local test projects next to a
+The guidance offered a simple and a modular solution shape, two slice layouts (the retired
+ADRs 0008 and 0009) that were both Accepted, `.sln` and `.slnx`, and module-local test projects next to a
 root `tests/` folder. Each choice is a variation every reader has to resolve, and code moved
 between apps does not fit.
 

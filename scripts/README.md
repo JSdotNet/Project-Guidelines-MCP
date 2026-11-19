@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains C# standalone automation scripts following ADR 0014.
+This folder contains C# standalone automation scripts following ADR 0001.
 
 Each script lives in its own subfolder (`<verb-noun>/`) with a `Program.cs` entry point and an optional `.csproj` sidecar for NuGet dependencies.
 

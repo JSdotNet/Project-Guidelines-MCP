@@ -25,5 +25,4 @@ Provide guidance for introducing change safely without long-lived branch diverge
 
 ## References
 
-- ADR 0010: Adopt OpenTelemetry for Comprehensive Observability
-- ADR 0015: Resilience Strategy for Outbound Dependencies
+- ADR 0007: Observability and Resilience

@@ -116,7 +116,7 @@ Company.Webshop/
 
 **Purpose**: Centralizes distributed application orchestration and shared service configurations.
 
-**Reference**: See ADR 0003 for detailed Aspire adoption guidance.
+**Reference**: See ADR 0002 for detailed Aspire adoption guidance.
 
 ### 2. Module/Domain Folders
 
@@ -262,7 +262,7 @@ public class PersonRepository : IPersonRepository
 
 **Naming convention**: `{ClassUnderTest}Tests.cs`
 
-**Coverage requirement**: Minimum 80% line coverage (see ADR 0001)
+**Coverage requirement**: Minimum 80% line coverage
 
 ### Testing Project Layout Options
 
@@ -619,9 +619,9 @@ Contoso.Ecommerce/
 
 ## Related Documents
 
-- **ADR 0005**: Modular Monolith Project Structure
-- **ADR 0003**: Recommend Aspire for ASP.NET Projects
-- **ADR 0006**: CQRS Recommendation for ASP.NET API
+- **ADR 0003**: Solution Structure
+- **ADR 0002**: Aspire, Configuration and Infrastructure
+- **ADR 0005**: Application Layer
 - **Design**: Simple Solution Structure
 - **Recommendation**: Unit Testing with xUnit, Moq, Bogus
 - **Recommendation**: Integration Testing

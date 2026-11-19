@@ -104,7 +104,8 @@ Dependency hygiene rules are defined in **Recommendation: Testing Shared Instruc
 
 ## References
 
-- ADR 0001: Adopt .NET 10
+- ADR 0001: Platform and Build
+- ADR 0010: Testing
 - Testing Strategy in `.github/copilot-instructions.md`
 - Recommendation: Testing Shared
 - Moq: <https://github.com/moq/moq>

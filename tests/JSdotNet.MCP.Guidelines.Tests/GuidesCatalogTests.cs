@@ -17,7 +17,7 @@ public sealed class GuidesCatalogTests
         var catalog = new FileSystemDocumentCatalog();
         var docs = await catalog.ListDocumentsAsync();
         Assert.NotEmpty(docs);
-        Assert.Contains(docs, d => d.Id.Contains("adopt-dotnet"));
+        Assert.Contains(docs, d => d.Id == "0001-platform-and-build");
     }
 
     [Fact]
@@ -34,15 +34,15 @@ public sealed class GuidesCatalogTests
     public async Task Search_FindsExpected()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var results = await catalog.SearchAsync("target framework");
-        Assert.Contains(results, r => r.Id.Contains("0001"));
+        var results = await catalog.SearchAsync("central package management");
+        Assert.Contains(results, r => r.Id == "0001-platform-and-build");
     }
 
     [Fact]
     public async Task Search_CaseInsensitive_FindsResults()
     {
         var catalog = new FileSystemDocumentCatalog();
-        var results = await catalog.SearchAsync("TARGET FRAMEWORK");
+        var results = await catalog.SearchAsync("CENTRAL PACKAGE MANAGEMENT");
         Assert.NotEmpty(results);
     }
 
@@ -52,7 +52,7 @@ public sealed class GuidesCatalogTests
         var catalog = new FileSystemDocumentCatalog();
         var results = await catalog.SearchByTagAsync("dotnet");
         Assert.NotEmpty(results);
-        Assert.Contains(results, r => r.Id.Contains("adopt-dotnet"));
+        Assert.Contains(results, r => r.Id == "0001-platform-and-build");
     }
 
     [Fact]

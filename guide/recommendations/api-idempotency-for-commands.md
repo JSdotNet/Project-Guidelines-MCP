@@ -31,6 +31,6 @@ Define when command endpoints should be idempotent and how that requirement shou
 
 ## References
 
-- ADR 0015: Resilience Strategy for Outbound Dependencies
-- ADR 0016: Messaging and Integration-Event Delivery
-- ADR 0017: HTTP Error Contract and Problem Details
+- ADR 0007: Observability and Resilience
+- ADR 0006: Persistence and Messaging
+- ADR 0004: HTTP API

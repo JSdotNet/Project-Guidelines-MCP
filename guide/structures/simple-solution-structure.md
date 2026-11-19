@@ -69,7 +69,7 @@ Contoso.Orders/
 
 ## Related Documents
 
-- ADR 0003: Strong Recommendation to Adopt .NET Aspire for ASP.NET Web Services
+- ADR 0002: Aspire, Configuration and Infrastructure
 - Design: Modular Solution Structure Design
 - Recommendation: Unit testing with xUnit, Moq and Bogus
 - Recommendation: Integration Testing

@@ -21,7 +21,7 @@ content change, not on a typo, grammar, or formatting-only edit. Documents are n
 ## Content boundaries
 
 - Stay framework-agnostic: how tokens are consumed in code belongs to
-  [ADR 0011](../../guide/adrs/0011-centralized-frontend-styling-variables.md), not here.
+  [ADR 0009](../../guide/adrs/0009-frontend.md), not here.
 - Color tokens are the only per-project customization. Never add guidance that lets a project
   override typography, spacing, radius, shadow, motion, or a `color-text-*`,
   `color-background-*` or `color-border-*` token; a new customization point is a change to

@@ -159,5 +159,4 @@ Always pin to the current major version of official GitHub Actions and update th
 - Recommendation: Logging and Audit Logging
 - Recommendation: Integration Testing
 - Recommendation: End-to-End Testing
-- ADR 0010: Adopt OpenTelemetry for Comprehensive Observability
-- ADR 0015: Resilience Strategy for Outbound Dependencies
+- ADR 0007: Observability and Resilience

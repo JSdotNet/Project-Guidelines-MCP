@@ -235,5 +235,4 @@ The agent is **not** permitted to:
 
 - [GitHub Copilot Coding Agent docs](https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent)
 - [Conventional Commits specification](https://www.conventionalcommits.org/)
-- ADR 0001: Adopt .NET 10 as Target Framework
-- ADR 0002: Central Package Management
+- ADR 0001: Platform and Build

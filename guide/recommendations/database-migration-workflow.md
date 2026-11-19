@@ -26,5 +26,5 @@ Define a safe, reviewable workflow for schema evolution in projects that follow 
 
 ## References
 
-- ADR 0014: Persistence Strategy and Repository Boundaries
+- ADR 0006: Persistence and Messaging
 - Recommendation: Integration Testing

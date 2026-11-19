@@ -53,8 +53,8 @@ Call: analyze_guidelines_usage(maxEntries: 200, maxAgeDays: 30)
 3. "options pattern edge cases" (2 times) — Missing recommendation
 
 ### Most Accessed Documents
-1. ADR-0001: Hexagonal Architecture (15 reads)
-2. ADR-0002: CQRS Pattern (12 reads)
+1. ADR-0005: Application Layer (15 reads)
+2. ADR-0003: Solution Structure (12 reads)
 3. Rec-005: Error Handling (8 reads)
 
 ### Failed Calls
@@ -74,7 +74,7 @@ From the analysis, look for patterns:
 **Example improvements from analysis**:
 ```
 Opportunity 1: "async state machine" search returned 0 results
-→ Create ADR-0008: State Machine Pattern for Async Workflows
+→ Create ADR-0014: State Machine Pattern for Async Workflows
 
 Opportunity 2: "decorator pattern" had low results
 → Add section to existing ADR on patterns, with C# examples
@@ -115,7 +115,7 @@ Usage analysis shows "async state machine" returned 0 results 5 times in the las
 
 ## Proposal
 
-Create ADR-0008: State Machine Pattern for Async Workflows, covering:
+Create ADR-0014: State Machine Pattern for Async Workflows, covering:
 - Use cases (order state transitions, workflow orchestration)
 - C# example using Stateless or custom implementation
 - When to prefer vs. CQRS
@@ -124,7 +124,7 @@ Create ADR-0008: State Machine Pattern for Async Workflows, covering:
 ## Acceptance Criteria
 
 - [ ] ADR written and merged
-- [ ] Cross-linked from ADR-0002 (CQRS) and ADR-0005 (Resilience)
+- [ ] Cross-linked from ADR-0005 (CQRS) and ADR-0007 (Resilience)
 - [ ] Verify search returns new ADR for "async state machine" query
 ```
 
@@ -224,7 +224,7 @@ If you've run a gap analysis on a project, use the feedback loop to propose guid
    → Find "cqrs" search returns docs, but get_guide("adr-cqrs") rarely used
 
 2. Call: draft_guidelines_issue(
-     title: "Enhance ADR-0002: Add CQRS Implementation Examples",
+     title: "Enhance ADR-0005: Add CQRS Implementation Examples",
      body: "Log analysis shows users search for CQRS (7 times) but rarely read the full ADR. Recommendation: add concrete C# examples..."
    )
 

@@ -8,7 +8,7 @@ tags: [aspire, scripts, developer-experience, orchestration, tooling, recommenda
 
 ## Purpose
 
-Every repository that adopts .NET Aspire (see ADR 0003) should ship a single, cross-team-consistent entry point for starting the AppHost locally. Without it, developers invent ad-hoc `dotnet run` invocations, skip dev-certificate trust, forget to restore/build first, and get inconsistent dashboard behavior. A canonical start script removes that guesswork and gives Copilot (and humans) one predictable command to run per repo.
+Every repository that adopts .NET Aspire (see ADR 0002) should ship a single, cross-team-consistent entry point for starting the AppHost locally. Without it, developers invent ad-hoc `dotnet run` invocations, skip dev-certificate trust, forget to restore/build first, and get inconsistent dashboard behavior. A canonical start script removes that guesswork and gives Copilot (and humans) one predictable command to run per repo.
 
 ## Recommendation
 
@@ -31,7 +31,7 @@ The script must, in order:
 
 ## Canonical Script
 
-Place this at `scripts/Start-Aspire.ps1`. Replace the AppHost glob pattern only if the repo deviates from ADR 0005's `src/Aspire/` convention.
+Place this at `scripts/Start-Aspire.ps1`. Replace the AppHost glob pattern only if the repo deviates from ADR 0003's `src/Aspire/` convention.
 
 ```powershell
 <#
@@ -73,14 +73,14 @@ Write-Host "Using .NET SDK $dotnetVersion"
 Write-Step "Ensuring local HTTPS dev certificates are trusted"
 dotnet dev-certs https --trust | Out-Null
 
-# 3. Locate the AppHost project by convention (ADR 0005: src/Aspire/*.AppHost)
+# 3. Locate the AppHost project by convention (ADR 0003: src/Aspire/*.AppHost)
 Write-Step "Locating Aspire AppHost project"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $appHostProject = Get-ChildItem -Path (Join-Path $repoRoot "src\Aspire") -Recurse -Filter "*.AppHost.csproj" -ErrorAction SilentlyContinue |
     Select-Object -First 1
 
 if (-not $appHostProject) {
-    Write-Error "No *.AppHost.csproj found under src\Aspire. Confirm the repo follows ADR 0005's project layout."
+    Write-Error "No *.AppHost.csproj found under src\Aspire. Confirm the repo follows ADR 0003's project layout."
     exit 1
 }
 Write-Host "Found AppHost: $($appHostProject.FullName)"
@@ -130,6 +130,6 @@ else {
 
 ## References
 
-- ADR 0003: Strong Recommendation to Adopt .NET Aspire for ASP.NET Web Services
-- ADR 0005: Modular Monolith Project Structure (`src/Aspire/` convention)
+- ADR 0002: Aspire, Configuration and Infrastructure
+- ADR 0003: Solution Structure (`src/Aspire/` convention)
 - Config: MCP Server Configuration (.mcp.json) — Aspire MCP server entry used alongside local dev tooling

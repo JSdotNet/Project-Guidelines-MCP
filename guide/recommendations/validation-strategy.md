@@ -40,6 +40,5 @@ Do not rely on request validators alone to protect domain correctness.
 
 ## References
 
-- ADR 0004: Standardize Result Objects for Expected Application Outcomes
-- ADR 0007: Recommend Minimal APIs Over Controller-Based APIs
-- ADR 0017: HTTP Error Contract and Problem Details
+- ADR 0005: Application Layer
+- ADR 0004: HTTP API

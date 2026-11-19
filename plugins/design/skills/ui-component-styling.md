@@ -210,7 +210,7 @@ Step 4: Verify accessibility
 Step 5: Implement using token variables
   → var(--token-name) in CSS
   → $token-name in SCSS
-  → Follow ADR 0011 for your framework
+  → Follow ADR 0009 for your framework
 ```
 
 ---

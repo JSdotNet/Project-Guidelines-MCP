@@ -33,6 +33,5 @@ Standardize how background work is implemented, scheduled, and operated in .NET 
 
 ## References
 
-- ADR 0015: Resilience Strategy for Outbound Dependencies
-- ADR 0016: Messaging and Integration-Event Delivery
-- ADR 0010: Adopt OpenTelemetry for Comprehensive Observability
+- ADR 0007: Observability and Resilience
+- ADR 0006: Persistence and Messaging

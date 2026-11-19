@@ -87,7 +87,8 @@ tests/
 
 ## References
 
-- ADR 0003: Strong Recommendation to Adopt .NET Aspire for ASP.NET Web Services
+- ADR 0002: Aspire, Configuration and Infrastructure
+- ADR 0010: Testing
 - Recommendation: Testing Shared
 - Recommendation: Unit Testing with xUnit, Moq and Bogus
 - Recommendation: Integration Testing

@@ -112,7 +112,7 @@ throw new ArgumentNullException(nameof(parameterName));
 ## References
 
 - Microsoft [C# coding conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- ADR 0001: Adopt .NET 10 as Target Framework
+- ADR 0001: Platform and Build
 
 
 
