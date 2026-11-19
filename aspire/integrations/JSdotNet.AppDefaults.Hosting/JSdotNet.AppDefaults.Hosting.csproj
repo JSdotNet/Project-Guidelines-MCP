@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Aspire.Hosting</RootNamespace>
+    <IsAspireHostingIntegration>true</IsAspireHostingIntegration>
+
+    <PackageId>JSdotNet.AppDefaults.Hosting</PackageId>
+    <Title>JSdotNet Application Defaults Aspire Hosting Integration</Title>
+    <Authors>JSdotNet</Authors>
+    <Company>JSdotNet</Company>
+    <Description>Aspire 17 hosting integration with the resource definitions the JSdotNet application defaults share: databases with a persistent data volume and the standard health check for every project.</Description>
+    <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JSdotNet/app-defaults</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>aspire;integration;hosting;defaults</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

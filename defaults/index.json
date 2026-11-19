@@ -1,0 +1,717 @@
+{
+    "version": "1.0",
+    "generated": "2026-11-19T21:55:19Z",
+    "documents": [
+        {
+            "id": "0001-platform-and-build",
+            "title": "ADR 0001: Platform and Build",
+            "description": "Follows the newest GA .NET release (today .NET 11 and C# 15) pinned in global.json, with Central Package Management, lock files, warnings as errors, a single .editorconfig, locked CI restore and C# file-based scripts.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0001-platform-and-build.md",
+            "tags": [
+                "dotnet",
+                "csharp",
+                "global-json",
+                "central-package-management",
+                "nuget",
+                "build",
+                "analyzers",
+                "editorconfig",
+                "scripts",
+                "file-based-apps",
+                "adr"
+            ]
+        },
+        {
+            "id": "0002-aspire-configuration-and-infrastructure",
+            "title": "ADR 0002: Aspire, Configuration and Infrastructure",
+            "description": "Makes Aspire 17 mandatory with a Microsoft.NET.Sdk AppHost using AddDotnetProject, sets validated options, Aspire parameters and managed identity for configuration and secrets, and makes Aspire the only infrastructure code.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0002-aspire-configuration-and-infrastructure.md",
+            "tags": [
+                "aspire",
+                "apphost",
+                "configuration",
+                "options",
+                "secrets",
+                "managed-identity",
+                "data-protection",
+                "infrastructure-as-code",
+                "bicep",
+                "deployment",
+                "adr"
+            ]
+        },
+        {
+            "id": "0003-solution-structure",
+            "title": "ADR 0003: Solution Structure",
+            "description": "Prescribes one solution shape: a modular monolith with feature slices per module, .slnx only, root tests/ only and Data.{Provider} project naming.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0003-solution-structure.md",
+            "tags": [
+                "modular-monolith",
+                "feature-slices",
+                "vertical-slices",
+                "solution-structure",
+                "slnx",
+                "tests",
+                "modules",
+                "adr"
+            ]
+        },
+        {
+            "id": "0004-http-api",
+            "title": "ADR 0004: HTTP API",
+            "description": "Prescribes Minimal APIs with endpoint classes, OpenAPI 3.2 with Scalar, built-in minimal-API validation, Problem Details for every error and clients generated from OpenAPI.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0004-http-api.md",
+            "tags": [
+                "minimal-api",
+                "openapi",
+                "scalar",
+                "validation",
+                "problem-details",
+                "http",
+                "errors",
+                "client-generation",
+                "adr"
+            ]
+        },
+        {
+            "id": "0005-application-layer",
+            "title": "ADR 0005: Application Layer",
+            "description": "Prescribes hand-rolled CQRS handlers without MediatR, a C# 15 union Result<T> matched with an exhaustive switch, and an injected TimeProvider.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0005-application-layer.md",
+            "tags": [
+                "cqrs",
+                "handlers",
+                "result-pattern",
+                "unions",
+                "csharp-15",
+                "time-provider",
+                "application",
+                "adr"
+            ]
+        },
+        {
+            "id": "0006-persistence-and-messaging",
+            "title": "ADR 0006: Persistence and Messaging",
+            "description": "Prescribes EF Core only in Data.{Provider} projects, a concurrency token per aggregate, migrations through an AppHost runner, fix-forward after migration, and outbox-based at-least-once messaging with idempotent consumers.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0006-persistence-and-messaging.md",
+            "tags": [
+                "persistence",
+                "ef-core",
+                "migrations",
+                "concurrency",
+                "messaging",
+                "integration-events",
+                "outbox",
+                "idempotency",
+                "adr"
+            ]
+        },
+        {
+            "id": "0007-observability-and-resilience",
+            "title": "ADR 0007: Observability and Resilience",
+            "description": "Prescribes OpenTelemetry through ServiceDefaults with the Aspire dashboard locally, [LoggerMessage] logging, the standard HTTP resilience handler and Polly v8 only for non-HTTP adapters.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0007-observability-and-resilience.md",
+            "tags": [
+                "observability",
+                "opentelemetry",
+                "logging",
+                "loggermessage",
+                "service-defaults",
+                "resilience",
+                "polly",
+                "http",
+                "adr"
+            ]
+        },
+        {
+            "id": "0008-security",
+            "title": "ADR 0008: Security",
+            "description": "Prescribes an external OIDC identity provider with full JWT validation and PKCE, zero-trust named policies checked per call with resource-based checks and audit, and rate limiting on every public or anonymous endpoint.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0008-security.md",
+            "tags": [
+                "security",
+                "authentication",
+                "authorization",
+                "oidc",
+                "oauth",
+                "jwt",
+                "pkce",
+                "zero-trust",
+                "policies",
+                "rate-limiting",
+                "audit",
+                "entra-id",
+                "adr"
+            ]
+        },
+        {
+            "id": "0009-frontend",
+            "title": "ADR 0009: Frontend",
+            "description": "Sets frontend rules rather than a framework: its own app under src/App/ run as an Aspire resource, a generated OpenAPI client, design/ tokens as CSS variables and a component catalog, with Blazor or React 19 + Vite + Tailwind 4 picked per app.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0009-frontend.md",
+            "tags": [
+                "frontend",
+                "ui",
+                "blazor",
+                "react",
+                "vite",
+                "tailwind",
+                "design-tokens",
+                "css-variables",
+                "openapi",
+                "component-catalog",
+                "aspire",
+                "adr"
+            ]
+        },
+        {
+            "id": "0010-testing",
+            "title": "ADR 0010: Testing",
+            "description": "Prescribes xUnit v3 on Microsoft Testing Platform with NSubstitute and Bogus, integration tests on one module Api with WebApplicationFactory and throwaway containers, and a Playwright E2E suite as the only tests run through aspire start.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0010-testing.md",
+            "tags": [
+                "testing",
+                "xunit",
+                "microsoft-testing-platform",
+                "nsubstitute",
+                "bogus",
+                "integration-tests",
+                "webapplicationfactory",
+                "testcontainers",
+                "e2e",
+                "playwright",
+                "aspire",
+                "architecture-tests",
+                "adr"
+            ]
+        },
+        {
+            "id": "0011-setting-up-mcp",
+            "title": "ADR 0011: Setting Up MCP",
+            "description": "Prescribes stateless Streamable HTTP MCP servers on the C# SDK 2.x with their own skill, two-way communication, OAuth 2.1 with CIMD and PKCE, agent-plus-user authorization through RFC 8693, annotated tools, rate limits and a per-call audit record.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0011-setting-up-mcp.md",
+            "tags": [
+                "mcp",
+                "model-context-protocol",
+                "streamable-http",
+                "oauth",
+                "cimd",
+                "pkce",
+                "token-exchange",
+                "rfc-8693",
+                "zero-trust",
+                "audit",
+                "skills",
+                "mcp-apps",
+                "adr"
+            ]
+        },
+        {
+            "id": "0012-agents-in-applications",
+            "title": "ADR 0012: Agents in Applications",
+            "description": "Prescribes Microsoft Agent Framework on Microsoft.Extensions.AI with Foundry behind one adapter, in-process agents by default, tools only from the app own MCP servers or handlers, A2A, human-in-the-loop, GenAI telemetry and baseline evaluation in CI.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0012-agents-in-applications.md",
+            "tags": [
+                "agents",
+                "ai",
+                "agent-framework",
+                "microsoft-extensions-ai",
+                "foundry",
+                "a2a",
+                "human-in-the-loop",
+                "evaluation",
+                "red-team",
+                "opentelemetry",
+                "genai",
+                "aspire",
+                "adr"
+            ]
+        },
+        {
+            "id": "0013-agent-ready-repository",
+            "title": "ADR 0013: Agent-Ready Repository",
+            "description": "Prescribes one AGENTS.md wrapped per host with path-scoped rules, Aspire skills from aspire agent init used CLI first, dotnet/skills, and an .mcp.json that runs the guidelines server through dnx.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/0013-agent-ready-repository.md",
+            "tags": [
+                "agents",
+                "agents-md",
+                "instructions",
+                "rules",
+                "skills",
+                "aspire-cli",
+                "mcp",
+                "dnx",
+                "claude-code",
+                "copilot",
+                "adr"
+            ]
+        },
+        {
+            "id": "README",
+            "title": "ADR Number Map",
+            "description": "Maps each retired ADR number 0001 to 0019 to the consolidated ADR that replaces it.",
+            "category": "adrs",
+            "relativePath": "arc42/adr/README.md",
+            "tags": [
+                "adr",
+                "index",
+                "numbering",
+                "retired"
+            ]
+        },
+        {
+            "id": "agent-skill-authoring",
+            "title": "Agent Skill Authoring: Scope, Preconditions, and Descriptions",
+            "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers narrowing scope by work type rather than process maturity, when negative scope is legitimate, Stage 0 scope discovery for missing inputs, stop conditions that route to a successor, anti-patterns, and a pass/fail audit checklist.",
+            "category": "recommendations",
+            "relativePath": "ai/agent-skill-authoring.md",
+            "tags": [
+                "skills",
+                "agent-skills",
+                "authoring",
+                "copilot",
+                "orchestration",
+                "routing",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "02-constraints",
+            "title": "02 Constraints",
+            "description": "Fixes the givens every app starts from: the newest GA .NET, Aspire 17, EF Core in Data.{Provider} projects and Azure as the target deployed by aspire deploy.",
+            "category": "designs",
+            "relativePath": "arc42/02-constraints.md",
+            "tags": [
+                "arc42",
+                "constraints",
+                "dotnet",
+                "aspire",
+                "ef-core",
+                "azure"
+            ]
+        },
+        {
+            "id": "04-solution-strategy",
+            "title": "04 Solution Strategy",
+            "description": "Maps each goal to its approach — one modular-monolith shape with feature slices, Result<T> handlers, pragmatic domain-driven design — and the path for extracting a module.",
+            "category": "designs",
+            "relativePath": "arc42/04-solution-strategy.md",
+            "tags": [
+                "arc42",
+                "solution-strategy",
+                "modular-monolith",
+                "feature-slices",
+                "cqrs",
+                "ddd",
+                "domain-model"
+            ]
+        },
+        {
+            "id": "05-building-block-view",
+            "title": "05 Building Block View",
+            "description": "Prescribes the one solution structure: the src/ and tests/ tree, the Contoso.Orders example, the blocks, the dependency rules and the naming conventions.",
+            "category": "structures",
+            "relativePath": "arc42/05-building-block-view.md",
+            "tags": [
+                "arc42",
+                "building-blocks",
+                "solution-structure",
+                "modular-monolith",
+                "feature-slices",
+                "naming",
+                "slnx"
+            ]
+        },
+        {
+            "id": "module",
+            "title": "Building Block: Module",
+            "description": "Prescribes a module's implementation and Abstractions projects, its feature-slice layout, handler and registration shape, and its boundary rules.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/module.md",
+            "tags": [
+                "building-blocks",
+                "module",
+                "feature-slices",
+                "cqrs",
+                "abstractions",
+                "structure"
+            ]
+        },
+        {
+            "id": "domain-model",
+            "title": "Building Block: Domain Model",
+            "description": "Prescribes aggregate roots that guard invariants through Result-returning methods, value objects only where they earn it, domain events, specifications and their tests.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/domain-model.md",
+            "tags": [
+                "building-blocks",
+                "ddd",
+                "domain-model",
+                "aggregates",
+                "value-objects",
+                "domain-events",
+                "invariants"
+            ]
+        },
+        {
+            "id": "api",
+            "title": "Building Block: Api",
+            "description": "Prescribes a module Api project: one endpoint class per feature slice, an exhaustive Result<T> to Problem Details mapping and a Program.cs that only composes.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/api.md",
+            "tags": [
+                "building-blocks",
+                "api",
+                "minimal-api",
+                "endpoints",
+                "openapi",
+                "problem-details",
+                "structure"
+            ]
+        },
+        {
+            "id": "data-provider",
+            "title": "Building Block: Data.{Provider}",
+            "description": "Prescribes the {Module}.Data.{Provider} project: EF Core mapping outside the entities, one repository per aggregate, concurrency tokens, the outbox and migrations.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/data-provider.md",
+            "tags": [
+                "building-blocks",
+                "data",
+                "ef-core",
+                "persistence",
+                "migrations",
+                "outbox",
+                "repository",
+                "structure"
+            ]
+        },
+        {
+            "id": "apphost",
+            "title": "Building Block: AppHost",
+            "description": "Prescribes the Microsoft.NET.Sdk AppHost with Aspire.Hosting.Dotnet and AddDotnetProject, the migration runner, resource commands and browser logs.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/apphost.md",
+            "tags": [
+                "building-blocks",
+                "aspire",
+                "apphost",
+                "orchestration",
+                "deployment",
+                "structure"
+            ]
+        },
+        {
+            "id": "service-defaults",
+            "title": "Building Block: ServiceDefaults",
+            "description": "Prescribes the ServiceDefaults project as the one place for OpenTelemetry, health endpoints, service discovery and the standard HTTP resilience handler.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/service-defaults.md",
+            "tags": [
+                "building-blocks",
+                "aspire",
+                "service-defaults",
+                "opentelemetry",
+                "health-checks",
+                "resilience",
+                "structure"
+            ]
+        },
+        {
+            "id": "test-harness",
+            "title": "Building Block: Test Harness",
+            "description": "Prescribes a Fake* adapter for integration tests and a harness project the AppHost starts in run mode for every external service the app does not own.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/test-harness.md",
+            "tags": [
+                "building-blocks",
+                "testing",
+                "harness",
+                "fakes",
+                "integration-tests",
+                "aspire"
+            ]
+        },
+        {
+            "id": "notifications",
+            "title": "Building Block: Notifications",
+            "description": "Prescribes notifications as stored records sent and retried by a background worker, with push carrying only a nudge and the client re-reading through the API.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/notifications.md",
+            "tags": [
+                "building-blocks",
+                "notifications",
+                "background-jobs",
+                "push",
+                "retries",
+                "outbox"
+            ]
+        },
+        {
+            "id": "file-storage",
+            "title": "Building Block: File Storage",
+            "description": "Prescribes an IFileStorage port with an Azure Blob Storage adapter hosted through Aspire, metadata in the module database and no public containers.",
+            "category": "structures",
+            "relativePath": "arc42/building-blocks/file-storage.md",
+            "tags": [
+                "building-blocks",
+                "file-storage",
+                "blob-storage",
+                "azure",
+                "ports-and-adapters",
+                "aspire"
+            ]
+        },
+        {
+            "id": "07-deployment-view",
+            "title": "07 Deployment View",
+            "description": "Makes Aspire the infrastructure code deployed with aspire deploy to Azure Container Apps, with per-environment secrets, a GitHub Actions pipeline, weekly grouped Dependabot updates with an Aspire group, auto-merge gated by required checks, and the rule to roll back only while the schema is unchanged.",
+            "category": "designs",
+            "relativePath": "arc42/07-deployment-view.md",
+            "tags": [
+                "arc42",
+                "deployment",
+                "aspire",
+                "aspire-deploy",
+                "azure-container-apps",
+                "bicep",
+                "secrets",
+                "ci-cd",
+                "github-actions",
+                "dependabot",
+                "auto-merge",
+                "rollback"
+            ]
+        },
+        {
+            "id": "08-crosscutting-concepts",
+            "title": "08 Crosscutting Concepts",
+            "description": "Prescribes one answer per crosscutting concern, each linked to its ADR: caching, feature flags, idempotency, API versioning, logging and audit, background jobs, validation, testing, code style and domain code, time, concurrency, real-time updates as nudge-and-re-read, and secrets at rest.",
+            "category": "designs",
+            "relativePath": "arc42/08-crosscutting-concepts.md",
+            "tags": [
+                "arc42",
+                "crosscutting-concepts",
+                "caching",
+                "feature-flags",
+                "idempotency",
+                "api-versioning",
+                "logging",
+                "audit",
+                "background-jobs",
+                "testing",
+                "code-style",
+                "domain",
+                "time",
+                "concurrency",
+                "real-time",
+                "secrets",
+                "validation"
+            ]
+        },
+        {
+            "id": "copilot-instruction-file-setup",
+            "title": "Instruction-File Setup: One AGENTS.md, Wrapped per Host",
+            "description": "Prescribes one root AGENTS.md as the only authored instruction file, CLAUDE.md as an @AGENTS.md import and .github/copilot-instructions.md as a one-sentence pointer, path-scoped rules authored once under .agents/rules/ with a wrapper per host, MCP-first selection with disclosed fallback, and the migration from a Copilot-only file.",
+            "category": "recommendations",
+            "relativePath": "ai/copilot-instruction-file-setup.md",
+            "tags": [
+                "instructions",
+                "agents-md",
+                "claude-code",
+                "copilot",
+                "path-scoped-rules",
+                "mcp",
+                "routing",
+                "recommendations"
+            ]
+        },
+        {
+            "id": "config-github-app-yml",
+            "title": "GitHub Copilot Agent Configuration (github-app.yml)",
+            "description": "Standard configuration guideline for github-app.yml: mandatory pre-PR validation steps (restore, build, test), post-PR CI monitoring with auto-fix loop, review comment handling, PR conventions, and agent safety boundaries.",
+            "category": "config",
+            "relativePath": "ai/config/github-app.yml.md",
+            "tags": [
+                "github",
+                "copilot-agent",
+                "ci-cd",
+                "pr-workflow",
+                "automation",
+                "config",
+                "testing",
+                "branch-naming",
+                "conventional-commits"
+            ]
+        },
+        {
+            "id": "config-mcp-json",
+            "title": "MCP Server Configuration (.mcp.json)",
+            "description": "Standard .mcp.json setup for GitHub Copilot CLI, including required fields, baseline server entries for Microsoft Learn, JSdotNet Guidelines, and Aspire, plus maintenance best practices.",
+            "category": "config",
+            "relativePath": "ai/config/.mcp.json.md",
+            "tags": [
+                "mcp",
+                "configuration",
+                "copilot-cli",
+                "microsoft-learn",
+                "aspire",
+                "guidelines",
+                "config"
+            ]
+        },
+        {
+            "id": "01-color-palette",
+            "title": "Style Guide: Color Palette",
+            "description": "Color tokens for light and dark mode: brand, semantic, text, background, and border groups with hex values and usage rules.",
+            "category": "design",
+            "relativePath": "design/01-color-palette.md",
+            "tags": [
+                "style-guide",
+                "color",
+                "design-tokens",
+                "dark-mode",
+                "light-mode"
+            ]
+        },
+        {
+            "id": "02-typography",
+            "title": "Style Guide: Typography",
+            "description": "Font families (Inter, Poppins, Fira Code), size scale, weights, line heights, and heading defaults.",
+            "category": "design",
+            "relativePath": "design/02-typography.md",
+            "tags": [
+                "style-guide",
+                "typography",
+                "fonts",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "03-spacing-and-layout",
+            "title": "Style Guide: Spacing and Layout",
+            "description": "4 px base spacing scale, 12-column layout grid, breakpoints, border radius, border width, shadows, and z-index scale.",
+            "category": "design",
+            "relativePath": "design/03-spacing-and-layout.md",
+            "tags": [
+                "style-guide",
+                "spacing",
+                "layout",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "04-motion-and-interaction",
+            "title": "Style Guide: Motion and Interaction",
+            "description": "Transition durations, easing curves, standard transition presets, focus states, reduced-motion rules, and loading indicator patterns.",
+            "category": "design",
+            "relativePath": "design/04-motion-and-interaction.md",
+            "tags": [
+                "style-guide",
+                "motion",
+                "animation",
+                "interaction",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "05-customization-guide",
+            "title": "Style Guide: Customization Guide",
+            "description": "Rules for overriding brand and semantic color tokens per project, including the override contract, contrast requirements, and step-by-step process.",
+            "category": "design",
+            "relativePath": "design/05-customization-guide.md",
+            "tags": [
+                "style-guide",
+                "customization",
+                "color",
+                "design-tokens",
+                "branding"
+            ]
+        },
+        {
+            "id": "06-component-patterns",
+            "title": "Style Guide: Component Patterns",
+            "description": "Reusable UI component specifications: Button, Form Input, Card, Badge/Chip, and Toast — covering anatomy, states, variants, and accessibility requirements.",
+            "category": "design",
+            "relativePath": "design/06-component-patterns.md",
+            "tags": [
+                "style-guide",
+                "components",
+                "patterns",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "07-iconography",
+            "title": "Style Guide: Iconography",
+            "description": "Lucide icon library rules: sizing scale, color conventions using currentColor, accessibility requirements for icon-only and icon+label elements.",
+            "category": "design",
+            "relativePath": "design/07-iconography.md",
+            "tags": [
+                "style-guide",
+                "iconography",
+                "icons",
+                "accessibility",
+                "design-tokens"
+            ]
+        },
+        {
+            "id": "08-voice-and-tone",
+            "title": "Style Guide: Voice and Tone",
+            "description": "Language personality, grammar rules, button label patterns, error message structure, empty state copy, confirmation dialog copy, and capitalization reference.",
+            "category": "design",
+            "relativePath": "design/08-voice-and-tone.md",
+            "tags": [
+                "style-guide",
+                "voice",
+                "tone",
+                "copy",
+                "content",
+                "ux-writing"
+            ]
+        },
+        {
+            "id": "09-interaction-patterns",
+            "title": "Style Guide: Interaction Patterns",
+            "description": "Standard UX patterns for form validation, empty states, loading states, error handling, and navigation (tabs, breadcrumbs, modals, drawers, drag-and-drop).",
+            "category": "design",
+            "relativePath": "design/09-interaction-patterns.md",
+            "tags": [
+                "style-guide",
+                "interaction",
+                "patterns",
+                "forms",
+                "navigation",
+                "ux"
+            ]
+        },
+        {
+            "id": "readme",
+            "title": "Style Guide: Overview",
+            "description": "Entry point to the UX style guide: structure overview, customization policy, design principles, and platform scope.",
+            "category": "design",
+            "relativePath": "design/README.md",
+            "tags": [
+                "style-guide",
+                "design-tokens",
+                "ux",
+                "frontend"
+            ]
+        }
+    ]
+}

@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  DOTNET_VERSION: '10.0.x'
-  SOLUTION_PATH: 'JSdotNet.MCP.slnx'
+  DOTNET_VERSION: '11.0.x'
+  SOLUTION_PATH: 'JSdotNet.AppDefaults.slnx'
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore "${{ env.SOLUTION_PATH }}"
+        run: dotnet restore "${{ env.SOLUTION_PATH }}" --locked-mode
 
       - name: Build solution
         run: dotnet build "${{ env.SOLUTION_PATH }}" --configuration Release --no-restore
@@ -45,20 +45,21 @@ jobs:
         run: |
           for project in \
             tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj \
-            tests/JSdotNet.MCP.Guidelines.Tests/JSdotNet.MCP.Guidelines.Tests.csproj \
-            tests/JSdotNet.MCP.Design.Tests/JSdotNet.MCP.Design.Tests.csproj \
-            tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj; do
+            tests/JSdotNet.AppDefaults.Hosting.Tests/JSdotNet.AppDefaults.Hosting.Tests.csproj \
+            tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj; do
             project_name="$(basename "$(dirname "$project")")"
             dotnet test "$project" --configuration Release --no-build --verbosity normal --results-directory "./coverage/$project_name" -- \
               --coverlet \
               --coverlet-output-format cobertura \
               --coverlet-exclude "[*.Tests]*" \
+              --coverlet-include "[JSdotNet.*]*" \
               --coverlet-exclude "[*]*.Program" \
               --coverlet-exclude "[*]*GitHubDocumentCatalog" \
               --coverlet-exclude-by-attribute Obsolete \
               --coverlet-exclude-by-attribute GeneratedCode \
               --coverlet-exclude-by-attribute CompilerGenerated \
-              --coverlet-include-directory "$PWD/src"
+              --coverlet-include-directory "$PWD/src" \
+              --coverlet-include-directory "$PWD/aspire/integrations"
           done
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -71,7 +72,8 @@ jobs:
           reportgenerator \
             -reports:"coverage/**/coverage.cobertura.*.xml" \
             -targetdir:"./coverage-merged" \
-            -reporttypes:Cobertura
+            -reporttypes:Cobertura \
+            -assemblyfilters:"+JSdotNet.*;-*.Tests"
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
 

@@ -1,0 +1,14 @@
+<Solution Name="JSdotNet.MCP">
+  <Folder Name="/aspire/">
+    <Project Path="aspire/integrations/JSdotNet.AppDefaults.Hosting/JSdotNet.AppDefaults.Hosting.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/JSdotNet.MCP.Shared/JSdotNet.MCP.Shared.csproj" />
+    <Project Path="src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj" />
+    <Project Path="tests/JSdotNet.AppDefaults.Hosting.Tests/JSdotNet.AppDefaults.Hosting.Tests.csproj" />
+    <Project Path="tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj" />
+  </Folder>
+</Solution>

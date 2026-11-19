@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Aspire/">
+    <Project Path="src/Aspire/Company.Product.AppHost/Company.Product.AppHost.csproj" />
+    <Project Path="src/Aspire/Company.Product.ServiceDefaults/Company.Product.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/Company.Product.Core/Company.Product.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/ModuleName/">
+    <Project Path="src/ModuleName/Company.Product/Company.Product.csproj" />
+    <Project Path="src/ModuleName/Company.Product.Abstractions/Company.Product.Abstractions.csproj" />
+    <Project Path="src/ModuleName/Company.Product.Api/Company.Product.Api.csproj" />
+    <Project Path="src/ModuleName/Company.Product.Data.SqlServer/Company.Product.Data.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Company.Product.UnitTests/Company.Product.UnitTests.csproj" />
+    <Project Path="tests/Company.Product.IntegrationTests/Company.Product.IntegrationTests.csproj" />
+    <Project Path="tests/Company.Product.ArchitectureTests/Company.Product.ArchitectureTests.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="AGENTS.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+  </Folder>
+</Solution>

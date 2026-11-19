@@ -1,35 +1,16 @@
 {
   "mcpServers": {
-    "jsdotnet-coding-guidelines": {
-      "type": "stdio",
-      "command": "jsdotnet-guidelines-mcpserver",
-      "args": [],
-      "tools": [
-        "*"
-      ]
-    },
-    "jsdotnet-design-ux-guidelines": {
+    "jsdotnet-app-defaults": {
       "type": "stdio",
       "command": "dotnet",
       "args": [
         "run",
         "--project",
-        "src/JSdotNet.MCP.Design/JSdotNet.MCP.Design.csproj"
+        "src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj"
       ],
-      "tools": [
-        "*"
-      ]
-    },
-    "jsdotnet-publish-results": {
-      "type": "stdio",
-      "command": "dotnet",
-      "args": [
-        "run",
-        "--project",
-        "src/JSdotNet.MCP.Publish/JSdotNet.MCP.Publish.csproj",
-        "--",
-        "--Publish:RootPath=.publish"
-      ],
+      "env": {
+        "JSDOTNET_DOCS_PATH": "."
+      },
       "tools": [
         "*"
       ]

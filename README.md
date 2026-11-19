@@ -1,519 +1,129 @@
-# JSdotNet Project Guidelines
+# JSdotNet App Defaults
 
-Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, designs, recommendations and structures under `guide/`. An MCP Server in `src/` exposes these documents for tools/agents.
+The default setup for a new JSdotNet .NET application: one golden setup, with one answer per
+concern and no alternatives listed. The decisions live in [defaults/](defaults/) as ADRs and
+arc42 chapters a project's `.devbook/` links to instead of copying. The `jsdotnet-app-defaults`
+MCP server serves them to agents, and [aspire/](aspire/) publishes them as an Aspire 17 config
+source, so `aspire new` scaffolds an app that already follows them.
 
-> Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
-> Original repository: https://github.com/nikneem/hexmaster-design-guidelines
+> Credits: this project builds on the original HexMaster Design Guidelines work by Eduard
+> Keilholz ([nikneem/hexmaster-design-guidelines](https://github.com/nikneem/hexmaster-design-guidelines))
+> and contributors.
 
-## MCP Server (C#, .NET 10)
+## The golden setup
 
-An MCP (Model Context Protocol) server implementing the official Microsoft MCP SDK. Exposes design guideline documents as tools that AI assistants can call.
+| Concern | Default | ADR |
+|---|---|---|
+| Runtime | The newest GA .NET release, STS included (today .NET 11, C# 15); `global.json` pinned with `latestFeature`; no preview features | [0001](defaults/arc42/adr/0001-platform-and-build.md) |
+| Build and packages | `.slnx` only; `Directory.Build.props` with `TreatWarningsAsErrors` always on and CS8509 an error; Central Package Management with lock files and transitive pinning; C# file-based apps in `scripts/` | [0001](defaults/arc42/adr/0001-platform-and-build.md) |
+| Orchestration | Aspire 17, mandatory: a `Microsoft.NET.Sdk` AppHost with `Aspire.Hosting.Dotnet` and `AddDotnetProject`, started with `aspire run`; this repository is the Aspire config source | [0002](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) |
+| Configuration and infrastructure | Aspire parameters and secrets per environment; the AppHost is the infrastructure code, `aspire publish` generates it and `aspire deploy` applies it | [0002](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) |
+| Solution shape | Modular monolith with feature slices; a small app has one module; data access in `{Module}.Data.{Provider}`; tests under root `tests/` | [0003](defaults/arc42/adr/0003-solution-structure.md) |
+| HTTP API | Minimal APIs with endpoint classes, native OpenAPI and Scalar; built-in `AddValidation()` at the edge; Problem Details for every error | [0004](defaults/arc42/adr/0004-http-api.md) |
+| Application flow | Hand-rolled CQRS handlers (no mediator) returning a `Result<T>` union | [0005](defaults/arc42/adr/0005-application-layer.md) |
+| Persistence and messaging | EF Core only, database chosen per app in its own ADR; a concurrency token on every aggregate; integration events through a transactional outbox, broker chosen per app | [0006](defaults/arc42/adr/0006-persistence-and-messaging.md) |
+| Observability and resilience | OpenTelemetry and the standard resilience handler from ServiceDefaults; the Aspire dashboard locally; `[LoggerMessage]` logging | [0007](defaults/arc42/adr/0007-observability-and-resilience.md) |
+| Security | External OIDC identity provider, full JWT validation, zero-trust authorization policies | [0008](defaults/arc42/adr/0008-security.md) |
+| Frontend | Rules, not a framework: its own app under `src/App/`, an Aspire resource, a client generated from OpenAPI, `defaults/design/` tokens as CSS variables; Blazor or React + Vite, picked in the app's own ADR | [0009](defaults/arc42/adr/0009-frontend.md) |
+| Tests | xUnit v3 on Microsoft Testing Platform with NSubstitute and Bogus; integration tests on `WebApplicationFactory` with throwaway containers; Playwright E2E through `aspire start` | [0010](defaults/arc42/adr/0010-testing.md) |
+| MCP in an app | C# SDK 2.x, stateless Streamable HTTP in the Api host, its own skill, OAuth 2.1 with agent and user identities checked on every call, audited | [0011](defaults/arc42/adr/0011-setting-up-mcp.md) |
+| Agents in an app | Microsoft Agent Framework on `Microsoft.Extensions.AI`, models from Foundry behind one adapter, tools only from the app's own MCP tools or handlers | [0012](defaults/arc42/adr/0012-agents-in-applications.md) |
+| Agent-ready repository | One `AGENTS.md` wrapped per host, path-scoped rules, Aspire skills CLI first, this server through `dnx` | [0013](defaults/arc42/adr/0013-agent-ready-repository.md) |
 
-### Requirements
+The arc42 chapters around the ADRs — [constraints](defaults/arc42/02-constraints.md),
+[solution strategy](defaults/arc42/04-solution-strategy.md),
+[building blocks](defaults/arc42/05-building-block-view.md),
+[deployment](defaults/arc42/07-deployment-view.md) and
+[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — and the
+[UX style guide](defaults/design/) fill in the detail. Retired ADR numbers are mapped in
+[defaults/arc42/adr/README.md](defaults/arc42/adr/README.md).
 
-- .NET 10 SDK
+## Use it from a project
 
-### MCP Protocol
+**The MCP server.** Add it to the project's `.mcp.json`; `dnx` (in the .NET SDK) runs the
+`JSdotNet.AppDefaults.Mcp` package without a global install:
 
-The server implements the Model Context Protocol using the official `ModelContextProtocol` NuGet package. It exposes tools for:
+```json
+{
+  "mcpServers": {
+    "jsdotnet-app-defaults": {
+      "type": "stdio",
+      "command": "dnx",
+      "args": ["JSdotNet.AppDefaults.Mcp", "--yes"]
+    }
+  }
+}
+```
 
-1. **ListDocuments** - Lists all available design guideline documents (ADRs, designs, recommendations, structures)
-2. **GetDocument** - Retrieves the content of a specific document by its ID
-3. **SearchDocuments** - Searches documents by keyword or phrase
+It serves the tools `list_guides`, `search_guides` and `get_guide`, every document as a
+`defaults://` resource, and the prompts `new-app`, `review-against-defaults` and `propose-adr`.
+Per-host setup (Claude Code, GitHub Copilot CLI, VS Code, Visual Studio, the Copilot coding
+agent), the agent plugin and running from source are in [docs/install.md](docs/install.md).
 
-Documents are served from the local filesystem when available, with automatic fallback to GitHub repository content.
-
-### Run Standalone (for testing)
-
-From the repository root:
+**The Aspire config source.** Point the Aspire CLI at this repository and `aspire new`,
+`aspire agent init` and `aspire add` offer the golden-setup template, the shared hosting
+integration and the defaults skills:
 
 ```powershell
-dotnet run --project .\src\JSdotNet.MCP.Guidelines\JSdotNet.MCP.Guidelines.csproj
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/app-defaults.git'
+$env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
+$env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/app-defaults/blob/main/aspire/README.md'
 ```
 
-The server uses stdio transport for MCP communication. Logs are written to stderr, JSON-RPC messages to stdout.
+The source follows `main`; set `ASPIRE_INIT_SOURCE_REF` to a reviewed commit id to pin it.
+[aspire/README.md](aspire/README.md) says what accepting the source changes and how to opt out.
 
-### Design / UX Optimized Server
+**From a devbook project.** A decision the organization already records is linked, not
+copied. In the project's `.devbook/arc42/09-architecture-decisions.md`, link these ADRs and
+record only the app's own decisions — its database, broker, identity provider and frontend
+framework — as its own ADRs:
 
-A second MCP server is included for the scoped design and UX guidance set under the repository's `design/` folder. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that documentation set.
+```markdown
+## Organization defaults
+
+This application follows the JSdotNet app defaults at commit `<sha>`:
+[ADRs 0001–0013](https://github.com/JSdotNet/app-defaults/tree/<sha>/defaults/arc42/adr).
+Deviations are recorded below as this application's own ADRs.
+```
+
+Its other arc42 chapters link the matching `defaults/arc42/` chapter the same way. How to adopt
+devbook itself is the [devbook](https://github.com/JSdotNet/devbook) repository's to say.
+
+## Start a new app
 
 ```powershell
-dotnet run --project .\src\JSdotNet.MCP.Design\JSdotNet.MCP.Design.csproj
+$env:ASPIRE_INIT_SOURCE_URL = 'https://github.com/JSdotNet/app-defaults.git'
+$env:ASPIRE_INIT_SOURCE_PATH = 'aspire/aspire.config.json'
+aspire new
 ```
 
-When run from the repository root, the server automatically discovers `design/` locally. For GitHub-backed usage, it resolves documents from the repository's `design/` path on GitHub.
-
-### Publish Results Server
-
-A third MCP server (`src/JSdotNet.MCP.Publish`) lets an agent publish its results to a **configurable file location** instead of serving documentation.
+Pick **JSdotNet app defaults** and accept the source. Without the source, run the template
+directly:
 
 ```powershell
-dotnet run --project .\src\JSdotNet.MCP.Publish\JSdotNet.MCP.Publish.csproj -- --Publish:RootPath=D:\reports
+aspire new --template-repository https://github.com/JSdotNet/app-defaults --template-path aspire/templates
 ```
 
-Tools: `publish_result`, `append_result`, `list_published`, `read_published`, `delete_published`, `get_publish_location`, `get_usage_logs`.
-
-The publish root is resolved from `Publish:RootPath` (command line or `Publish__RootPath` environment variable), then `JSDOTNET_PUBLISH_PATH`, and finally a per-user default folder (`%LOCALAPPDATA%\JSdotNet\PublishedResults`). All tool paths are relative to that root — absolute paths and `..` segments are rejected. See [src/JSdotNet.MCP.Publish/README.md](src/JSdotNet.MCP.Publish/README.md) for details.
-
-### Install as GitHub Copilot MCP Tool
-
-The MCP Server can be integrated with GitHub Copilot to provide AI agents with access to design guidelines during code generation.
-
-There are two usage scenarios:
-
-1. **Standard Installation** (Recommended) - Install from NuGet, documents fetched from GitHub
-2. **Local Development** - Run from source with local documents for testing changes
-
----
-
-#### Scenario 1: Standard Installation (NuGet Global Tool)
-
-This is the recommended approach for general use. Documents are automatically fetched from the GitHub repository, so no local clone is needed.
-
-**VS Code Setup**
-
-1. **Install the package**:
-
-   ```bash
-   dotnet tool install --global JSdotNet.MCP.Guidelines
-   ```
-
-2. **Configure VS Code MCP settings**:
-
-   Create or edit `.vscode/mcp.json` in your user profile or workspace:
-
-   ```json
-   {
-     "inputs": [],
-     "servers": {
-       "jsdotnet-coding-guidelines": {
-         "type": "stdio",
-         "command": "jsdotnet-guidelines-mcpserver",
-         "args": []
-       }
-     }
-   }
-   ```
-
-   **Location options:**
-   - **User-level** (all workspaces): `%USERPROFILE%\.vscode\mcp.json` (Windows) or `~/.vscode/mcp.json` (Mac/Linux)
-   - **Workspace-level** (specific project): `.vscode/mcp.json` in your project root
-
-3. **Restart VS Code** to apply changes
-
-4. **Verify the connection**:
-   - Open the Output panel: View → Output
-   - Select "MCP" from the dropdown
-   - You should see server startup logs
-   - Open GitHub Copilot Chat
-   - Ask Copilot: "What ADRs are available in the design guidelines?"
-
-**Visual Studio Setup**
-
-1. **Install the package**:
-
-   ```powershell
-   dotnet tool install --global JSdotNet.MCP.Guidelines
-   ```
-
-2. **Configure Copilot MCP settings**:
-   - Go to `Tools` → `Options`
-   - Navigate to `GitHub` → `Copilot` → `MCP Servers`
-   - Click "Add Server"
-   - Configure:
-     - **Name:** `jsdotnet-coding-guidelines`
-     - **Command:** `jsdotnet-guidelines-mcpserver`
-
-3. **Restart Visual Studio** to apply changes
-
-4. **Verify the connection**:
-   - Open GitHub Copilot Chat window
-   - The MCP server should be listed as an active tool
-   - Ask Copilot: "Show me the ADR for .NET version adoption"
-
-**How it works**: When installed as a global tool, the server automatically fetches documents from the GitHub repository (`https://github.com/JSdotNet/Project-Guidelines-MCP`). No local clone is required, and you'll always get the latest published content from the `main` branch.
-
-**Update**:
-
-```bash
-dotnet tool update --global JSdotNet.MCP.Guidelines
-```
-
-**Uninstall**:
-
-```bash
-dotnet tool uninstall --global JSdotNet.MCP.Guidelines
-```
-
----
-
-#### Scenario 1b: GitHub Copilot CLI Setup
-
-Copilot CLI reads `.mcp.json` from your project root automatically. This repo ships a ready-to-use `.mcp.json` — you only need to install the global tool first.
-
-1. **Install the package** (if not already installed):
-
-   ```bash
-   dotnet tool install --global JSdotNet.MCP.Guidelines
-   ```
-
-2. **Copy `.mcp.json` to your project root** (or add the server entry to an existing `.mcp.json`):
-
-   ```json
-   {
-     "mcpServers": {
-       "jsdotnet-coding-guidelines": {
-         "type": "stdio",
-         "command": "jsdotnet-guidelines-mcpserver",
-         "args": [],
-         "tools": ["*"]
-       }
-     }
-   }
-   ```
-
-3. **Start Copilot CLI** in your project folder:
-
-   ```bash
-   copilot
-   ```
-
-   The MCP server is picked up automatically — no restart needed.
-
-4. **Verify** by running `/mcp show jsdotnet-coding-guidelines` inside the CLI session.
-
-**Alternatively**, add the server at the user level (available in all projects):
-
-```bash
-# Inside a Copilot CLI session
-/mcp add
-```
-
-Follow the prompts: type `stdio`, command `jsdotnet-guidelines-mcpserver`, tools `*`.
-
-**Update**:
-
-```bash
-dotnet tool update --global JSdotNet.MCP.Guidelines
-```
-
-Then inside an active Copilot CLI session, run `/mcp show` to confirm the updated server version is loaded.
-
-**Uninstall**:
-
-```bash
-dotnet tool uninstall --global JSdotNet.MCP.Guidelines
-```
-
-Then remove the entry from `.mcp.json` or run `/mcp delete jsdotnet-coding-guidelines` inside a Copilot CLI session to remove the user-level entry.
-
----
-
-#### Scenario 1c: Claude Code Setup
-
-Claude Code reads MCP servers from two places: the project's `.mcp.json` (this repo ships one) and a
-user-level `mcpServers` block in `~/.claude.json` (`%USERPROFILE%\.claude.json` on Windows). Use the
-user level to make the servers available in **every** project without copying config around.
-
-1. **Install the global tools**:
-
-   ```bash
-   dotnet tool install --global JSdotNet.MCP.Guidelines
-   ```
-
-   ```bash
-   dotnet tool install --global JSdotNet.MCP.Design
-   ```
-
-   ```bash
-   dotnet tool install --global JSdotNet.MCP.Publish
-   ```
-
-2. **Register them at user level**. With the `claude` CLI on your PATH:
-
-   ```bash
-   claude mcp add -s user jsdotnet-coding-guidelines -- jsdotnet-guidelines-mcpserver
-   ```
-
-   Otherwise add a top-level `mcpServers` block to `%USERPROFILE%\.claude.json` directly:
-
-   ```json
-   {
-     "mcpServers": {
-       "jsdotnet-coding-guidelines": {
-         "type": "stdio",
-         "command": "jsdotnet-guidelines-mcpserver",
-         "args": [],
-         "tools": ["*"]
-       },
-       "jsdotnet-design-ux-guidelines": {
-         "type": "stdio",
-         "command": "jsdotnet-design-mcpserver",
-         "args": [],
-         "tools": ["*"]
-       },
-       "jsdotnet-publish-results": {
-         "type": "stdio",
-         "command": "jsdotnet-publish-mcpserver",
-         "args": [],
-         "tools": ["*"]
-       }
-     }
-   }
-   ```
-
-   Keep the server IDs exactly as shown — the skills in `plugins/` refer to them by name.
-
-3. **Restart Claude Code** (or start a new session) to pick up the change.
-
-4. **Verify** with `/mcp` in a session, or ask "list the available guides".
-
-**Publish root**: with no `args`, `jsdotnet-publish-mcpserver` writes to the per-user default
-(`%LOCALAPPDATA%\JSdotNet\PublishedResults`). Add `"args": ["--Publish:RootPath=D:\\reports"]` to
-point it elsewhere — use an absolute path at user level, since a relative one resolves against
-whatever directory the session was started in.
-
-**Scope precedence**: a server defined in a project's `.mcp.json` overrides a user-level server with
-the same ID. In this repository, `.mcp.json` deliberately runs the design and publish servers from
-source via `dotnet run`, so those two use the working-tree build here and the installed global tools
-everywhere else. Note that the first `dotnet run` startup in a clean clone has to restore and build,
-which can exceed the MCP startup timeout — build the solution once (`dotnet build JSdotNet.MCP.slnx`)
-before starting a session.
-
----
-
-#### Scenario 2: Local Development (Run from Source)
-
-For contributors testing local changes before publishing to NuGet. This allows you to work with unpublished ADRs, recommendations, or structural changes.
-
-**VS Code Setup**
-
-1. **Clone the repository**:
-
-   ```bash
-   git clone https://github.com/JSdotNet/Project-Guidelines-MCP.git
-   cd Project-Guidelines-MCP
-   ```
-
-2. **Create or edit `.vscode/mcp.json`** in the repository root with your actual path:
-
-   ```json
-   {
-     "inputs": [],
-     "servers": {
-       "jsdotnet-project-guidelines-local": {
-         "type": "stdio",
-         "command": "dotnet",
-         "args": [
-           "run",
-           "--project",
-           "D:/projects/github.com/JSdotNet/Project-Guidelines-MCP/src/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj"
-         ]
-       }
-     }
-   }
-   ```
-
-3. **Restart VS Code** - The MCP server will run directly from your local source code
-
-**How it works**: When running from source with `dotnet run`, the server automatically discovers and reads documents from your local `guide/` folder. This allows you to test changes immediately without publishing.
-
-**Testing Local NuGet Packages (Advanced)**
-
-If you want to test the packaged tool locally before publishing to NuGet.org:
+The template scaffolds the golden setup: an AppHost with `AddDotnetProject`, ServiceDefaults,
+one module (Api, module, `Data.SqlServer`), the test projects, the ADR 0001 build files,
+`.editorconfig`, `AGENTS.md` with its host wrappers and a `dnx` `.mcp.json`. Then run
+`aspire agent init` for the skills and record the app's own choices as ADRs.
+
+## Change a default
+
+A default changes through a pull request that rewrites the ADR in place (git keeps the old
+text) or, where no ADR covers the topic, adds the next number. Update
+[defaults/index.json](defaults/index.json) in the same change. Branch names, commit style, the
+rules per folder and the review bar are in [AGENTS.md](AGENTS.md).
 
 ```powershell
-# Pack the project
-dotnet pack src/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj -o ./local-packages
-
-# Install from local package
-dotnet tool install --global --add-source ./local-packages JSdotNet.MCP.Guidelines
+dotnet build JSdotNet.AppDefaults.slnx
 ```
 
----
-
-#### Troubleshooting
-
-**Server doesn't appear in Copilot**
-
-- Check Output panel (View → Output) and select "MCP" from dropdown
-- Verify the command path is correct (use full path if needed)
-- Ensure .NET 10 SDK is installed: `dotnet --version`
-- Try restarting VS Code
-
-**Documents not loading**
-
-- For NuGet installation: Check internet connectivity (docs fetched from GitHub)
-- For local development: Verify `JSDOTNET_REPO_ROOT` points to repository root
-- Check server logs in MCP Output panel
-
-**Global tool not found**
-
-- Verify installation: `dotnet tool list --global`
-- Check PATH includes .NET tools directory
-  - Windows: `%USERPROFILE%\.dotnet\tools`
-  - Mac/Linux: `~/.dotnet/tools`
-
----
-
-### Registering new documents
-
-This repository uses `guide/index.json` as the canonical registry for MCP document discovery.
-
-When you add, rename, edit, or remove markdown files in `guide/`, also update `guide/index.json` so metadata and paths stay in sync.
-
-## Repo structure
-
-```
-AGENTS.md                         the repository's standing rules (the one root instruction file)
-CLAUDE.md                         @AGENTS.md import for Claude Code
-.github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
-.agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-guide/                            adrs/, designs/, recommendations/, structures/, config/ and index.json
-design/                           UX style guide served by the design server
-plugins/                          guidelines and design agent plugins
-src/                              JSdotNet.MCP.Shared, .Guidelines, .Design, .Publish
-tests/                            one test project per src/ project
-JSdotNet.MCP.slnx
+```powershell
+dotnet test JSdotNet.AppDefaults.slnx
 ```
 
-## ADRs
-
-- [0001: Adopt .NET 10 as Target Framework](guide/adrs/0001-adopt-dotnet-10.md) (Accepted)
-- [0002: Central Package Management for .NET Solutions](guide/adrs/0002-central-package-management.md) (Accepted)
-- [0003: .NET Aspire Recommendation for ASP.NET Services](guide/adrs/0003-recommend-aspire-for-aspnet-projects.md) (Accepted)
-- [0004: Standardize Result Objects for Expected Application Outcomes](guide/adrs/0004-standardize-result-objects-for-expected-failures.md) (Accepted)
-- [0005: Modular Monolith Project Structure](guide/adrs/0005-modular-monolith-structure.md) (Accepted)
-- [0006: CQRS Recommendation for ASP.NET API](guide/adrs/0006-cqrs-recommendation-for-aspnet-api.md) (Accepted)
-- [0007: Minimal APIs Over Controller-Based APIs](guide/adrs/0007-minimal-apis-over-controllers.md) (Accepted)
-- [0008: Adopt Vertical Slice Architecture for Feature Organization](guide/adrs/0008-vertical-slice-architecture.md) (Accepted)
-- [0009: Feature Slices Within Module Projects](guide/adrs/0009-feature-slices-module-structure.md) (Accepted)
-- [0010: Adopt OpenTelemetry for Comprehensive Observability](guide/adrs/0010-adopt-opentelemetry-for-observability.md) (Accepted)
-- [0011: Centralized Frontend Styling Variables](guide/adrs/0011-centralized-frontend-styling-variables.md) (Accepted)
-
-## Designs
-
-- [Modular Monolith Architecture Design](guide/designs/modular-monolith-architecture-design.md)
-- [Pragmatic Domain-Driven Design Approach](guide/designs/pragmatic-domain-driven-design.md)
-
-## Recommendations
-
-- [Instruction-File Setup: One AGENTS.md, Wrapped per Host](guide/recommendations/copilot-instruction-file-setup.md)
-- [Devbook Adoption: Start with the devbook Plugin Alone](guide/recommendations/devbook-adoption.md)
-- [Blazor Frontend Framework Guidance](guide/recommendations/blazor-frontend-framework-guidance.md)
-- [C# Coding Style](guide/recommendations/csharp-coding-style.md)
-- [Object Calisthenics for Domain Code](guide/recommendations/object-calisthenics-for-domain.md)
-- [Specification Pattern for Business Rules](guide/recommendations/specification-pattern-usage.md)
-- [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture.md)
-- [End-to-End Testing](guide/recommendations/testing-end-to-end.md)
-- [Integration Testing](guide/recommendations/testing-integration.md)
-- [Testing Shared Instructions](guide/recommendations/testing-shared.md)
-- [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit.md)
-
-## Structures
-
-- [Feature Slices Module Structure](guide/structures/feature-slices-module-structure.md)
-- [Folder Structure Reference](guide/structures/folder-structure-reference.md)
-- [Minimal API Endpoint Organization](guide/structures/minimal-api-endpoint-organization.md)
-- [Modular Solution Structure Template](guide/structures/modular-solution-structure.md)
-- [Simple Solution Structure Design](guide/structures/simple-solution-structure.md)
-
----
-
-## Development
-
-### Building and Testing
-
-```bash
-# Build the solution
-dotnet build JSdotNet.MCP.slnx
-
-# Run all tests
-dotnet test JSdotNet.MCP.slnx
-
-# Run tests with coverage
-dotnet test JSdotNet.MCP.slnx --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
-
-# Generate coverage report
-reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:"coverage/report" -reporttypes:"Html"
-```
-
-### Code Coverage Requirements
-
-- **Core Library** (`JSdotNet.MCP.Shared`): ≥80% line coverage
-- **Tests**: All tests must pass
-- Coverage reports are automatically generated in CI/CD
-
----
-
-## CI/CD Workflows
-
-### Build and Publish Workflow
-
-**Workflow**: `.github/workflows/publish-nuget.yml`
-
-Triggers on push to `main` branch when files in `src/` change.
-
-Steps:
-
-1. **Versioning** – GitVersion generates semantic version
-2. **Build** – Compiles solution in Release configuration with version info
-3. **Test** – Runs all unit tests with 80% coverage enforcement
-4. **Coverage Report** – Generates coverage summary
-5. **Package** – Creates NuGet package for the MCP Server
-6. **Publish** – Pushes package to NuGet.org
-7. **Release** – Creates GitHub release with version tag and artifacts
-
-Semantic Versioning Strategy (GitHubFlow):
-
-- **Main branch**: 1.0.0, 1.0.1, 1.0.2... (patch increments)
-- **Feature branches** (`feature/*`): 1.1.0-alpha.1, 1.1.0-alpha.2... (minor with alpha pre-release)
-- **Release branches** (`release/*`): 1.0.0-beta.1, 1.0.0-beta.2... (beta pre-release)
-
-Configuration: `GitVersion.yml` at repository root.
-
-### NuGet Packages
-
-Published to NuGet.org:
-
-- **JSdotNet.MCP.Guidelines** – coding guidelines MCP server (`jsdotnet-guidelines-mcpserver`)
-- **JSdotNet.MCP.Design** – design/UX guidance MCP server (`jsdotnet-design-mcpserver`)
-- **JSdotNet.MCP.Publish** – publish-results MCP server (`jsdotnet-publish-mcpserver`)
-
-Each package is published independently: the release workflow only pushes a package when its own
-source (or the shared `JSdotNet.MCP.Shared` project) changed on `main`.
-
-Package features:
-
-- .NET 10 global tool
-- Automatic document discovery from filesystem or GitHub
-- ModelContextProtocol SDK integration
-- MIT license
-
-### Setup Requirements
-
-To enable automated publishing, add the following GitHub secret:
-
-- `NUGET_API_KEY` – NuGet.org API key with push permissions
-
-Navigate to: Repository Settings → Secrets and variables → Actions → New repository secret
-
-### Local Version Testing
-
-To check what version GitVersion would generate locally:
-
-```bash
-# Install GitVersion tool
-dotnet tool install --global GitVersion.Tool
-
-# Run in repository root
-dotnet-gitversion
-```
-
-## Notes
-
-- All code and examples target `.NET 10`.
-- The MCP Server uses the `FileSystemDocumentCatalog` for local development and `GitHubDocumentCatalog` for published scenarios.
-- Coverage threshold is enforced at 80% for core library code.
-- CI/CD pipeline only triggers on changes to `src/` folder when pushed to `main` branch.
-
+Merging to `main` publishes the `JSdotNet.AppDefaults.Mcp` package through
+[publish-nuget.yml](.github/workflows/publish-nuget.yml) when its source changed; the server
+reads documents from `main`, so a merged default reaches every project at once.

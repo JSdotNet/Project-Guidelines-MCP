@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.jsdotnet/app-defaults",
+  "title": "JSdotNet Application Defaults",
+  "description": "The JSdotNet application defaults for .NET apps: ADRs, building blocks, recommendations and design, as tools, prompts and defaults:// resources.",
+  "version": "__VERSION__",
+  "repository": {
+    "url": "https://github.com/JSdotNet/app-defaults",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "nuget",
+      "registryBaseUrl": "https://api.nuget.org",
+      "identifier": "JSdotNet.AppDefaults.Mcp",
+      "version": "__VERSION__",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "JSDOTNET_DOCS_PATH",
+          "description": "Optional local defaults/ folder (or a repository root holding one) to serve instead of fetching from GitHub.",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "JSDOTNET_LOG_PATH",
+          "description": "Optional folder for the usage log.",
+          "isRequired": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

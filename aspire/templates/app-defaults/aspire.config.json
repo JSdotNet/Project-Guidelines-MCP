@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aspire.dev/reference/cli/configuration/schema/17.0.0.json",
+  "appHost": {
+    "path": "src/Aspire/Company.Product.AppHost/Company.Product.AppHost.csproj"
+  }
+}

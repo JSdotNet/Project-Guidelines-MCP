@@ -19,8 +19,8 @@ joined with commas, and its `description` is copied from the rule. Check that `a
 
 | Topic | Paths | Covers |
 |---|---|---|
-| [guide](guide.md) | `guide/**` | Doc taxonomy, front matter, `guide/index.json` |
-| [design-content](design-content.md) | `design/**` | Style-guide authoring, customization boundary, `design/index.json` |
+| [defaults](defaults.md) | `defaults/arc42/**`, `defaults/ai/**`, `defaults/index.json` | Doc taxonomy, front matter, `defaults/index.json` |
+| [design-content](design-content.md) | `defaults/design/**` | Style-guide authoring, customization boundary, its index entries |
 | [mcp-server](mcp-server.md) | `src/**`, `tests/**` | Server invariants and the coverage floor |
 
 Rules that apply to the whole repository stay in [`AGENTS.md`](../../AGENTS.md), which points

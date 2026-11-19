@@ -1,0 +1,23 @@
+{
+  "$schema": "https://aspire.dev/reference/cli/configuration/schema/17.0.0.json",
+  "skillSources": {
+    "jsdotnet-app-defaults": {
+      "repository": "https://github.com/JSdotNet/app-defaults.git",
+      "marketplace": "jsdotnet-app-defaults",
+      "plugins": ["app-defaults"]
+    }
+  },
+  "integrationSources": {
+    "jsdotnet-app-defaults": {
+      "source": "https://api.nuget.org/v3/index.json",
+      "patterns": ["JSdotNet.AppDefaults.Hosting"]
+    }
+  },
+  "templateSources": {
+    "jsdotnet-app-defaults": {
+      "displayName": "JSdotNet app defaults",
+      "repository": "https://github.com/JSdotNet/app-defaults.git",
+      "path": "aspire/templates"
+    }
+  }
+}

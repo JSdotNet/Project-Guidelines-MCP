@@ -1,11 +1,11 @@
-# GitHub Copilot App configuration for Project-Guidelines-MCP
-# Guideline source: JSdotNet.MCP.Guidelines.mcpserver
+# GitHub Copilot App configuration for app-defaults
+# Guideline source: JSdotNet.AppDefaults.Mcp (jsdotnet-app-defaults)
 
 # --- Pre-PR Validation ---
 # Build the solution to catch compilation errors before opening a PR.
 pre_flight:
   - name: Build solution
-    run: dotnet build JSdotNet.MCP.slnx --no-incremental
+    run: dotnet build JSdotNet.AppDefaults.slnx --no-incremental
     shell: pwsh
 
 # --- Post-PR: Pipeline Monitoring ---
@@ -63,7 +63,7 @@ instructions:
       1. Remove-Item Env:GH_TOKEN -ErrorAction SilentlyContinue
       2. gh auth switch --user JSdotNet
   git_transport: "Use the repository SSH remote/account for push, pull, fetch, and clone operations."
-  mcp_server: "Use jsdotnet-project-guidelines-mcpserver when working on code in src/. Do not query it when editing docs/ — those files are the source content the server serves."
+  mcp_server: "Use the jsdotnet-app-defaults MCP server when working on code in src/. Do not query it when editing defaults/ — those files are the source content the server serves."
 
 # --- Scope & Safety Boundaries ---
 # The agent IS permitted to:

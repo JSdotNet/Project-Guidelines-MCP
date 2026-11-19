@@ -9,7 +9,7 @@ namespace JSdotNet.MCP.Shared.Tests;
 
 /// <summary>
 /// Pure unit tests for FileSystemDocumentCatalog and DocumentInfo.
-/// Uses temp directories or non-real paths — no dependency on guide/ or design/.
+/// Uses temp directories or non-real paths — no dependency on defaults/.
 /// Integration tests against real doc folders live in Guidelines.Tests / Design.Tests.
 /// </summary>
 public class DocumentCatalogTests
@@ -20,21 +20,21 @@ public class DocumentCatalogTests
     public async Task Search_WithEmptyQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(await catalog.SearchAsync(""));
+        Assert.Empty(await catalog.SearchAsync("", TestContext.Current.CancellationToken));
     }
 
     [Fact]
     public async Task Search_WithWhitespaceQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(await catalog.SearchAsync("   "));
+        Assert.Empty(await catalog.SearchAsync("   ", TestContext.Current.CancellationToken));
     }
 
     [Fact]
     public async Task Search_WithNullQuery_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog();
-        Assert.Empty(await catalog.SearchAsync(null!));
+        Assert.Empty(await catalog.SearchAsync(null!, TestContext.Current.CancellationToken));
     }
 
     // --- Non-existent root ---
@@ -43,7 +43,7 @@ public class DocumentCatalogTests
     public async Task FileSystemCatalog_WithNonExistentRoot_ReturnsEmpty()
     {
         var catalog = new FileSystemDocumentCatalog("C:\\NonExistentPath\\Docs");
-        Assert.Empty(await catalog.ListDocumentsAsync());
+        Assert.Empty(await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken));
     }
 
     // --- GetContent with unknown id ---
@@ -113,7 +113,7 @@ public class DocumentCatalogTests
                 "---\ntitle: \"Multiline Tags Doc\"\ntags:\n- alpha\n- beta\n- gamma\n---\n# Body");
 
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = await catalog.ListDocumentsAsync();
+            var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
             Assert.Single(docs);
             Assert.Equal("Multiline Tags Doc", docs[0].Title);
@@ -138,7 +138,7 @@ public class DocumentCatalogTests
                 "---\ntitle: \"Should Be Ignored\"\n\n# Real H1 Title\n\nContent.");
 
             var catalog = new FileSystemDocumentCatalog(tempDir);
-            var docs = await catalog.ListDocumentsAsync();
+            var docs = await catalog.ListDocumentsAsync(TestContext.Current.CancellationToken);
 
             Assert.Single(docs);
             Assert.Equal("Real H1 Title", docs[0].Title);

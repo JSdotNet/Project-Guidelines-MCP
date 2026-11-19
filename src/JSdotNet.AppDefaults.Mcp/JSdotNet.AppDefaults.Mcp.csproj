@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>JSdotNet.AppDefaults.Mcp</RootNamespace>
+
+    <!-- NuGet Package Metadata: an MCP server tool, run with dnx JSdotNet.AppDefaults.Mcp and its yes flag -->
+    <PackAsTool>true</PackAsTool>
+    <PackageType>McpServer</PackageType>
+    <ToolCommandName>jsdotnet-app-defaults</ToolCommandName>
+    <PackageId>JSdotNet.AppDefaults.Mcp</PackageId>
+    <Title>JSdotNet Application Defaults MCP Server</Title>
+    <Authors>Eduard Keilholz</Authors>
+    <Company>JSdotNet</Company>
+    <Description>Model Context Protocol (MCP) server serving the JSdotNet application defaults: ADRs, building blocks, recommendations, configuration and design guidance for .NET applications, as tools, prompts and defaults:// resources.</Description>
+    <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JSdotNet/app-defaults</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>mcp;mcpserver;model-context-protocol;defaults;guidelines;adr;architecture;design;dotnet;csharp</PackageTags>
+    <Copyright>Copyright © Eduard Keilholz 2025</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JSdotNet.MCP.Shared\JSdotNet.MCP.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="ModelContextProtocol" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!--
+    .mcp/server.json carries __VERSION__ where the package version goes; packing stamps the real
+    PackageVersion into a copy under obj/ and packs that copy as .mcp/server.json.
+  -->
+  <Target Name="StampMcpServerJson" BeforeTargets="_GetPackageFiles">
+    <PropertyGroup>
+      <_McpServerJsonSource>$(MSBuildProjectDirectory)/.mcp/server.json</_McpServerJsonSource>
+      <_McpServerJsonStamped>$(IntermediateOutputPath)server.json</_McpServerJsonStamped>
+      <_McpServerJson>$([System.IO.File]::ReadAllText('$(_McpServerJsonSource)').Replace('__VERSION__', '$(PackageVersion)'))</_McpServerJson>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(_McpServerJsonStamped)" Lines="$([MSBuild]::Escape('$(_McpServerJson)'))" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <None Include="$(_McpServerJsonStamped)" Pack="true" PackagePath=".mcp/server.json" />
+    </ItemGroup>
+  </Target>
+
+</Project>

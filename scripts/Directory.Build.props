@@ -5,7 +5,7 @@
     Directory.Packages.props is also inherited from the solution root, enabling
     version-less #:package directives for packages already declared there.
 
-    See ADR 0014: C# Standalone Script Files.
+    See ADR 0001: Platform and Build.
   -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 

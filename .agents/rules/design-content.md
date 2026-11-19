@@ -1,13 +1,13 @@
 ---
 name: design-content
-description: Authoring rules for the UX style guide under design/ and its index.
+description: Authoring rules for the UX style guide under defaults/design/ and its index entries.
 paths:
-  - "design/**"
+  - "defaults/design/**"
 ---
 
 # Design content
 
-`design/` is the UX style guide served by the design MCP server. `design/README.md` is its
+`defaults/design/` is the UX style guide served by the design MCP server. Its `README.md` is its
 entry point and structure overview; keep its Structure table and "What Is and Isn't
 Customizable" table in step with any document you add, remove, or rescope.
 
@@ -21,7 +21,7 @@ content change, not on a typo, grammar, or formatting-only edit. Documents are n
 ## Content boundaries
 
 - Stay framework-agnostic: how tokens are consumed in code belongs to
-  [ADR 0011](../../guide/adrs/0011-centralized-frontend-styling-variables.md), not here.
+  [ADR 0009](../../defaults/arc42/adr/0009-frontend.md), not here.
 - Color tokens are the only per-project customization. Never add guidance that lets a project
   override typography, spacing, radius, shadow, motion, or a `color-text-*`,
   `color-background-*` or `color-border-*` token; a new customization point is a change to
@@ -29,11 +29,12 @@ content change, not on a typo, grammar, or formatting-only edit. Documents are n
 - Every color token has a light and a dark value, and every rule meets WCAG 2.1 AA.
 - When a topic appears in more than one document, the more specific one is authoritative;
   change it there and link to it rather than restating it.
-- Keep the SVGs in `design/assets/` in step with the tokens they depict.
+- Keep the SVGs in `defaults/design/assets/` in step with the tokens they depict.
 
-## `design/index.json`
+## Index entries
 
-Update it in the same change whenever a document is added, removed, retitled, or retagged:
+Update `defaults/index.json` ([defaults.md](defaults.md)) in the same change whenever a
+document is added, removed, retitled, or retagged:
 one entry per markdown file with `id` (the file name without `.md`, lower-case), `title` and
-`tags` from the front matter, a one-sentence `description`, `category` `style-guide`, and
-`relativePath` relative to `design/`. Update the `generated` timestamp.
+`tags` from the front matter, a one-sentence `description`, `category` `design`, and
+`relativePath` relative to `defaults/` (`design/NN-topic.md`). Update the `generated` timestamp.

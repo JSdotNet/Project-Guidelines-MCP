@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "JSdotNet",
+  "classifications": [ "Aspire", "Cloud", "Web", "API", "Modular monolith" ],
+  "identity": "JSdotNet.AppDefaults.App",
+  "name": "JSdotNet app defaults",
+  "description": "The JSdotNet golden setup: an Aspire 17 AppHost, ServiceDefaults and one module (Api, module and Data.SqlServer) with unit, architecture and integration tests.",
+  "shortName": "jsdotnet-app",
+  "sourceName": "Company.Product",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "ModuleNameValue": {
+      "type": "generated",
+      "generator": "regex",
+      "dataType": "string",
+      "parameters": {
+        "source": "name",
+        "steps": [
+          { "regex": "^.*\\.", "replacement": "" },
+          { "regex": "[^A-Za-z0-9_]", "replacement": "" }
+        ]
+      },
+      "replaces": "ModuleName",
+      "fileRename": "ModuleName"
+    },
+    "ModuleNameLower": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "ModuleNameValue",
+        "toLower": true
+      },
+      "replaces": "modulename"
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [ "**/bin/**", "**/obj/**", "**/packages.lock.json", ".template.config/**" ]
+        }
+      ]
+    }
+  ],
+  "primaryOutputs": [
+    { "path": "Company.Product.slnx" }
+  ]
+}
