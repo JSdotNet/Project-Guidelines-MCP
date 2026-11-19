@@ -5,6 +5,7 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>cobertura</Format>
+          <Include>[JSdotNet.*]*</Include>
           <Exclude>[*.Tests]*,[*]*.Program,[*]*GitHubDocumentCatalog</Exclude>
           <ExcludeByAttribute>Obsolete,GeneratedCode,CompilerGenerated</ExcludeByAttribute>
           <IncludeDirectory>../src/</IncludeDirectory>
