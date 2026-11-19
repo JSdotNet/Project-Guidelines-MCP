@@ -9,8 +9,8 @@
     <Authors>JSdotNet</Authors>
     <Company>JSdotNet</Company>
     <Description>Aspire 17 hosting integration with the resource definitions the JSdotNet application defaults share: databases with a persistent data volume and the standard health check for every project.</Description>
-    <PackageProjectUrl>https://github.com/JSdotNet/Project-Guidelines-MCP</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/JSdotNet/Project-Guidelines-MCP</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JSdotNet/app-defaults</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>

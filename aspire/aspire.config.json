@@ -2,7 +2,7 @@
   "$schema": "https://aspire.dev/reference/cli/configuration/schema/17.0.0.json",
   "skillSources": {
     "jsdotnet-app-defaults": {
-      "repository": "https://github.com/JSdotNet/Project-Guidelines-MCP.git",
+      "repository": "https://github.com/JSdotNet/app-defaults.git",
       "marketplace": "jsdotnet-app-defaults",
       "plugins": ["app-defaults"]
     }
@@ -16,7 +16,7 @@
   "templateSources": {
     "jsdotnet-app-defaults": {
       "displayName": "JSdotNet app defaults",
-      "repository": "https://github.com/JSdotNet/Project-Guidelines-MCP.git",
+      "repository": "https://github.com/JSdotNet/app-defaults.git",
       "path": "aspire/templates"
     }
   }

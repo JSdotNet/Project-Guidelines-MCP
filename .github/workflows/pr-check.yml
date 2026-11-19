@@ -7,7 +7,7 @@ on:
 
 env:
   DOTNET_VERSION: '11.0.x'
-  SOLUTION_PATH: 'JSdotNet.MCP.slnx'
+  SOLUTION_PATH: 'JSdotNet.AppDefaults.slnx'
 
 permissions:
   contents: read

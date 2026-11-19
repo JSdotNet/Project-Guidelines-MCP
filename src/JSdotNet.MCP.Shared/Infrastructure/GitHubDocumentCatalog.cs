@@ -13,7 +13,7 @@ namespace JSdotNet.MCP.Shared.Infrastructure;
 /// <summary>
 /// Loads Markdown documents from the GitHub repository's defaults/ folder.
 /// Prefers defaults/index.json with 30-minute cache; falls back to directory traversal if index is missing.
-/// Default repo: JSdotNet/Project-Guidelines-MCP (branch: main).
+/// Default repo: JSdotNet/app-defaults (branch: main).
 /// </summary>
 public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
 {
@@ -28,7 +28,7 @@ public sealed class GitHubDocumentCatalog : IDocumentCatalog, IAsyncDisposable
     public GitHubDocumentCatalog(
         IMemoryCache cache,
         string owner = "JSdotNet",
-        string repo = "Project-Guidelines-MCP",
+        string repo = "app-defaults",
         string branch = "main",
         HttpClient? httpClient = null,
         string documentsPath = FileSystemDocumentCatalog.DefaultsFolder,

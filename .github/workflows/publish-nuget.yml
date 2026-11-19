@@ -8,7 +8,7 @@ on:
 
 env:
   DOTNET_VERSION: '11.0.x'
-  SOLUTION_PATH: 'JSdotNet.MCP.slnx'
+  SOLUTION_PATH: 'JSdotNet.AppDefaults.slnx'
   DEFAULTS_PROJECT_PATH: 'src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj'
   HOSTING_PROJECT_PATH: 'aspire/integrations/JSdotNet.AppDefaults.Hosting/JSdotNet.AppDefaults.Hosting.csproj'
 

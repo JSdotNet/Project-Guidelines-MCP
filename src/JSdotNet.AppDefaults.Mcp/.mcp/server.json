@@ -5,7 +5,7 @@
   "description": "The JSdotNet application defaults for .NET apps: ADRs, building blocks, recommendations and design, as tools, prompts and defaults:// resources.",
   "version": "__VERSION__",
   "repository": {
-    "url": "https://github.com/JSdotNet/Project-Guidelines-MCP",
+    "url": "https://github.com/JSdotNet/app-defaults",
     "source": "github"
   },
   "packages": [
