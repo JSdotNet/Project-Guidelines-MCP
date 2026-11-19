@@ -8,7 +8,7 @@
 
 | Server | MCP name | Serves | Contains |
 |--------|----------|--------|----------|
-| **Design / UX** | `jsdotnet-design-ux-guidelines` | `design/` | UX style guide, design tokens (color, typography, spacing, motion) |
+| **Design / UX** | `jsdotnet-design-ux-guidelines` | `defaults/design/` | UX style guide, design tokens (color, typography, spacing, motion) |
 
 > For coding/architecture guidance (ADRs, patterns, C# standards), use the separate `jsdotnet-coding-guidelines` server and its plugin.
 
@@ -19,7 +19,7 @@
 | Tool | When to use |
 |------|-------------|
 | `list_guides` | Browse the full style-guide catalog |
-| `list_guides_by_type(category)` | Get all docs in a category (only `style-guide` exists) |
+| `list_guides_by_type(category)` | Get all docs in a category (only `design` exists) |
 | `search_guides(query)` | Free-text search across titles and descriptions |
 | `search_guides_by_tag(tag)` | Precise tag-based search — fastest for known topics |
 | `get_guide(id)` | Fetch the full markdown of a specific style-guide document |
@@ -27,7 +27,7 @@
 
 ### Valid `list_guides_by_type` categories
 
-`style-guide`
+`design`
 
 ---
 
@@ -51,7 +51,7 @@
 - **"What fonts are used?"** → `get_guide("02-typography")`
 - **"What spacing values should I use?"** → `get_guide("03-spacing-and-layout")`
 - **"How should I animate a transition?"** → `get_guide("04-motion-and-interaction")`
-- **"Give me the full catalog."** → `list_guides_by_type("style-guide")`
+- **"Give me the full catalog."** → `list_guides_by_type("design")`
 - **"Find all color-related docs."** → `search_guides_by_tag("color")`
 - **"Find docs about accessibility."** → `search_guides_by_tag("accessibility")`
 

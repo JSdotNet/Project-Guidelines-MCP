@@ -8,7 +8,7 @@
 
 | Server | MCP name | Serves |
 |--------|----------|--------|
-| **Design / UX** | `jsdotnet-design-ux-guidelines` | `design/` — UX style guide (color, typography, spacing, motion) |
+| **Design / UX** | `jsdotnet-design-ux-guidelines` | `defaults/design/` — UX style guide (color, typography, spacing, motion) |
 
 > To test the coding guidelines server, use the **test-guidelines-server** skill from the `jsdotnet-project-guidelines` plugin.
 
@@ -25,19 +25,19 @@ list_guides()
 ```
 
 **Expected:** JSON array with 6 entries (5 style-guide docs + README).  
-**Pass criteria:** All entries have `category` = `style-guide`; IDs include `01-color-palette`, `02-typography`, `03-spacing-and-layout`, `04-motion-and-interaction`, `05-customization-guide`, `readme`.  
-**Fail:** Empty array or wrong categories → server is not connected or `design/` folder is missing.
+**Pass criteria:** All entries have `category` = `design`; IDs include `01-color-palette`, `02-typography`, `03-spacing-and-layout`, `04-motion-and-interaction`, `05-customization-guide`, `readme`.  
+**Fail:** Empty array or wrong categories → server is not connected or `defaults/design/` folder is missing.
 
 ---
 
 ### Test 2 — List by category
 
 ```
-list_guides_by_type("style-guide")
+list_guides_by_type("design")
 ```
 
 **Expected:** Same 6 documents as Test 1.  
-**Pass criteria:** All entries have `category` = `style-guide`; count = 6.  
+**Pass criteria:** All entries have `category` = `design`; count = 6.  
 **Fail:** Empty array → category filter broken or no docs; wrong count → index out of sync with disk.
 
 ---
@@ -56,7 +56,7 @@ search_guides_by_tag("typography")
 - `color` returns ≥2 docs (color palette + customization guide)
 - `typography` returns ≥1 doc (typography doc)
 
-**Fail:** Zero results for any tag → tag metadata missing from `design/index.json`.
+**Fail:** Zero results for any tag → tag metadata missing from `defaults/index.json`.
 
 ---
 
@@ -70,7 +70,7 @@ search_guides("customization")
 
 **Expected:** At least one result per query.  
 **Pass criteria:** Results contain documents whose titles or descriptions match the search term.  
-**Fail:** Zero results → `design/index.json` is stale or missing. Regenerate it.
+**Fail:** Zero results → `defaults/index.json` is stale or missing. Regenerate it.
 
 ---
 
@@ -84,7 +84,7 @@ get_guide("05-customization-guide")
 
 **Expected:** Full markdown content for each document (hundreds of characters minimum).  
 **Pass criteria:** Content includes token tables with light/dark values and usage rules.  
-**Fail:** Empty string or error → `design/` directory not found or file is missing.
+**Fail:** Empty string or error → `defaults/design/` directory not found or file is missing.
 
 ---
 
@@ -123,8 +123,8 @@ search_guides_by_tag("color")
 
 | # | Test | Pass condition |
 |---|------|----------------|
-| 1 | `list_guides()` | 6 entries, all `style-guide` category |
-| 2 | `list_guides_by_type("style-guide")` | 6 entries |
+| 1 | `list_guides()` | 6 entries, all `design` category |
+| 2 | `list_guides_by_type("design")` | 6 entries |
 | 3 | `search_guides_by_tag("design-tokens")` | ≥4 results |
 | 4 | `search_guides_by_tag("color")` | ≥2 results |
 | 5 | `search_guides_by_tag("typography")` | ≥1 result |
@@ -147,15 +147,15 @@ search_guides_by_tag("color")
 
 ### Empty results from `list_guides` or `search_guides`
 
-1. Check that `design/index.json` exists and is current.
-2. The index must match the actual markdown files in `design/`.
-3. If stale: regenerate the index by scanning all markdown files in `design/` and updating `design/index.json`.
+1. Check that `defaults/index.json` exists and is current.
+2. The index must match the actual markdown files in `defaults/design/`.
+3. If stale: regenerate the index by scanning all markdown files in `defaults/design/` and updating `defaults/index.json`.
 4. Expected documents: `README.md`, `01-color-palette.md`, `02-typography.md`, `03-spacing-and-layout.md`, `04-motion-and-interaction.md`, `05-customization-guide.md`
 
 ### `get_guide` returns empty
 
-1. Verify the `id` exists in `design/index.json`.
-2. Confirm the markdown file referenced by `relativePath` exists on disk in `design/`.
+1. Verify the `id` exists in `defaults/index.json`.
+2. Confirm the markdown file referenced by `relativePath` exists on disk in `defaults/design/`.
 3. Check environment variable `JSDOTNET_DOCS_PATH` — if set, it overrides the default path.
 
 ### `get_usage_logs` returns empty

@@ -21,7 +21,7 @@ tags: [style-guide, design-tokens, ux, frontend]
 
 This style guide is the **canonical UX foundation, component, content, and interaction reference** for web products in this organization. It defines the shared visual language, reusable UI patterns, copy guidance, and recurring interaction behaviors that keep products consistent and accessible across frameworks.
 
-> **Framework-agnostic web guidance:** These documents avoid framework-specific implementation details. For token implementation patterns in code, see [ADR 0009: Frontend](../guide/adrs/0009-frontend.md).
+> **Framework-agnostic web guidance:** These documents avoid framework-specific implementation details. For token implementation patterns in code, see [ADR 0009: Frontend](../arc42/adr/0009-frontend.md).
 
 ---
 
@@ -91,7 +91,7 @@ This style guide targets **web applications**:
 ## Relationship to ADR 0009
 
 This style guide defines **what** the shared tokens and UX rules are.
-[ADR 0009](../guide/adrs/0009-frontend.md) defines **how** the design tokens are represented and consumed in code.
+[ADR 0009](../arc42/adr/0009-frontend.md) defines **how** the design tokens are represented and consumed in code.
 
 The style guide is the source of truth for UX decisions. ADR 0009 is the implementation contract for frontend projects.
 

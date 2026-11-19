@@ -27,13 +27,13 @@ Intentionally not covered in depth here:
 - Boundary and consistency strategy
 - Evolution and extraction strategy
 
-For those concerns, see `designs/modular-monolith-architecture-design.md`.
+For those concerns, see `modular-monolith-architecture-design.md`.
 
 ## Proposed Solution Structure
 
 This template covers the **multi-module** solution profile.
 
-For single-module solutions, use `structures/simple-solution-structure.md`.
+For single-module solutions, use `simple-solution-structure.md`.
 
 All test projects are placed under `solution-root/tests/`.
 

@@ -17,10 +17,10 @@ Detailed and scenario-specific folder trees remain in their own structure docume
 
 Use this page to choose the right structure document:
 
-- `structures/modular-solution-structure.md`
-- `structures/simple-solution-structure.md`
-- `structures/feature-slices-module-structure.md`
-- `structures/minimal-api-endpoint-organization.md`
+- `modular-solution-structure-template.md`
+- `simple-solution-structure.md`
+- `feature-slices-module-structure.md`
+- `minimal-api-endpoint-organization.md`
 
 ## High-Level Map
 
@@ -34,7 +34,7 @@ solution-root/
 
 ## Where Details Live
 
-- Multi-module solution layout and examples: `structures/modular-solution-structure.md`
-- Simple single-solution layout and examples: `structures/simple-solution-structure.md`
-- Feature-slices module folder layout: `structures/feature-slices-module-structure.md`
-- Minimal API endpoint file layout: `structures/minimal-api-endpoint-organization.md`
+- Multi-module solution layout and examples: `modular-solution-structure-template.md`
+- Simple single-solution layout and examples: `simple-solution-structure.md`
+- Feature-slices module folder layout: `feature-slices-module-structure.md`
+- Minimal API endpoint file layout: `minimal-api-endpoint-organization.md`

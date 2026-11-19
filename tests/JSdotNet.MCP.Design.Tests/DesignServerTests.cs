@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using JSdotNet.MCP.Shared.Abstractions;
 using JSdotNet.MCP.Shared.Infrastructure;
 using Xunit;
 
@@ -11,10 +12,7 @@ public sealed class DesignServerTests
     [Fact]
     public async Task DesignCatalog_LoadsDesignDocs()
     {
-        var designRoot = FindFolder("design");
-        Assert.NotNull(designRoot);
-
-        var catalog = new FileSystemDocumentCatalog(designRoot!);
+        var catalog = DesignCatalog();
         var docs = await catalog.ListDocumentsAsync();
 
         Assert.NotEmpty(docs);
@@ -24,10 +22,7 @@ public sealed class DesignServerTests
     [Fact]
     public async Task DesignCatalog_SearchReturnsResults()
     {
-        var designRoot = FindFolder("design");
-        Assert.NotNull(designRoot);
-
-        var catalog = new FileSystemDocumentCatalog(designRoot!);
+        var catalog = DesignCatalog();
         var results = await catalog.SearchAsync("color");
 
         Assert.NotEmpty(results);
@@ -36,10 +31,7 @@ public sealed class DesignServerTests
     [Fact]
     public async Task DesignCatalog_GetContent_ReturnsMarkdown()
     {
-        var designRoot = FindFolder("design");
-        Assert.NotNull(designRoot);
-
-        var catalog = new FileSystemDocumentCatalog(designRoot!);
+        var catalog = DesignCatalog();
         var doc = (await catalog.ListDocumentsAsync()).First();
         var content = await catalog.GetContentAsync(doc.Id, TestContext.Current.CancellationToken);
 
@@ -50,26 +42,46 @@ public sealed class DesignServerTests
     [Fact]
     public void DesignIndex_ExistsAndIsValid()
     {
-        var repoRoot = FindFolder("design", returnParent: true);
-        Assert.NotNull(repoRoot);
+        var defaultsRoot = FindFolder("defaults");
+        Assert.NotNull(defaultsRoot);
 
-        var indexPath = Path.Combine(repoRoot!, "design", "index.json");
-        Assert.True(File.Exists(indexPath), "design/index.json must exist");
+        var indexPath = Path.Combine(defaultsRoot!, "index.json");
+        Assert.True(File.Exists(indexPath), "defaults/index.json must exist");
 
         var indexData = JsonSerializer.Deserialize<JsonElement>(File.ReadAllText(indexPath));
         Assert.True(indexData.TryGetProperty("version", out _));
         Assert.True(indexData.TryGetProperty("documents", out var docs));
-        Assert.True(docs.GetArrayLength() > 0);
+        var design = docs.EnumerateArray()
+            .Where(d => d.GetProperty("category").GetString() == "design")
+            .ToList();
+        Assert.NotEmpty(design);
+        Assert.All(design, d => Assert.StartsWith("design/", d.GetProperty("relativePath").GetString()));
     }
 
-    private static string? FindFolder(string name, bool returnParent = false)
+    [Fact]
+    public async Task DesignCatalog_ServesOnlyDesignDocuments()
+    {
+        var docs = await DesignCatalog().ListDocumentsAsync();
+
+        Assert.All(docs, d => Assert.Equal("design", d.Category));
+        Assert.DoesNotContain(docs, d => d.Id == "0001-platform-and-build");
+    }
+
+    private static IDocumentCatalog DesignCatalog()
+    {
+        var defaultsRoot = FindFolder("defaults");
+        Assert.NotNull(defaultsRoot);
+        return CategoryFilteredDocumentCatalog.DesignOnly(new FileSystemDocumentCatalog(defaultsRoot!));
+    }
+
+    private static string? FindFolder(string name)
     {
         var current = AppContext.BaseDirectory;
         while (current != null)
         {
             var candidate = Path.Combine(current, name);
             if (Directory.Exists(candidate))
-                return returnParent ? current : candidate;
+                return candidate;
             current = Directory.GetParent(current)?.FullName;
         }
         return null;

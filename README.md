@@ -1,6 +1,6 @@
 # JSdotNet Project Guidelines
 
-Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, designs, recommendations and structures under `guide/`. An MCP Server in `src/` exposes these documents for tools/agents.
+Design, architecture, style and structure guidelines for modern .NET (C#) projects, organized as ADRs, building blocks, concepts, AI setup and a UX style guide under `defaults/`. An MCP Server in `src/` exposes these documents for tools/agents.
 
 > Credits: This project builds on the original HexMaster Design Guidelines work by Eduard Keilholz (GitHub: nikneem) and contributors.
 > Original repository: https://github.com/nikneem/hexmaster-design-guidelines
@@ -35,13 +35,13 @@ The server uses stdio transport for MCP communication. Logs are written to stder
 
 ### Design / UX Optimized Server
 
-A second MCP server is included for the scoped design and UX guidance set under the repository's `design/` folder. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that documentation set.
+A second MCP server is included for the scoped design and UX guidance set under the repository's `defaults/design/` folder. It exposes the same tools (`list_guides`, `list_guides_by_type`, `search_guides`, `search_guides_by_tag`, `get_guide`) but reads only that documentation set.
 
 ```powershell
 dotnet run --project .\src\JSdotNet.MCP.Design\JSdotNet.MCP.Design.csproj
 ```
 
-When run from the repository root, the server automatically discovers `design/` locally. For GitHub-backed usage, it resolves documents from the repository's `design/` path on GitHub.
+When run from the repository root, the server automatically discovers `defaults/` locally. For GitHub-backed usage, it reads the repository's `defaults/index.json` on GitHub. Either way it serves only the documents in category `design`; the guidelines server serves the rest.
 
 ### Publish Results Server
 
@@ -316,7 +316,7 @@ For contributors testing local changes before publishing to NuGet. This allows y
 
 3. **Restart VS Code** - The MCP server will run directly from your local source code
 
-**How it works**: When running from source with `dotnet run`, the server automatically discovers and reads documents from your local `guide/` folder. This allows you to test changes immediately without publishing.
+**How it works**: When running from source with `dotnet run`, set `JSDOTNET_DOCS_PATH` to the repository root (or its `defaults/` folder) and the server reads your local documents instead of GitHub's. This allows you to test changes immediately without publishing.
 
 **Testing Local NuGet Packages (Advanced)**
 
@@ -358,9 +358,9 @@ dotnet tool install --global --add-source ./local-packages JSdotNet.MCP.Guidelin
 
 ### Registering new documents
 
-This repository uses `guide/index.json` as the canonical registry for MCP document discovery.
+This repository uses `defaults/index.json` as the canonical registry for MCP document discovery, for both servers.
 
-When you add, rename, edit, or remove markdown files in `guide/`, also update `guide/index.json` so metadata and paths stay in sync.
+When you add, rename, edit, or remove markdown files in `defaults/`, also update `defaults/index.json` so metadata and paths stay in sync.
 
 ## Repo structure
 
@@ -369,8 +369,8 @@ AGENTS.md                         the repository's standing rules (the one root 
 CLAUDE.md                         @AGENTS.md import for Claude Code
 .github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-guide/                            adrs/, designs/, recommendations/, structures/, config/ and index.json
-design/                           UX style guide served by the design server
+defaults/                         arc42/ (adr/, building-blocks/, concepts/), ai/, design/ and index.json
+defaults/design/                  UX style guide served by the design server
 plugins/                          guidelines and design agent plugins
 src/                              JSdotNet.MCP.Shared, .Guidelines, .Design, .Publish
 tests/                            one test project per src/ project
@@ -381,48 +381,48 @@ JSdotNet.MCP.slnx
 
 The decisions are a set of 13 ADRs, rewritten in place when a decision changes:
 
-- [0001: Platform and Build](guide/adrs/0001-platform-and-build.md) (Accepted)
-- [0002: Aspire, Configuration and Infrastructure](guide/adrs/0002-aspire-configuration-and-infrastructure.md) (Accepted)
-- [0003: Solution Structure](guide/adrs/0003-solution-structure.md) (Accepted)
-- [0004: HTTP API](guide/adrs/0004-http-api.md) (Accepted)
-- [0005: Application Layer](guide/adrs/0005-application-layer.md) (Accepted)
-- [0006: Persistence and Messaging](guide/adrs/0006-persistence-and-messaging.md) (Accepted)
-- [0007: Observability and Resilience](guide/adrs/0007-observability-and-resilience.md) (Accepted)
-- [0008: Security](guide/adrs/0008-security.md) (Accepted)
-- [0009: Frontend](guide/adrs/0009-frontend.md) (Accepted)
-- [0010: Testing](guide/adrs/0010-testing.md) (Accepted)
-- [0011: Setting Up MCP](guide/adrs/0011-setting-up-mcp.md) (Accepted)
-- [0012: Agents in Applications](guide/adrs/0012-agents-in-applications.md) (Accepted)
-- [0013: Agent-Ready Repository](guide/adrs/0013-agent-ready-repository.md) (Accepted)
+- [0001: Platform and Build](defaults/arc42/adr/0001-platform-and-build.md) (Accepted)
+- [0002: Aspire, Configuration and Infrastructure](defaults/arc42/adr/0002-aspire-configuration-and-infrastructure.md) (Accepted)
+- [0003: Solution Structure](defaults/arc42/adr/0003-solution-structure.md) (Accepted)
+- [0004: HTTP API](defaults/arc42/adr/0004-http-api.md) (Accepted)
+- [0005: Application Layer](defaults/arc42/adr/0005-application-layer.md) (Accepted)
+- [0006: Persistence and Messaging](defaults/arc42/adr/0006-persistence-and-messaging.md) (Accepted)
+- [0007: Observability and Resilience](defaults/arc42/adr/0007-observability-and-resilience.md) (Accepted)
+- [0008: Security](defaults/arc42/adr/0008-security.md) (Accepted)
+- [0009: Frontend](defaults/arc42/adr/0009-frontend.md) (Accepted)
+- [0010: Testing](defaults/arc42/adr/0010-testing.md) (Accepted)
+- [0011: Setting Up MCP](defaults/arc42/adr/0011-setting-up-mcp.md) (Accepted)
+- [0012: Agents in Applications](defaults/arc42/adr/0012-agents-in-applications.md) (Accepted)
+- [0013: Agent-Ready Repository](defaults/arc42/adr/0013-agent-ready-repository.md) (Accepted)
 
-The old numbers 0001 to 0019 are retired and never reused; [guide/adrs/README.md](guide/adrs/README.md) maps each one to the ADR that replaced it.
+The old numbers 0001 to 0019 are retired and never reused; [defaults/arc42/adr/README.md](defaults/arc42/adr/README.md) maps each one to the ADR that replaced it.
 
 ## Designs
 
-- [Modular Monolith Architecture Design](guide/designs/modular-monolith-architecture-design.md)
-- [Pragmatic Domain-Driven Design Approach](guide/designs/pragmatic-domain-driven-design.md)
+- [Modular Monolith Architecture Design](defaults/arc42/building-blocks/modular-monolith-architecture-design.md)
+- [Pragmatic Domain-Driven Design Approach](defaults/arc42/building-blocks/pragmatic-domain-driven-design.md)
 
 ## Recommendations
 
-- [Instruction-File Setup: One AGENTS.md, Wrapped per Host](guide/recommendations/copilot-instruction-file-setup.md)
-- [Devbook Adoption: Start with the devbook Plugin Alone](guide/recommendations/devbook-adoption.md)
-- [Blazor Frontend Framework Guidance](guide/recommendations/blazor-frontend-framework-guidance.md)
-- [C# Coding Style](guide/recommendations/csharp-coding-style.md)
-- [Object Calisthenics for Domain Code](guide/recommendations/object-calisthenics-for-domain.md)
-- [Specification Pattern for Business Rules](guide/recommendations/specification-pattern-usage.md)
-- [Architecture Testing for Layer and Module Boundaries](guide/recommendations/testing-architecture.md)
-- [End-to-End Testing](guide/recommendations/testing-end-to-end.md)
-- [Integration Testing](guide/recommendations/testing-integration.md)
-- [Testing Shared Instructions](guide/recommendations/testing-shared.md)
-- [Unit Testing with xUnit, Moq, and Bogus](guide/recommendations/testing-unit.md)
+- [Instruction-File Setup: One AGENTS.md, Wrapped per Host](defaults/ai/copilot-instruction-file-setup.md)
+- [Devbook Adoption: Start with the devbook Plugin Alone](defaults/arc42/concepts/devbook-adoption.md)
+- [Blazor Frontend Framework Guidance](defaults/arc42/concepts/blazor-frontend-framework-guidance.md)
+- [C# Coding Style](defaults/arc42/concepts/csharp-coding-style.md)
+- [Object Calisthenics for Domain Code](defaults/arc42/concepts/object-calisthenics-for-domain.md)
+- [Specification Pattern for Business Rules](defaults/arc42/concepts/specification-pattern-usage.md)
+- [Architecture Testing for Layer and Module Boundaries](defaults/arc42/concepts/testing-architecture.md)
+- [End-to-End Testing](defaults/arc42/concepts/testing-end-to-end.md)
+- [Integration Testing](defaults/arc42/concepts/testing-integration.md)
+- [Testing Shared Instructions](defaults/arc42/concepts/testing-shared.md)
+- [Unit Testing with xUnit, Moq, and Bogus](defaults/arc42/concepts/testing-unit.md)
 
 ## Structures
 
-- [Feature Slices Module Structure](guide/structures/feature-slices-module-structure.md)
-- [Folder Structure Reference](guide/structures/folder-structure-reference.md)
-- [Minimal API Endpoint Organization](guide/structures/minimal-api-endpoint-organization.md)
-- [Modular Solution Structure Template](guide/structures/modular-solution-structure.md)
-- [Simple Solution Structure Design](guide/structures/simple-solution-structure.md)
+- [Feature Slices Module Structure](defaults/arc42/building-blocks/feature-slices-module-structure.md)
+- [Folder Structure Reference](defaults/arc42/building-blocks/folder-structure-reference.md)
+- [Minimal API Endpoint Organization](defaults/arc42/building-blocks/minimal-api-endpoint-organization.md)
+- [Modular Solution Structure Template](defaults/arc42/building-blocks/modular-solution-structure-template.md)
+- [Simple Solution Structure Design](defaults/arc42/building-blocks/simple-solution-structure.md)
 
 ---
 

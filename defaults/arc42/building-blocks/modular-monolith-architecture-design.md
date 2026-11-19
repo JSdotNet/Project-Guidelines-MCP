@@ -10,7 +10,7 @@ tags: [design, modular-monolith, architecture, boundaries, integration]
 
 This document explains the architectural intent behind a modular monolith, including module boundaries, communication rules, consistency choices, and operational concerns. It complements structure templates by describing why the structure exists and what rules make it effective.
 
-Use this design together with the modular structure template in `structures/modular-solution-structure.md`.
+Use this design together with the modular structure template in `modular-solution-structure-template.md`.
 
 ## Problem
 
@@ -136,7 +136,7 @@ Default recommendation: start with schema-per-module plus strict access rules, t
 
 - ADR 0003: modular monolith with feature slices per module, and the solution layout
 - ADR 0007: observability baseline (OpenTelemetry)
-- `structures/modular-solution-structure.md`: concrete scaffold for this design
+- `modular-solution-structure-template.md`: concrete scaffold for this design
 
 ## Evolution Path
 

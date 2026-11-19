@@ -32,15 +32,16 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddSingleton<IDocumentCatalog>(sp =>
 {
-    var localPath = Environment.GetEnvironmentVariable("JSDOTNET_DOCS_PATH");
-    if (!string.IsNullOrWhiteSpace(localPath) && Directory.Exists(localPath))
+    // defaults/index.json also lists the design documents; the design server serves those.
+    var localPath = FileSystemDocumentCatalog.ResolveDocumentsPath(Environment.GetEnvironmentVariable("JSDOTNET_DOCS_PATH"));
+    if (localPath is not null)
     {
-        return new FileSystemDocumentCatalog(localPath);
+        return CategoryFilteredDocumentCatalog.WithoutDesign(new FileSystemDocumentCatalog(localPath));
     }
 
     var client = sp.GetRequiredService<HttpClient>();
     var cache = sp.GetRequiredService<IMemoryCache>();
-    return new GitHubDocumentCatalog(cache: cache, httpClient: client);
+    return CategoryFilteredDocumentCatalog.WithoutDesign(new GitHubDocumentCatalog(cache: cache, httpClient: client));
 });
 
 builder.Services

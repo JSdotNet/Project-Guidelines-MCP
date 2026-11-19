@@ -10,7 +10,7 @@ tags: [design, architecture, aspire, single-module, structure]
 
 This document defines the recommended structure for **simple single-solution** projects.
 
-Use this structure when the solution has one bounded context and no near-term requirement to split into multiple modules. For multi-module solutions, use `structures/modular-solution-structure.md`.
+Use this structure when the solution has one bounded context and no near-term requirement to split into multiple modules. For multi-module solutions, use `modular-solution-structure-template.md`.
 
 Aspire is optional in this profile. Use Aspire when distributed orchestration is needed; otherwise omit `src/Aspire/`.
 

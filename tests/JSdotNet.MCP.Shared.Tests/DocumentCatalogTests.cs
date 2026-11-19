@@ -9,7 +9,7 @@ namespace JSdotNet.MCP.Shared.Tests;
 
 /// <summary>
 /// Pure unit tests for FileSystemDocumentCatalog and DocumentInfo.
-/// Uses temp directories or non-real paths — no dependency on guide/ or design/.
+/// Uses temp directories or non-real paths — no dependency on defaults/.
 /// Integration tests against real doc folders live in Guidelines.Tests / Design.Tests.
 /// </summary>
 public class DocumentCatalogTests

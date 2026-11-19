@@ -68,7 +68,7 @@ Add a `COLOR_TOKENS.md` (or equivalent) to your project repository that lists ev
 
 ## Override Mechanism
 
-Overrides are declared in the project's central token file, as specified in [ADR 0009](../guide/adrs/0009-frontend.md). The mechanism is framework-agnostic: replace the default value of only the permitted tokens and leave all others unchanged.
+Overrides are declared in the project's central token file, as specified in [ADR 0009](../arc42/adr/0009-frontend.md). The mechanism is framework-agnostic: replace the default value of only the permitted tokens and leave all others unchanged.
 
 **Conceptually**, the override looks like this:
 
@@ -83,7 +83,7 @@ Overrides are declared in the project's central token file, as specified in [ADR
   color-primary (dark):   #C0392B   <- accessible dark-mode variant
 ```
 
-The implementation details (SCSS variable override, CSS custom property override, design-token JSON merge) depend on the frontend technology. See [ADR 0009](../guide/adrs/0009-frontend.md) for framework-specific patterns.
+The implementation details (SCSS variable override, CSS custom property override, design-token JSON merge) depend on the frontend technology. See [ADR 0009](../arc42/adr/0009-frontend.md) for framework-specific patterns.
 
 ---
 

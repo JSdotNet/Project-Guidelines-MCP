@@ -32,21 +32,17 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddSingleton<IDocumentCatalog>(sp =>
 {
-    var localPath = Environment.GetEnvironmentVariable("JSDOTNET_DOCS_PATH");
-    if (!string.IsNullOrWhiteSpace(localPath) && Directory.Exists(localPath))
+    // The design documents are the design category of the one defaults/index.json.
+    var localPath = FileSystemDocumentCatalog.ResolveDocumentsPath(Environment.GetEnvironmentVariable("JSDOTNET_DOCS_PATH"))
+        ?? FindNearestDocsFolder(FileSystemDocumentCatalog.DefaultsFolder);
+    if (localPath is not null)
     {
-        return new FileSystemDocumentCatalog(localPath);
-    }
-
-    var discoveredPath = FindNearestDocsFolder("design");
-    if (!string.IsNullOrWhiteSpace(discoveredPath))
-    {
-        return new FileSystemDocumentCatalog(discoveredPath);
+        return CategoryFilteredDocumentCatalog.DesignOnly(new FileSystemDocumentCatalog(localPath));
     }
 
     var client = sp.GetRequiredService<HttpClient>();
     var cache = sp.GetRequiredService<IMemoryCache>();
-    return new GitHubDocumentCatalog(cache: cache, httpClient: client, documentsPath: "design");
+    return CategoryFilteredDocumentCatalog.DesignOnly(new GitHubDocumentCatalog(cache: cache, httpClient: client));
 });
 
 builder.Services
@@ -72,7 +68,7 @@ static string? FindNearestDocsFolder(string relativePath)
         while (dir is not null)
         {
             var candidate = Path.Join(dir.FullName, relativePath);
-            if (Directory.Exists(candidate))
+            if (File.Exists(Path.Join(candidate, "index.json")))
             {
                 return candidate;
             }

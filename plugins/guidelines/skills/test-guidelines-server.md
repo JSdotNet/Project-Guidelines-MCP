@@ -8,7 +8,7 @@
 
 | Server | MCP name | Serves |
 |--------|----------|--------|
-| **Coding Guidelines** | `jsdotnet-coding-guidelines` | `guide/` — ADRs, designs, recommendations, structures, config |
+| **Coding Guidelines** | `jsdotnet-coding-guidelines` | `defaults/` — ADRs, designs, recommendations, structures, config |
 
 > To test the design/UX server, use the **test-design-server** skill from the `jsdotnet-design-ux-guidelines` plugin.
 
@@ -26,7 +26,7 @@ list_guides()
 
 **Expected:** JSON array with multiple entries. Each entry has `id`, `title`, `category`, `relativePath`, `tags`.  
 **Pass criteria:** At least one entry with `category` of `adrs`, `recommendations`, or `structures`.  
-**Fail:** Empty array or error → server is not connected or `guide/` content is missing.
+**Fail:** Empty array or error → server is not connected or `defaults/` content is missing.
 
 ---
 
@@ -54,7 +54,7 @@ search_guides("persistence")
 
 **Expected:** At least one result per query.  
 **Pass criteria:** Results contain documents whose titles or descriptions mention the search term.  
-**Fail:** Zero results → index is stale or content is missing. Regenerate `guide/index.json`.
+**Fail:** Zero results → index is stale or content is missing. Regenerate `defaults/index.json`.
 
 ---
 
@@ -86,7 +86,7 @@ get_guide("<id-from-step-above>")
 
 **Expected:** Full markdown content of the document (hundreds of characters minimum).  
 **Pass criteria:** Content includes readable headings and text; not an empty string.  
-**Fail:** Empty string or error → `guide/` directory not found or file is missing.
+**Fail:** Empty string or error → `defaults/` directory not found or file is missing.
 
 ---
 
@@ -128,13 +128,13 @@ get_usage_logs(5)
 
 ### Empty results from `list_guides` or `search_guides`
 
-1. Check that `guide/index.json` exists and is current.
-2. The index must match the actual markdown files in `guide/`.
-3. If stale: regenerate the index by scanning all markdown files and updating `guide/index.json`.
+1. Check that `defaults/index.json` exists and is current.
+2. The index must match the actual markdown files in `defaults/`.
+3. If stale: regenerate the index by scanning all markdown files and updating `defaults/index.json`.
 
 ### `get_guide` returns empty
 
-1. Verify the `id` exists in `guide/index.json`.
+1. Verify the `id` exists in `defaults/index.json`.
 2. Confirm the markdown file referenced by `relativePath` exists on disk.
 3. Check environment variable `JSDOTNET_DOCS_PATH` — if set, it overrides the default path.
 
