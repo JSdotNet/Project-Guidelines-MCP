@@ -1,0 +1,23 @@
+{
+  "name": "app-defaults",
+  "version": "3.0.0",
+  "description": "Skills for the jsdotnet-app-defaults MCP server: look up and apply the JSdotNet application defaults (ADRs, building blocks, crosscutting concepts) and the design tokens, review code and decisions against them, plan migrations, and smoke-test the server.",
+  "author": {
+    "name": "JSdotNet"
+  },
+  "homepage": "https://github.com/JSdotNet/Project-Guidelines-MCP",
+  "repository": "https://github.com/JSdotNet/Project-Guidelines-MCP",
+  "license": "MIT",
+  "keywords": [
+    "app-defaults",
+    "guidelines",
+    "architecture",
+    "adr",
+    "design-tokens",
+    "style-guide",
+    "csharp",
+    "dotnet",
+    "mcp"
+  ],
+  "skills": "skills/"
+}

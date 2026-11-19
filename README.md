@@ -78,17 +78,15 @@ The source follows `main`; set `ASPIRE_INIT_SOURCE_REF` to a reviewed full commi
 [aspire/README.md](aspire/README.md) is the page `ASPIRE_INIT_SOURCE_README_URL` points at: what
 accepting the source changes, how to opt out, and how its content is reviewed.
 
-### Publish Results Server
+## Plugin
 
-A second MCP server (`src/JSdotNet.MCP.Publish`) lets an agent publish its results to a **configurable file location** instead of serving documentation.
+`plugins/app-defaults/` is the one agent plugin. Its skills sit in `skills/<name>/SKILL.md`
+folders and target the `jsdotnet-app-defaults` server; it ships a Claude Code manifest
+(`.claude-plugin/plugin.json`) and a GitHub Copilot manifest (`.github/plugin/plugin.json`). See
+[plugins/app-defaults/README.md](plugins/app-defaults/README.md).
 
-```powershell
-dotnet run --project .\src\JSdotNet.MCP.Publish\JSdotNet.MCP.Publish.csproj -- --Publish:RootPath=D:\reports
-```
-
-Tools: `publish_result`, `append_result`, `list_published`, `read_published`, `delete_published`, `get_publish_location`, `get_usage_logs`.
-
-The publish root is resolved from `Publish:RootPath` (command line or `Publish__RootPath` environment variable), then `JSDOTNET_PUBLISH_PATH`, and finally a per-user default folder (`%LOCALAPPDATA%\JSdotNet\PublishedResults`). All tool paths are relative to that root — absolute paths and `..` segments are rejected. See [src/JSdotNet.MCP.Publish/README.md](src/JSdotNet.MCP.Publish/README.md) for details.
+The publish-results MCP server (`JSdotNet.MCP.Publish`) lives in its own repository,
+[JSdotNet/mcp-publish](https://github.com/JSdotNet/mcp-publish).
 
 ### Registering new documents
 
@@ -104,11 +102,11 @@ CLAUDE.md                         @AGENTS.md import for Claude Code
 .github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
 defaults/                         arc42/ (chapters 02, 04, 05, 07, 08, workspace.dsl, adr/, building-blocks/), ai/, design/ and index.json
-defaults/design/                  UX style guide served by the design server
+defaults/design/                  UX style guide, served as the `design` category
 aspire/                           Aspire 17 config source: aspire.config.json, templates/, integrations/
 .claude-plugin/marketplace.json   the plugin marketplace the config source's skillSources names
-plugins/                          guidelines and design agent plugins
-src/                              JSdotNet.MCP.Shared, JSdotNet.AppDefaults.Mcp, JSdotNet.MCP.Publish
+plugins/app-defaults/             the one agent plugin: skills/<name>/SKILL.md plus both host manifests
+src/                              JSdotNet.MCP.Shared, JSdotNet.AppDefaults.Mcp
 tests/                            one test project per src/ project
 JSdotNet.MCP.slnx
 ```
@@ -226,10 +224,9 @@ Configuration: `GitVersion.yml` at repository root.
 Published to NuGet.org:
 
 - **JSdotNet.AppDefaults.Mcp** – application defaults MCP server (`jsdotnet-app-defaults`), run with `dnx JSdotNet.AppDefaults.Mcp --yes`
-- **JSdotNet.MCP.Publish** – publish-results MCP server (`jsdotnet-publish-mcpserver`)
 
-Each package is published independently: the release workflow only pushes a package when its own
-source (or the shared `JSdotNet.MCP.Shared` project) changed on `main`.
+The release workflow pushes the package only when its source (or the shared
+`JSdotNet.MCP.Shared` project) changed on `main`.
 
 Package features:
 

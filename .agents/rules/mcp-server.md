@@ -19,5 +19,4 @@ paths:
   the coverage gate measures them.
 - Cache results; make no redundant GitHub API calls.
 - Keep merged line coverage over `src/` at 80% or more; CI fails the build below it. `Program`
-  classes and `GitHubDocumentCatalog` are excluded, so the gate measures `JSdotNet.MCP.Shared`
-  and `JSdotNet.MCP.Publish`. New code ships with the tests that keep it there.
+  classes and `GitHubDocumentCatalog` are excluded, so the gate measures `JSdotNet.MCP.Shared`. New code ships with the tests that keep it there.

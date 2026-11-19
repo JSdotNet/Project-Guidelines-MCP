@@ -5,12 +5,10 @@
   <Folder Name="/src/">
     <Project Path="src/JSdotNet.MCP.Shared/JSdotNet.MCP.Shared.csproj" />
     <Project Path="src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj" />
-    <Project Path="src/JSdotNet.MCP.Publish/JSdotNet.MCP.Publish.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj" />
     <Project Path="tests/JSdotNet.AppDefaults.Hosting.Tests/JSdotNet.AppDefaults.Hosting.Tests.csproj" />
     <Project Path="tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj" />
-    <Project Path="tests/JSdotNet.MCP.Publish.Tests/JSdotNet.MCP.Publish.Tests.csproj" />
   </Folder>
 </Solution>
