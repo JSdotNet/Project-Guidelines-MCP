@@ -78,7 +78,7 @@ AGENTS.md                         the repository's standing rules (the one root 
 CLAUDE.md                         @AGENTS.md import for Claude Code
 .github/copilot-instructions.md   one-sentence pointer at AGENTS.md for GitHub Copilot
 .agents/rules/                    path-scoped rules, wrapped per host in .claude/rules/ and .github/instructions/
-defaults/                         arc42/ (chapters 02, 04, 05, workspace.dsl, adr/, building-blocks/, concepts/), ai/, design/ and index.json
+defaults/                         arc42/ (chapters 02, 04, 05, 07, 08, workspace.dsl, adr/, building-blocks/), ai/, design/ and index.json
 defaults/design/                  UX style guide served by the design server
 plugins/                          guidelines and design agent plugins
 src/                              JSdotNet.MCP.Shared, JSdotNet.AppDefaults.Mcp, JSdotNet.MCP.Publish
@@ -115,6 +115,8 @@ The arc42 chapters a project links to from its own `.devbook/arc42/`:
 | [02 Constraints](defaults/arc42/02-constraints.md) | The fixed givens: .NET, Aspire, EF Core, Azure |
 | [04 Solution Strategy](defaults/arc42/04-solution-strategy.md) | Goals to approach, pragmatic domain-driven design, module extraction |
 | [05 Building Block View](defaults/arc42/05-building-block-view.md) | The one solution structure, dependency rules and naming |
+| [07 Deployment View](defaults/arc42/07-deployment-view.md) | `aspire deploy` to Azure Container Apps, per-environment secrets, pipeline, Dependabot, auto-merge, rollback |
+| [08 Crosscutting Concepts](defaults/arc42/08-crosscutting-concepts.md) | Caching, feature flags, idempotency, API versioning, logging and audit, background jobs, validation, testing, code style and domain code, time, concurrency, real-time updates, secrets at rest |
 | [workspace.dsl](defaults/arc42/workspace.dsl) | The C4 seed (Structurizr DSL) a project starts from |
 
 Building blocks, one page each: [Module](defaults/arc42/building-blocks/module.md),
@@ -129,17 +131,14 @@ Building blocks, one page each: [Module](defaults/arc42/building-blocks/module.m
 
 ## Recommendations
 
+The short recommendations are folded into [08 Crosscutting Concepts](defaults/arc42/08-crosscutting-concepts.md)
+and [07 Deployment View](defaults/arc42/07-deployment-view.md); what remains is the agent setup in `defaults/ai/`:
+
 - [Instruction-File Setup: One AGENTS.md, Wrapped per Host](defaults/ai/copilot-instruction-file-setup.md)
-- [Devbook Adoption: Start with the devbook Plugin Alone](defaults/arc42/concepts/devbook-adoption.md)
-- [Blazor Frontend Framework Guidance](defaults/arc42/concepts/blazor-frontend-framework-guidance.md)
-- [C# Coding Style](defaults/arc42/concepts/csharp-coding-style.md)
-- [Object Calisthenics for Domain Code](defaults/arc42/concepts/object-calisthenics-for-domain.md)
-- [Specification Pattern for Business Rules](defaults/arc42/concepts/specification-pattern-usage.md)
-- [Architecture Testing for Layer and Module Boundaries](defaults/arc42/concepts/testing-architecture.md)
-- [End-to-End Testing](defaults/arc42/concepts/testing-end-to-end.md)
-- [Integration Testing](defaults/arc42/concepts/testing-integration.md)
-- [Testing Shared Instructions](defaults/arc42/concepts/testing-shared.md)
-- [Unit Testing with xUnit, Moq, and Bogus](defaults/arc42/concepts/testing-unit.md)
+- [Agent Skill Authoring](defaults/ai/agent-skill-authoring.md)
+
+A project that keeps a `.devbook/` links these chapters and ADRs from its own arc42 chapters
+instead of copying them; how to adopt devbook is the [devbook](https://github.com/JSdotNet/devbook) repository's to say.
 
 ---
 
