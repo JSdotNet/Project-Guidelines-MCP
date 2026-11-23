@@ -91,7 +91,19 @@ jobs:
             tests/JSdotNet.MCP.Shared.Tests/JSdotNet.MCP.Shared.Tests.csproj \
             tests/JSdotNet.AppDefaults.Hosting.Tests/JSdotNet.AppDefaults.Hosting.Tests.csproj \
             tests/JSdotNet.AppDefaults.Mcp.Tests/JSdotNet.AppDefaults.Mcp.Tests.csproj; do
-            dotnet test "$project" --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage --settings coverlet.runsettings
+            project_name="$(basename "$(dirname "$project")")"
+            dotnet test "$project" --configuration Release --no-build --verbosity normal --results-directory "./coverage/$project_name" -- \
+              --coverlet \
+              --coverlet-output-format cobertura \
+              --coverlet-exclude "[*.Tests]*" \
+              --coverlet-include "[JSdotNet.*]*" \
+              --coverlet-exclude "[*]*.Program" \
+              --coverlet-exclude "[*]*GitHubDocumentCatalog" \
+              --coverlet-exclude-by-attribute Obsolete \
+              --coverlet-exclude-by-attribute GeneratedCode \
+              --coverlet-exclude-by-attribute CompilerGenerated \
+              --coverlet-include-directory "$PWD/src" \
+              --coverlet-include-directory "$PWD/aspire/integrations"
           done
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -102,9 +114,10 @@ jobs:
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"coverage/**/coverage.cobertura.xml" \
+            -reports:"coverage/**/coverage.cobertura.*.xml" \
             -targetdir:"./coverage-merged" \
-            -reporttypes:Cobertura
+            -reporttypes:Cobertura \
+            -assemblyfilters:"+JSdotNet.*;-*.Tests"
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
