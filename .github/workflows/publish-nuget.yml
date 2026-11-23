@@ -144,7 +144,7 @@ jobs:
 
   # 3. Publish AppDefaults (only when its source changed)
   publish-defaults:
-    name: Publish JSdotNet.AppDefaults.Mcp
+    name: Publish MCP server
     runs-on: ubuntu-latest
     needs: [detect-changes, build-test]
     if: |
@@ -180,7 +180,7 @@ jobs:
 
   # 3b. Publish the Aspire hosting integration the config source lists (only when it changed)
   publish-hosting:
-    name: Publish JSdotNet.AppDefaults.Hosting
+    name: Publish Aspire hosting
     runs-on: ubuntu-latest
     needs: [detect-changes, build-test]
     if: |
