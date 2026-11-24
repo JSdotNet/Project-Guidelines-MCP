@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Final notice version of a retired package; shared settings in ../Directory.Build.props. -->
+  <PropertyGroup>
+    <RootNamespace>JSdotNet.MCP.Guidelines</RootNamespace>
+    <PackageId>JSdotNet.MCP.Guidelines</PackageId>
+    <ToolCommandName>jsdotnet-guidelines-mcpserver</ToolCommandName>
+    <Title>JSdotNet.MCP.Guidelines (retired: moved to JSdotNet.AppDefaults.Mcp)</Title>
+  </PropertyGroup>
+
+</Project>
