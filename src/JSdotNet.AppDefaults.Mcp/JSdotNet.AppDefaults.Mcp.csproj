@@ -10,7 +10,7 @@
     <ToolCommandName>jsdotnet-app-defaults</ToolCommandName>
     <PackageId>JSdotNet.AppDefaults.Mcp</PackageId>
     <Title>JSdotNet Application Defaults MCP Server</Title>
-    <Authors>Eduard Keilholz</Authors>
+    <Authors>Job Schepers</Authors>
     <Company>JSdotNet</Company>
     <Description>Model Context Protocol (MCP) server serving the JSdotNet application defaults: ADRs, building blocks, recommendations, configuration and design guidance for .NET applications, as tools, prompts and defaults:// resources.</Description>
     <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
@@ -19,7 +19,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>mcp;mcpserver;model-context-protocol;defaults;guidelines;adr;architecture;design;dotnet;csharp</PackageTags>
-    <Copyright>Copyright © Eduard Keilholz 2025</Copyright>
+    <Copyright>Copyright © Job Schepers 2026</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
