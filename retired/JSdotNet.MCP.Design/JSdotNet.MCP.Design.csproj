@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Final notice version of a retired package; shared settings in ../Directory.Build.props. -->
+  <PropertyGroup>
+    <RootNamespace>JSdotNet.MCP.Design</RootNamespace>
+    <PackageId>JSdotNet.MCP.Design</PackageId>
+    <ToolCommandName>jsdotnet-design-mcpserver</ToolCommandName>
+    <Title>JSdotNet.MCP.Design (retired: moved to JSdotNet.AppDefaults.Mcp)</Title>
+  </PropertyGroup>
+
+</Project>

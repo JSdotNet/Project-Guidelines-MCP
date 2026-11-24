@@ -1,0 +1,32 @@
+<Project>
+  <!--
+    The retired JSdotNet.MCP.Guidelines and JSdotNet.MCP.Design packages. Each ships one final
+    notice version whose tool prints the move to JSdotNet.AppDefaults.Mcp on stderr and exits.
+    The version is pinned here, not taken from GitVersion: it is one patch past the last
+    published 1.0.12 and must never move again.
+  -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Version>1.0.13</Version>
+    <PackageVersion>1.0.13</PackageVersion>
+    <PackAsTool>true</PackAsTool>
+    <Authors>Job Schepers</Authors>
+    <Company>JSdotNet</Company>
+    <Description>Moved to JSdotNet.AppDefaults.Mcp. This package is retired: run dnx JSdotNet.AppDefaults.Mcp --yes and register the server as jsdotnet-app-defaults.</Description>
+    <PackageProjectUrl>https://github.com/JSdotNet/app-defaults</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JSdotNet/app-defaults</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>mcp;deprecated;retired;jsdotnet-app-defaults</PackageTags>
+    <Copyright>Copyright © Job Schepers 2026</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Program.cs" Link="Program.cs" />
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" Link="README.md" />
+  </ItemGroup>
+</Project>
