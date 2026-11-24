@@ -141,3 +141,11 @@ dnx JSdotNet.AppDefaults.Mcp --yes --add-source ./local-packages
 | No documents load | GitHub is reachable; on a rate-limit error, set `GITHUB_TOKEN` |
 | The skills cannot find the server | The server id is exactly `jsdotnet-app-defaults` |
 | An old server id still answers | Remove `jsdotnet-coding-guidelines`, `jsdotnet-project-guidelines` and `jsdotnet-design-ux-guidelines` entries; their packages are retired |
+| The server prints "Moved to JSdotNet.AppDefaults.Mcp" and exits | It runs a retired package; replace the entry with the one above |
+
+## Retired packages
+
+`JSdotNet.MCP.Guidelines` and `JSdotNet.MCP.Design` were merged into `JSdotNet.AppDefaults.Mcp`.
+Their last version, 1.0.13, only prints that notice to stderr and exits; earlier versions are
+unlisted. Their sources live in `retired/`, which publishes nothing but that notice version.
+`JSdotNet.MCP.Publish` is not retired: it lives on in `JSdotNet/mcp-publish`.

@@ -11,6 +11,8 @@ env:
   SOLUTION_PATH: 'JSdotNet.AppDefaults.slnx'
   DEFAULTS_PROJECT_PATH: 'src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj'
   HOSTING_PROJECT_PATH: 'aspire/integrations/JSdotNet.AppDefaults.Hosting/JSdotNet.AppDefaults.Hosting.csproj'
+  # The retired packages: each ships one final notice version (pinned in retired/Directory.Build.props).
+  RETIRED_PACKAGE_IDS: 'JSdotNet.MCP.Guidelines JSdotNet.MCP.Design'
 
 permissions:
   contents: write
@@ -25,6 +27,7 @@ jobs:
     outputs:
       defaults: ${{ steps.filter.outputs.defaults }}
       hosting: ${{ steps.filter.outputs.hosting }}
+      retired: ${{ steps.filter.outputs.retired }}
     steps:
       - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
@@ -36,6 +39,8 @@ jobs:
               - 'src/JSdotNet.AppDefaults.Mcp/**'
             hosting:
               - 'aspire/integrations/**'
+            retired:
+              - 'retired/**'
 
   # 2. Build, test and pack (always runs)
   build-test:
@@ -155,6 +160,21 @@ jobs:
           path: ./artifacts/*.nupkg
           retention-days: 7
 
+      # Packed apart and without the GitVersion properties: the notice version is pinned, and
+      # these packages stay out of the GitHub release.
+      - name: Pack retired notice packages
+        run: |
+          for id in ${{ env.RETIRED_PACKAGE_IDS }}; do
+            dotnet pack "retired/$id/$id.csproj" --configuration Release --output ./artifacts-retired
+          done
+
+      - name: Upload retired notice packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: nuget-retired-${{ steps.gitversion.outputs.fullSemVer }}
+          path: ./artifacts-retired/*.nupkg
+          retention-days: 7
+
   # 3. Publish AppDefaults (only when its source changed)
   publish-defaults:
     name: Publish MCP server
@@ -238,6 +258,68 @@ jobs:
         env:
           NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
 
+  # 3c. Publish the final notice version of each retired package and unlist its earlier
+  #     versions (only when retired/ changed). Pushing is idempotent (--skip-duplicate).
+  publish-retired:
+    name: Publish retired notices
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-test]
+    permissions:
+      contents: read
+      id-token: write
+    if: |
+      needs.detect-changes.outputs.retired == 'true' ||
+      github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Download retired notice packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-retired-${{ needs.build-test.outputs.fullSemVer }}
+          path: ./artifacts-retired
+
+      - name: Log in to NuGet.org (trusted publishing)
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: JSdotNet
+
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push "./artifacts-retired/*.nupkg"             --api-key "$NUGET_API_KEY"             --source https://api.nuget.org/v3/index.json             --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+
+      # Best effort: a trusted-publishing key may lack the unlist scope. Every version this step
+      # cannot unlist is listed in the run summary for unlisting on nuget.org by hand.
+      - name: Unlist earlier versions
+        continue-on-error: true
+        run: |
+          echo "## Retired packages" >> $GITHUB_STEP_SUMMARY
+          echo "| Package | Version | Unlisted |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|---|" >> $GITHUB_STEP_SUMMARY
+          failed=0
+          for id in ${{ env.RETIRED_PACKAGE_IDS }}; do
+            notice=$(basename ./artifacts-retired/$id.[0-9]*.nupkg .nupkg); notice=${notice#"$id."}
+            lower=$(echo "$id" | tr '[:upper:]' '[:lower:]')
+            for version in $(curl -fsSL "https://api.nuget.org/v3-flatcontainer/$lower/index.json" | jq -r '.versions[]'); do
+              [ "$version" = "$notice" ] && continue
+              if dotnet nuget delete "$id" "$version"                   --source https://api.nuget.org/v3/index.json                   --api-key "$NUGET_API_KEY"                   --non-interactive; then
+                echo "| $id | $version | yes |" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "| $id | $version | **no: unlist on nuget.org** |" >> $GITHUB_STEP_SUMMARY
+                failed=1
+              fi
+            done
+          done
+          exit $failed
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+
   # 4. GitHub Release (only when at least one package was published)
   create-release:
     name: Create GitHub Release
@@ -280,7 +362,7 @@ jobs:
   # 5. Report pipeline failure as a GitHub issue
   report-failure:
     name: Report Pipeline Failure
-    needs: [build-test, publish-defaults, publish-hosting, create-release]
+    needs: [build-test, publish-defaults, publish-hosting, publish-retired, create-release]
     if: failure()
     runs-on: ubuntu-latest
     permissions:

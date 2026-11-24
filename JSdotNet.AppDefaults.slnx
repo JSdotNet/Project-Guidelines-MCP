@@ -2,6 +2,10 @@
   <Folder Name="/aspire/">
     <Project Path="aspire/integrations/JSdotNet.AppDefaults.Hosting/JSdotNet.AppDefaults.Hosting.csproj" />
   </Folder>
+  <Folder Name="/retired/">
+    <Project Path="retired/JSdotNet.MCP.Design/JSdotNet.MCP.Design.csproj" />
+    <Project Path="retired/JSdotNet.MCP.Guidelines/JSdotNet.MCP.Guidelines.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/JSdotNet.MCP.Shared/JSdotNet.MCP.Shared.csproj" />
     <Project Path="src/JSdotNet.AppDefaults.Mcp/JSdotNet.AppDefaults.Mcp.csproj" />
