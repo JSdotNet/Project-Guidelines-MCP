@@ -15,7 +15,7 @@ description: "Reference guide for the jsdotnet-app-defaults MCP server: style-gu
 |--------|----------|--------|----------|
 | **Design / UX** | `jsdotnet-app-defaults` | `defaults/design/` | UX style guide, design tokens (color, typography, spacing, motion) |
 
-> Coding/architecture guidance (ADRs, patterns, C# standards) comes from the same server; see the **coding-guidelines-mcp** skill.
+> Coding/architecture guidance (ADRs, patterns, C# standards) comes from the same server; see the **app-defaults-mcp** skill.
 
 ---
 

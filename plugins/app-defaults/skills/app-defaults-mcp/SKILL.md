@@ -1,9 +1,9 @@
 ---
-name: coding-guidelines-mcp
+name: app-defaults-mcp
 description: "Reference guide for the jsdotnet-app-defaults MCP server: tool reference, valid categories, common tags, and example workflows for ADRs, architecture patterns, and coding standards."
 ---
 
-# Skill: JSdotNet Coding Guidelines MCP
+# Skill: JSdotNet App Defaults MCP
 
 **Description:** Learn how to use the `jsdotnet-app-defaults` MCP server to retrieve coding standards, Architecture Decision Records (ADRs), design documents, recommendations, and project structure templates for .NET projects.
 
@@ -13,7 +13,7 @@ description: "Reference guide for the jsdotnet-app-defaults MCP server: tool ref
 
 | Server | MCP name | Serves | Contains |
 |--------|----------|--------|----------|
-| **Coding Guidelines** | `jsdotnet-app-defaults` | `defaults/` | ADRs, designs, recommendations, structures, config |
+| **App defaults** | `jsdotnet-app-defaults` | `defaults/` | ADRs, designs, recommendations, structures, config |
 
 > UX/design token guidance is the `design` category of the same server; see the **design-mcp** skill.
 
