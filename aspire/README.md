@@ -13,17 +13,20 @@ $env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/app-defaults/b
 aspire new
 ```
 
-Pick **JSdotNet app defaults** in the template picker and accept the source when the CLI asks.
-Without the source, run the template directly:
+Accept the source when the CLI asks, then pick **JSdotNet app defaults** in the template picker.
+Only the interactive picker lists a source's templates; `--non-interactive` accepts no template
+name from it. Without the source, or in a script, run the template directly:
 
 ```powershell
 aspire new --template-repository https://github.com/JSdotNet/app-defaults --template-path aspire/templates
 ```
 
-`aspire agent init` then registers the defaults skills in the agent's own plugin settings, and
-`aspire add` finds the shared hosting integration. `aspire update --config-source` refreshes an
-app that accepted the source; setting `configSource.optOut` to `true` in the app's
-`aspire.config.json` opts it out.
+`aspire update --use-config-source` binds an existing app to the source. `aspire agent init`
+then registers the defaults skills in the agent's own plugin settings (`.claude/settings.json`,
+`.github/copilot/settings.json`), and `aspire add` finds the shared hosting integration; with
+`--non-interactive`, name it exactly: `aspire add JSdotNet.AppDefaults.Hosting`.
+`aspire update --config-source` refreshes an app that accepted the source; setting
+`configSource.optOut` to `true` in the app's `aspire.config.json` opts it out.
 
 ## What it supplies
 
