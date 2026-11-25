@@ -60,6 +60,12 @@ It serves the tools `list_guides`, `search_guides` and `get_guide`, every docume
 Per-host setup (Claude Code, GitHub Copilot CLI, VS Code, Visual Studio, the Copilot coding
 agent), the agent plugin and running from source are in [docs/install.md](docs/install.md).
 
+**The agent plugin.** [plugins/app-defaults](plugins/app-defaults/README.md) ships the server's
+own skill, `jsdotnet-app-defaults`, beside `gap-analysis`, `migration-planning`,
+`feedback-loop`, `test-server` and the three design-token skills. Claude Code and GitHub
+Copilot CLI both install it from this repository's marketplace:
+`app-defaults@jsdotnet-app-defaults`.
+
 **The Aspire config source.** Point the Aspire CLI at this repository and `aspire new`,
 `aspire agent init` and `aspire add` offer the golden-setup template, the shared hosting
 integration and the defaults skills:
