@@ -1,6 +1,6 @@
 ---
 title: "Building Block: Module"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
 tags: [building-blocks, module, feature-slices, cqrs, abstractions, structure]
 ---
@@ -64,8 +64,9 @@ public sealed class SubmitOrderCommandHandler(IOrderRepository orders, TimeProvi
         if (order.Submit(time.GetUtcNow()) is Invalid invalid)
             return invalid;
 
-        await orders.SaveAsync(order, ct);
-        return new Ok<OrderDto>(order.ToDto());
+        return await orders.SaveAsync(order, ct)
+            ? new Ok<OrderDto>(order.ToDto())
+            : new Conflict();
     }
 }
 ```

@@ -1,5 +1,6 @@
 using Company.Product.Api.Features.CreateItem;
 using Company.Product.Api.Features.GetItemById;
+using Company.Product.Api.Features.RenameItem;
 
 namespace Company.Product.Api;
 
@@ -11,7 +12,8 @@ internal static class ModuleNameRoutes
         app.MapGroup("/modulename")
             .WithTags("ModuleName")
             .MapCreateItem()
-            .MapGetItemById();
+            .MapGetItemById()
+            .MapRenameItem();
 
         return app;
     }

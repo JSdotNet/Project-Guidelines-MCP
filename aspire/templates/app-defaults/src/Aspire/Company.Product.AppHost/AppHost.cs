@@ -1,14 +1,11 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sql = builder.AddSqlServer("sql")
-    .WithDataVolume()
-    .WithLifetime(ContainerLifetime.Persistent);
-
-var database = sql.AddDatabase("modulename-db");
+// JSdotNet.AppDefaults.Hosting (ADR 0002): a persistent data volume and the shared /health check.
+var database = builder.AddDefaultsSqlServer("sql").AddDatabase("modulename-db");
 
 builder.AddDotnetProject("modulename-api", "../../ModuleName/Company.Product.Api/Company.Product.Api.csproj")
     .WithReference(database)
     .WaitFor(database)
-    .WithHttpHealthCheck("/health");
+    .WithDefaultsHealthCheck();
 
 builder.Build().Run();

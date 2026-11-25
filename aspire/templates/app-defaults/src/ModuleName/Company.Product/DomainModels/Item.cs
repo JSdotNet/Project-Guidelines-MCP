@@ -21,21 +21,42 @@ public sealed class Item
 
     public DateTimeOffset CreatedAt { get; private set; }
 
-    /// <summary>Concurrency token: a stale write becomes <see cref="Conflict"/>.</summary>
+    /// <summary>
+    /// Concurrency token (ADR 0006): every change increments it, the client sends back the value it
+    /// read, and a stale value becomes <see cref="Conflict"/>.
+    /// </summary>
     public int Version { get; private set; }
 
-    public static Result<Item> Create(string name, DateTimeOffset now)
+    public static Result<Item> Create(string name, DateTimeOffset now) =>
+        Validate(name) is { } invalid
+            ? invalid
+            : new Ok<Item>(new Item(Guid.CreateVersion7(now), name.Trim(), now));
+
+    /// <summary>Renames the item when <paramref name="expectedVersion"/> is the version it holds.</summary>
+    public Result<Item> Rename(string name, int expectedVersion)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > MaxNameLength)
+        if (expectedVersion != Version)
         {
-            return new Invalid(new Dictionary<string, string[]>
-            {
-                [nameof(Name)] = [$"Name is required and at most {MaxNameLength} characters."],
-            });
+            return new Conflict();
         }
 
-        return new Ok<Item>(new Item(Guid.CreateVersion7(now), name.Trim(), now));
+        if (Validate(name) is { } invalid)
+        {
+            return invalid;
+        }
+
+        Name = name.Trim();
+        Version++;
+        return new Ok<Item>(this);
     }
 
     public ItemDto ToDto() => new(Id, Name, CreatedAt, Version);
+
+    private static Invalid? Validate(string name) =>
+        string.IsNullOrWhiteSpace(name) || name.Length > MaxNameLength
+            ? new Invalid(new Dictionary<string, string[]>
+            {
+                [nameof(Name)] = [$"Name is required and at most {MaxNameLength} characters."],
+            })
+            : null;
 }

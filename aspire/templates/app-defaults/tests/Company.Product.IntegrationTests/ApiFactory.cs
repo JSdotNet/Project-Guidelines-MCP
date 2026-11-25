@@ -1,5 +1,7 @@
+using Company.Product.Data.SqlServer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.MsSql;
 using Xunit;
 
@@ -13,7 +15,14 @@ public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly MsSqlContainer _database = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest").Build();
 
-    public async ValueTask InitializeAsync() => await _database.StartAsync();
+    public async ValueTask InitializeAsync()
+    {
+        await _database.StartAsync();
+
+        // Test-only schema setup; the app itself migrates through the AppHost's runner (ADR 0006).
+        using var scope = Services.CreateScope();
+        await scope.ServiceProvider.GetRequiredService<ModuleNameDbContext>().Database.EnsureCreatedAsync();
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder) =>
         builder.UseSetting("ConnectionStrings:modulename-db", _database.GetConnectionString());

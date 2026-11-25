@@ -59,6 +59,17 @@ It targets .NET 11 with warnings as errors (ADR 0001). The database is SQL Serve
 EF Core 11 provider is GA; an app that chooses another database renames `Data.SqlServer` and
 records the choice in its own ADR (ADR 0006).
 
+- **AppHost** — calls `AddDefaultsSqlServer` and `WithDefaultsHealthCheck` from
+  `JSdotNet.AppDefaults.Hosting`, pinned in `Directory.Packages.props`.
+- **`nuget.config`** — nuget.org only, with `minPublishAgeHours="72"` (ADR 0001).
+- **Sample slice** — `Item.Version` is the concurrency token: `RenameItem` (`PUT
+  /{module}/items/{id}`) takes the version the client read, the aggregate increments it, and a
+  stale version or a `DbUpdateConcurrencyException` becomes a 409 Problem Details (ADR 0006).
+- **Lock files are not shipped.** The template excludes `packages.lock.json`; the app's first
+  `dotnet restore` writes one per project from the template's exact pins, and the app commits
+  them with its first change, after which CI restores with `--locked-mode`. Shipping them would
+  make every pin change here a lock-file regeneration nothing in this repository checks.
+
 ## Trust and pinning
 
 Owned by the JSdotNet maintainers; changes land through reviewed pull requests to `main`
