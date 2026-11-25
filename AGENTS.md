@@ -38,7 +38,7 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
 | `defaults/design/` | UX style guide, served as the `design` category |
 | `aspire/` | Aspire 17 config source: `aspire.config.json`, the golden-setup template and the hosting integration |
-| `plugins/app-defaults/` | The one agent plugin: `skills/<name>/SKILL.md` and both host manifests, targeting server `jsdotnet-app-defaults` |
+| `plugins/app-defaults/` | The one agent plugin, listed in `.claude-plugin/marketplace.json`: both host manifests and `skills/<name>/SKILL.md`, each a workflow of at most 40 lines with its tables in `reference.md`; `skills/jsdotnet-app-defaults/` is the server's own skill |
 | `scripts/` | C# standalone automation scripts |
 | `src/` | MCP server production code |
 | `tests/` | MCP server test projects |
