@@ -3,7 +3,7 @@ name: gap-analysis
 description: "Analyze your .NET project structure against established guidelines. Identify missing layers, conventions, and create an improvement plan."
 ---
 
-# Skill: Project Guidelines Gap Analysis
+# Skill: App Defaults Gap Analysis
 
 **Description:** Scan a .NET project to identify architectural gaps, missing layers, and structural issues. Compare the project structure against established guidelines and create improvement issues.
 
@@ -11,7 +11,7 @@ description: "Analyze your .NET project structure against established guidelines
 
 ## What is a Gap Analysis?
 
-A gap analysis compares your actual project structure against the recommended architecture from the JSdotNet Project Guidelines. It helps identify:
+A gap analysis compares your actual project structure against the recommended architecture from the app defaults. It helps identify:
 
 - Missing architectural layers (Domain, Application, Infrastructure, Adapters, Interface)
 - Inconsistent naming conventions

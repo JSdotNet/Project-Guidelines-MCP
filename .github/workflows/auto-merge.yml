@@ -13,6 +13,9 @@ name: Auto-merge
 # workflows on the base branch, so the merge uses the AUTO_MERGE_TOKEN secret
 # (a fine-grained token with Contents and Pull requests read/write) when the
 # repository has one, and falls back to GITHUB_TOKEN when it does not.
+# After a GITHUB_TOKEN merge into main, the job dispatches publish-nuget.yml
+# itself (a workflow_dispatch is the one event GITHUB_TOKEN may start), with
+# `since` set to main's commit before the merge so only changed packages publish.
 
 on:
   pull_request:
@@ -21,6 +24,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
   checks: read
   statuses: read
 
@@ -75,6 +79,7 @@ jobs:
           echo "Every other check passed."
 
       - name: Merge
+        id: merge
         env:
           GH_TOKEN: ${{ secrets.AUTO_MERGE_TOKEN || github.token }}
         run: |
@@ -88,6 +93,32 @@ jobs:
           # --auto defers to the branch's own required checks when it has any
           # and merges straight away when nothing is left to wait for.
           gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --merge --match-head-commit "$SHA"
+          echo "requested=true" >> "$GITHUB_OUTPUT"
+
+      # A push made with GITHUB_TOKEN starts no workflow, so publish-nuget.yml would not run.
+      - name: Start the publish run a GITHUB_TOKEN merge into main does not trigger
+        if: ${{ steps.merge.outputs.requested == 'true' && github.event.pull_request.base.ref == 'main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HAS_MERGE_TOKEN: ${{ secrets.AUTO_MERGE_TOKEN != '' }}
+        run: |
+          if [ "$HAS_MERGE_TOKEN" = "true" ]; then
+            echo "Merged with AUTO_MERGE_TOKEN; the push to main starts publish-nuget.yml."
+            exit 0
+          fi
+          # --auto may merge a moment later; wait up to ten minutes for it.
+          for _ in $(seq 1 20); do
+            merge=$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json state,mergeCommit --jq 'select(.state == "MERGED") | .mergeCommit.oid')
+            [ -n "$merge" ] && break
+            sleep 30
+          done
+          if [ -z "$merge" ]; then
+            echo "Pull request $PR is not merged yet; nothing to publish."
+            exit 0
+          fi
+          since=$(gh api "repos/$GITHUB_REPOSITORY/commits/$merge" --jq '.parents[0].sha')
+          gh workflow run publish-nuget.yml --repo "$GITHUB_REPOSITORY" --ref main -f since="$since"
+          echo "Dispatched publish-nuget.yml on main for changes since $since."
 
   back-to-draft:
     name: Turn off auto-merge for a draft
