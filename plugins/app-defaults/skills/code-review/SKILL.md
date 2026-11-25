@@ -5,7 +5,7 @@ description: "Validate code changes against architectural patterns, coding stand
 
 # Skill: Code Review Against Guidelines
 
-**Description:** Validate code changes against the JSdotNet Project Guidelines. Review pull requests, commits, or code snippets to ensure they follow architectural patterns, coding standards, and documented decisions.
+**Description:** Validate code changes against the app defaults. Review pull requests, commits, or code snippets to ensure they follow architectural patterns, coding standards, and documented decisions.
 
 ---
 

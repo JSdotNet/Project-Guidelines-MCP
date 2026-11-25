@@ -8,7 +8,7 @@ UX style guide (the `design` category). It replaces the former `guidelines` and 
 
 | Skill | Use it when |
 |---|---|
-| `coding-guidelines-mcp` | Learning the server's tools, categories and tags for architecture and code |
+| `app-defaults-mcp` | Learning the server's tools, categories and tags for architecture and code |
 | `design-mcp` | Learning the `design` category: style-guide documents and token categories |
 | `gap-analysis` | Auditing a project's structure against the defaults |
 | `code-review` | Reviewing a change against the ADRs and coding concepts |
