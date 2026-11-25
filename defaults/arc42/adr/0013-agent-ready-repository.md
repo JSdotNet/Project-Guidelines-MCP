@@ -1,6 +1,6 @@
 ---
 title: "ADR 0013: Agent-Ready Repository"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
 tags: [agents, agents-md, instructions, rules, skills, aspire-cli, mcp, dnx, claude-code, copilot, adr]
 ---
@@ -25,15 +25,15 @@ answers nobody agreed on.
   Agents use the CLI (`aspire describe`, `aspire logs`, `aspire otel`, resource commands);
   the dashboard MCP server is configured only for a host without a shell.
 - **.NET skills.** The `dotnet/skills` skills are installed alongside.
-- **The defaults server.** `.mcp.json` points at this repository's guidelines server through
+- **The defaults server.** `.mcp.json` points at the `jsdotnet-app-defaults` server through
   `dnx`, so no global tool install is needed:
 
 ```json
 {
   "mcpServers": {
-    "jsdotnet-coding-guidelines": {
+    "jsdotnet-app-defaults": {
       "command": "dnx",
-      "args": ["JSdotNet.MCP.Guidelines", "--yes"]
+      "args": ["JSdotNet.AppDefaults.Mcp", "--yes"]
     }
   }
 }
