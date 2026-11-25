@@ -34,7 +34,8 @@ The arc42 chapters around the ADRs — [constraints](defaults/arc42/02-constrain
 [solution strategy](defaults/arc42/04-solution-strategy.md),
 [building blocks](defaults/arc42/05-building-block-view.md),
 [deployment](defaults/arc42/07-deployment-view.md) and
-[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — and the
+[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — the
+[technology ratings](defaults/tech/technology-graph.md) (adopted or hold) and the
 [UX style guide](defaults/design/) fill in the detail. Retired ADR numbers are mapped in
 [defaults/arc42/adr/README.md](defaults/arc42/adr/README.md).
 
@@ -59,6 +60,12 @@ It serves the tools `list_guides`, `search_guides` and `get_guide`, every docume
 `defaults://` resource, and the prompts `new-app`, `review-against-defaults` and `propose-adr`.
 Per-host setup (Claude Code, GitHub Copilot CLI, VS Code, Visual Studio, the Copilot coding
 agent), the agent plugin and running from source are in [docs/install.md](docs/install.md).
+
+**The agent plugin.** [plugins/app-defaults](plugins/app-defaults/README.md) ships the server's
+own skill, `jsdotnet-app-defaults`, beside `gap-analysis`, `migration-planning`,
+`feedback-loop`, `test-server` and the three design-token skills. Claude Code and GitHub
+Copilot CLI both install it from this repository's marketplace:
+`app-defaults@jsdotnet-app-defaults`.
 
 **The Aspire config source.** Point the Aspire CLI at this repository and `aspire new`,
 `aspire agent init` and `aspire add` offer the golden-setup template, the shared hosting
@@ -127,3 +134,7 @@ dotnet test JSdotNet.AppDefaults.slnx
 Merging to `main` publishes the `JSdotNet.AppDefaults.Mcp` package through
 [publish-nuget.yml](.github/workflows/publish-nuget.yml) when its source changed; the server
 reads documents from `main`, so a merged default reaches every project at once.
+A merge by [auto-merge.yml](.github/workflows/auto-merge.yml) uses `GITHUB_TOKEN` when the
+repository has no `AUTO_MERGE_TOKEN` secret, and such a push starts no workflow, so auto-merge
+dispatches `publish-nuget.yml` itself with `since` set to `main`'s commit before the merge. A
+manual dispatch without `since` publishes every package, the retired notices included.

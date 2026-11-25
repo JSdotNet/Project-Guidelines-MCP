@@ -1,6 +1,6 @@
 ---
 title: "Building Block: Data.{Provider}"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
 tags: [building-blocks, data, ef-core, persistence, migrations, outbox, repository, structure]
 ---
@@ -47,20 +47,35 @@ internal sealed class OrderRepository(OrdersDbContext db) : IOrderRepository
     public Task<Order?> GetByIdAsync(Guid id, CancellationToken ct) =>
         db.Orders.Include(o => o.Lines).SingleOrDefaultAsync(o => o.Id == id, ct);
 
-    public async Task SaveAsync(Order order, CancellationToken ct)
+    // false: another write changed the order after it was read; the handler returns Conflict.
+    public async Task<bool> SaveAsync(Order order, CancellationToken ct)
     {
         db.AddOutboxMessages(order.DomainEvents);   // same transaction as the state change
-        await db.SaveChangesAsync(ct);
+        try
+        {
+            await db.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return false;
+        }
+
         order.ClearDomainEvents();
+        return true;
     }
 }
 ```
+
+`IsRowVersion()` on a `uint` maps PostgreSQL's `xmin`. A provider without a row version the
+model can hold as a number, such as SQL Server, maps an `int Version` the aggregate increments
+on every change with `IsConcurrencyToken()`, as the golden-setup template's `Item` does.
 
 ## Rules
 
 - One repository per aggregate root; never one for a child entity.
 - The module owns its schema; it never reads or writes another module's tables.
-- Every aggregate has a concurrency token; a stale write becomes `Conflict` and a 409.
+- Every aggregate has a concurrency token; a stale write becomes `Conflict` and a 409. The
+  repository catches `DbUpdateConcurrencyException`; it never reaches the Api.
 - Integration events go to the outbox in the same `SaveChangesAsync`; a dispatcher
   publishes them (ADR 0006).
 - Migrations live here and run through the `MigrationRunner` resource in the

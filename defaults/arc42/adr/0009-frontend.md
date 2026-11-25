@@ -1,6 +1,6 @@
 ---
 title: "ADR 0009: Frontend"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
 tags: [frontend, ui, blazor, react, vite, tailwind, design-tokens, css-variables, openapi, component-catalog, aspire, adr]
 ---
@@ -28,7 +28,8 @@ drift from the style guide in `defaults/design/`.
   tokens.
 - It is covered end to end by the Playwright suite (ADR 0010).
 
-**Two options.** An app picks one and records the pick in its own ADR:
+**Two options.** Both are rated `adopted` in [defaults/tech/web.md](../../tech/web.md). An app
+picks one and records the pick in its own ADR:
 
 | Option | Tokens arrive as |
 |---|---|
@@ -43,7 +44,7 @@ drift from the style guide in `defaults/design/`.
 }
 ```
 
-Angular, Vue and Svelte are not options.
+Angular, Vue and Svelte are not options; `tech/` rates them `hold`.
 
 ## Consequences
 
@@ -62,6 +63,7 @@ Angular, Vue and Svelte are not options.
 ## References
 
 - [defaults/design/ style guide](../../design/README.md)
+- [defaults/tech/ technology ratings](../../tech/technology-graph.md)
 - [Tailwind CSS theme variables](https://tailwindcss.com/docs/theme)
 - [ASP.NET Core Blazor CSS isolation](https://learn.microsoft.com/aspnet/core/blazor/components/css-isolation)
 - [Aspire JavaScript hosting](https://aspire.dev/integrations/frameworks/javascript/)

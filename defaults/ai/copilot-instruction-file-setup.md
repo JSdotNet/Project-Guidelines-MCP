@@ -1,6 +1,6 @@
 ---
 title: "Instruction-File Setup: One AGENTS.md, Wrapped per Host"
-date: 2026-10-06
+date: 2026-11-25
 status: Accepted
 tags: [instructions, agents-md, claude-code, copilot, path-scoped-rules, mcp, routing, recommendations]
 ---
@@ -127,9 +127,8 @@ Use a stable selection order:
 Name the expected MCP servers in `AGENTS.md` by their authoritative server IDs, and take those IDs and
 commands from *Config Guideline: .mcp.json* rather than restating the table.
 
-**⚠️ Do not use the deprecated command `jsdotnet-project-guidelines-mcpserver`** (deprecated package
-`jsdotnet.project.guidelines.mcpserver`, last v1.0.6). If it appears in a generated instruction file or
-config, replace it with `jsdotnet-guidelines-mcpserver`.
+**⚠️ Use only the server ID `jsdotnet-app-defaults`.** If a generated instruction file or config names a
+retired JSdotNet server ID or package, replace it with the entry from *Config Guideline: .mcp.json*.
 
 Rules:
 

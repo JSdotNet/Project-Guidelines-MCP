@@ -4,11 +4,14 @@
     "name": "JSdotNet",
     "url": "https://github.com/JSdotNet"
   },
+  "metadata": {
+    "description": "The JSdotNet application defaults plugin: skills for the jsdotnet-app-defaults MCP server."
+  },
   "plugins": [
     {
       "name": "app-defaults",
       "source": "./plugins/app-defaults",
-      "description": "Skills for the jsdotnet-app-defaults MCP server: look up and apply the JSdotNet application defaults and design tokens, review code and decisions against them, and plan migrations."
+      "description": "Skills for the jsdotnet-app-defaults MCP server: look up and apply the JSdotNet application defaults and design tokens, audit a repository against them, and plan migrations."
     }
   ]
 }

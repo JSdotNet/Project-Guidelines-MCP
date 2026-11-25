@@ -103,7 +103,8 @@ public sealed class DefaultsCatalogTests
         Assert.Contains("## Tool and MCP Selection Policy", content);
         Assert.Contains("@AGENTS.md", content);
         Assert.Contains(".agents/rules/<topic>.md", content);
-        Assert.Contains("jsdotnet-project-guidelines-mcpserver", content);
+        Assert.Contains("jsdotnet-app-defaults", content);
+        Assert.DoesNotContain("jsdotnet-project-guidelines", content);
     }
 
     [Fact]

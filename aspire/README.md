@@ -13,17 +13,20 @@ $env:ASPIRE_INIT_SOURCE_README_URL = 'https://github.com/JSdotNet/app-defaults/b
 aspire new
 ```
 
-Pick **JSdotNet app defaults** in the template picker and accept the source when the CLI asks.
-Without the source, run the template directly:
+Accept the source when the CLI asks, then pick **JSdotNet app defaults** in the template picker.
+Only the interactive picker lists a source's templates; `--non-interactive` accepts no template
+name from it. Without the source, or in a script, run the template directly:
 
 ```powershell
 aspire new --template-repository https://github.com/JSdotNet/app-defaults --template-path aspire/templates
 ```
 
-`aspire agent init` then registers the defaults skills in the agent's own plugin settings, and
-`aspire add` finds the shared hosting integration. `aspire update --config-source` refreshes an
-app that accepted the source; setting `configSource.optOut` to `true` in the app's
-`aspire.config.json` opts it out.
+`aspire update --use-config-source` binds an existing app to the source. `aspire agent init`
+then registers the defaults skills in the agent's own plugin settings (`.claude/settings.json`,
+`.github/copilot/settings.json`), and `aspire add` finds the shared hosting integration; with
+`--non-interactive`, name it exactly: `aspire add JSdotNet.AppDefaults.Hosting`.
+`aspire update --config-source` refreshes an app that accepted the source; setting
+`configSource.optOut` to `true` in the app's `aspire.config.json` opts it out.
 
 ## What it supplies
 
@@ -55,6 +58,17 @@ Contoso.Orders/
 It targets .NET 11 with warnings as errors (ADR 0001). The database is SQL Server because its
 EF Core 11 provider is GA; an app that chooses another database renames `Data.SqlServer` and
 records the choice in its own ADR (ADR 0006).
+
+- **AppHost** — calls `AddDefaultsSqlServer` and `WithDefaultsHealthCheck` from
+  `JSdotNet.AppDefaults.Hosting`, pinned in `Directory.Packages.props`.
+- **`nuget.config`** — nuget.org only, with `minPublishAgeHours="72"` (ADR 0001).
+- **Sample slice** — `Item.Version` is the concurrency token: `RenameItem` (`PUT
+  /{module}/items/{id}`) takes the version the client read, the aggregate increments it, and a
+  stale version or a `DbUpdateConcurrencyException` becomes a 409 Problem Details (ADR 0006).
+- **Lock files are not shipped.** The template excludes `packages.lock.json`; the app's first
+  `dotnet restore` writes one per project from the template's exact pins, and the app commits
+  them with its first change, after which CI restores with `--locked-mode`. Shipping them would
+  make every pin change here a lock-file regeneration nothing in this repository checks.
 
 ## Trust and pinning
 
