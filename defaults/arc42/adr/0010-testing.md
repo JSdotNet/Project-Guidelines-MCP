@@ -1,8 +1,8 @@
 ---
 title: "ADR 0010: Testing"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
-tags: [testing, xunit, microsoft-testing-platform, nsubstitute, bogus, integration-tests, webapplicationfactory, testcontainers, e2e, playwright, aspire, architecture-tests, adr]
+tags: [testing, xunit, microsoft-testing-platform, nsubstitute, bogus, integration-tests, webapplicationfactory, testcontainers, e2e, playwright, aspire, architecture-tests, playwright-agents, azure-app-testing, adr]
 ---
 # ADR 0010: Testing
 
@@ -39,6 +39,17 @@ suite whose global setup:
 
 Devbook journeys reuse this suite rather than a second one.
 
+**Watch, not adopted.** Two ways to run Playwright at scale are named but not defaults:
+
+- *Playwright's healer agent* (`npx playwright init-agents`, with the planner and generator)
+  repairs a failing test by rewriting it. A repair can hide a real regression, so it may only
+  propose a change for review; it never runs unattended in CI, and its fix must still pass
+  the Aspire log check above.
+- *Azure App Testing* (Playwright Workspaces, the successor of Microsoft Playwright Testing)
+  runs browsers in the cloud in parallel. The suite's apps run locally under `aspire start`,
+  so remote browsers need the local endpoints exposed to them; it is worth adopting only
+  when a suite outgrows one CI agent, and the app records that choice in its own ADR.
+
 ## Consequences
 
 ### Positive
@@ -59,6 +70,8 @@ Devbook journeys reuse this suite rather than a second one.
 - [xUnit v3 with Microsoft Testing Platform](https://xunit.net/docs/getting-started/v3/microsoft-testing-platform)
 - [Integration tests in ASP.NET Core](https://learn.microsoft.com/aspnet/core/test/integration-tests)
 - [Playwright Test](https://playwright.dev/docs/intro)
+- [Playwright test agents](https://playwright.dev/docs/test-agents)
+- [Introducing Azure App Testing](https://techcommunity.microsoft.com/blog/appsonazureblog/introducing-azure-app-testing-scalable-end-to-end-app-validation/4440496)
 - [Aspire CLI](https://aspire.dev/reference/cli/overview/)
 - ADR 0002: Aspire, Configuration and Infrastructure
 - ADR 0003: Solution Structure

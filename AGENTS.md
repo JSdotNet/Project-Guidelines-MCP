@@ -36,6 +36,7 @@ architecture, patterns, C# style, testing, observability, or another technical d
 | `defaults/arc42/adr/` | ADRs 0001–0013 as `NNNN-title.md`, rewritten in place; `README.md` maps retired numbers |
 | `defaults/arc42/building-blocks/` | One page per building block of `05-building-block-view.md` |
 | `defaults/ai/` | Instruction-file setup, skill authoring, and standard config files in `config/` |
+| `defaults/tech/` | Default technology ratings (adopted or hold) per layer, derived from the ADRs, served as the `tech` category |
 | `defaults/design/` | UX style guide, served as the `design` category |
 | `aspire/` | Aspire 17 config source: `aspire.config.json`, the golden-setup template and the hosting integration |
 | `plugins/app-defaults/` | The one agent plugin, listed in `.claude-plugin/marketplace.json`: both host manifests and `skills/<name>/SKILL.md`, each a workflow of at most 40 lines with its tables in `reference.md`; `skills/jsdotnet-app-defaults/` is the server's own skill |

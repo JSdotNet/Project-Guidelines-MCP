@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-11-25T12:00:00Z",
+    "generated": "2026-11-25T15:03:33Z",
     "documents": [
         {
             "id": "0001-platform-and-build",
@@ -134,11 +134,12 @@
         {
             "id": "0008-security",
             "title": "ADR 0008: Security",
-            "description": "Prescribes an external OIDC identity provider with full JWT validation and PKCE, zero-trust named policies checked per call with resource-based checks and audit, and rate limiting on every public or anonymous endpoint.",
+            "description": "Prescribes an external OIDC identity provider with full JWT validation and PKCE, Keycloak through the Aspire integration for local development, zero-trust named policies checked per call with resource-based checks and audit, and rate limiting on every public or anonymous endpoint.",
             "category": "adrs",
             "relativePath": "arc42/adr/0008-security.md",
             "tags": [
                 "security",
+                "keycloak",
                 "authentication",
                 "authorization",
                 "oidc",
@@ -156,7 +157,7 @@
         {
             "id": "0009-frontend",
             "title": "ADR 0009: Frontend",
-            "description": "Sets frontend rules rather than a framework: its own app under src/App/ run as an Aspire resource, a generated OpenAPI client, design/ tokens as CSS variables and a component catalog, with Blazor or React 19 + Vite + Tailwind 4 picked per app.",
+            "description": "Sets frontend rules rather than a framework: its own app under src/App/ run as an Aspire resource, a generated OpenAPI client, design/ tokens as CSS variables and a component catalog, with Blazor or React 19 + Vite + Tailwind 4, both rated adopted in tech/, picked per app.",
             "category": "adrs",
             "relativePath": "arc42/adr/0009-frontend.md",
             "tags": [
@@ -177,7 +178,7 @@
         {
             "id": "0010-testing",
             "title": "ADR 0010: Testing",
-            "description": "Prescribes xUnit v3 on Microsoft Testing Platform with NSubstitute and Bogus, integration tests on one module Api with WebApplicationFactory and throwaway containers, and a Playwright E2E suite as the only tests run through aspire start.",
+            "description": "Prescribes xUnit v3 on Microsoft Testing Platform with NSubstitute and Bogus, integration tests on one module Api with WebApplicationFactory and throwaway containers, and a Playwright E2E suite as the only tests run through aspire start, with Playwright's healer agent and Azure App Testing on watch.",
             "category": "adrs",
             "relativePath": "arc42/adr/0010-testing.md",
             "tags": [
@@ -193,6 +194,8 @@
                 "playwright",
                 "aspire",
                 "architecture-tests",
+                "playwright-agents",
+                "azure-app-testing",
                 "adr"
             ]
         },
@@ -712,6 +715,96 @@
                 "design-tokens",
                 "ux",
                 "frontend"
+            ]
+        },
+        {
+            "id": "technology-graph",
+            "title": "Technology Graph",
+            "description": "Lists the default technology ratings (adopted or hold) by layer, derived from the ADRs and the template's Directory.Packages.props, with the depends-on graph and how to extend it.",
+            "category": "tech",
+            "relativePath": "tech/technology-graph.md",
+            "tags": [
+                "tech",
+                "technology-graph",
+                "ratings",
+                "adopted",
+                "hold",
+                "packages",
+                "tech-radar"
+            ]
+        },
+        {
+            "id": "shared",
+            "title": "Shared Technologies",
+            "description": "Rates the technologies every layer uses: .NET 11, C# 15, OpenAPI 3.2, OpenID Connect and OAuth 2.1, and OpenTelemetry, all adopted.",
+            "category": "tech",
+            "relativePath": "tech/shared.md",
+            "tags": [
+                "tech",
+                "ratings",
+                "dotnet",
+                "csharp",
+                "openapi",
+                "oidc",
+                "opentelemetry"
+            ]
+        },
+        {
+            "id": "backend",
+            "title": "Backend Technologies",
+            "description": "Rates the backend stack: Minimal APIs, EF Core, the standard resilience handler, JWT and OIDC handlers, the MCP C# SDK, Microsoft.Extensions.AI and Agent Framework adopted; MediatR, FluentValidation, Dapper and the discontinued Aspire Azure AI clients on hold.",
+            "category": "tech",
+            "relativePath": "tech/backend.md",
+            "tags": [
+                "tech",
+                "ratings",
+                "backend",
+                "aspnet-core",
+                "minimal-apis",
+                "ef-core",
+                "resilience",
+                "authentication",
+                "mcp",
+                "agent-framework",
+                "microsoft-extensions-ai"
+            ]
+        },
+        {
+            "id": "web",
+            "title": "Web Technologies",
+            "description": "Rates the UI options: Blazor and React 19 + Vite + Tailwind 4 adopted, Angular, Vue and Svelte on hold.",
+            "category": "tech",
+            "relativePath": "tech/web.md",
+            "tags": [
+                "tech",
+                "ratings",
+                "frontend",
+                "ui",
+                "blazor",
+                "react",
+                "vite",
+                "tailwind"
+            ]
+        },
+        {
+            "id": "tooling",
+            "title": "Tooling Technologies",
+            "description": "Rates orchestration and test tooling: Aspire 17, xUnit v3 on MTP, NSubstitute, Bogus, FakeTimeProvider, Testcontainers, NetArchTest and Playwright Test adopted; Moq, Aspire.AppHost.Sdk and AddProject on hold.",
+            "category": "tech",
+            "relativePath": "tech/tooling.md",
+            "tags": [
+                "tech",
+                "ratings",
+                "tooling",
+                "aspire",
+                "testing",
+                "xunit",
+                "nsubstitute",
+                "bogus",
+                "testcontainers",
+                "netarchtest",
+                "playwright",
+                "moq"
             ]
         }
     ]

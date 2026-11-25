@@ -2,6 +2,7 @@
 paths:
   - "defaults/arc42/**"
   - "defaults/ai/**"
+  - "defaults/tech/**"
   - "defaults/index.json"
 ---
 

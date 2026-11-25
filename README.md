@@ -34,7 +34,8 @@ The arc42 chapters around the ADRs — [constraints](defaults/arc42/02-constrain
 [solution strategy](defaults/arc42/04-solution-strategy.md),
 [building blocks](defaults/arc42/05-building-block-view.md),
 [deployment](defaults/arc42/07-deployment-view.md) and
-[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — and the
+[crosscutting concepts](defaults/arc42/08-crosscutting-concepts.md) — the
+[technology ratings](defaults/tech/technology-graph.md) (adopted or hold) and the
 [UX style guide](defaults/design/) fill in the detail. Retired ADR numbers are mapped in
 [defaults/arc42/adr/README.md](defaults/arc42/adr/README.md).
 
