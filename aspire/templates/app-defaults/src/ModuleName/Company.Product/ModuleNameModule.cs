@@ -2,6 +2,7 @@ using Company.Product.Abstractions.DataTransferObjects;
 using Company.Product.Core;
 using Company.Product.Features.CreateItem;
 using Company.Product.Features.GetItemById;
+using Company.Product.Features.RenameItem;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -16,6 +17,7 @@ public static class ModuleNameModule
 
         return services
             .AddScoped<ICommandHandler<CreateItemCommand, ItemDto>, CreateItemCommandHandler>()
+            .AddScoped<ICommandHandler<RenameItemCommand, ItemDto>, RenameItemCommandHandler>()
             .AddScoped<IQueryHandler<GetItemByIdQuery, ItemDto>, GetItemByIdQueryHandler>();
     }
 }

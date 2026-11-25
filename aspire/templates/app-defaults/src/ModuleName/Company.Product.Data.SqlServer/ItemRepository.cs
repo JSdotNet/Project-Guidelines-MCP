@@ -13,4 +13,18 @@ internal sealed class ItemRepository(ModuleNameDbContext db) : IItemRepository
         db.Items.Add(item);
         await db.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<bool> SaveAsync(Item item, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await db.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // ADR 0006: another write moved Version on after this item was read.
+            return false;
+        }
+    }
 }

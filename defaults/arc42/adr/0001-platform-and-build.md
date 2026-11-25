@@ -1,8 +1,8 @@
 ---
 title: "ADR 0001: Platform and Build"
-date: 2026-11-19
+date: 2026-11-25
 status: Accepted
-tags: [dotnet, csharp, global-json, central-package-management, nuget, build, analyzers, editorconfig, scripts, file-based-apps, adr]
+tags: [dotnet, csharp, global-json, central-package-management, nuget, publish-age, build, analyzers, editorconfig, scripts, file-based-apps, adr]
 ---
 # ADR 0001: Platform and Build
 
@@ -23,8 +23,27 @@ features (`LangVersion preview`, `EnablePreviewFeatures`) are never used.
 
 **Packages.** Central Package Management: every version lives in the root
 `Directory.Packages.props`, with `CentralPackageTransitivePinningEnabled` on and
-`RestorePackagesWithLockFile` committing a `packages.lock.json` per project. NuGet's minimum
-package publication age setting is on, so a version published only hours ago is not restored.
+`RestorePackagesWithLockFile` committing a `packages.lock.json` per project. Versions are
+exact; floating versions (`1.2.*`) are never used.
+
+**Publish age.** The root `nuget.config` sets NuGet's minimum publish age (NuGet 8.0,
+.NET SDK 11.0.100) on its one source:
+
+```xml
+<packageSources>
+  <clear />
+  <add key="nuget.org" value="https://api.nuget.org/v3/index.json" minPublishAgeHours="72" />
+</packageSources>
+<minPublishAgeExceptions />
+```
+
+`dotnet package add` and `dotnet package update` then never pick a version younger than 72
+hours, and restore of a floating version fails with NU1020. Restore does not check the age of
+an exact version, transitive ones included, so the setting only guards the moment a version is
+chosen; the pin in `Directory.Packages.props` and its reviewed `chore:` pull request guard the
+rest. A source redefined in another `nuget.config` without the attribute drops back to 0.
+A package the team publishes itself goes in `<minPublishAgeExceptions>` as
+`<package pattern="Company.*" />`.
 
 **Build policy**, set once in the root `Directory.Build.props`:
 
@@ -61,13 +80,16 @@ package publication age setting is on, so a version published only hours ago is 
 - One major upgrade per year instead of one per two years.
 - Warnings as errors makes analyzer and SDK updates break the build until fixed; they land
   in their own `chore:` pull request.
-- The publication-age delay holds back an urgent security fix until it ages or is allowed
-  explicitly.
+- The publish-age delay holds back an urgent security fix from `dotnet package update`, even
+  with `--vulnerable`, until it ages; pinning the fixed version by hand bypasses it.
+- The publish age protects the choice of a version, not every restore; it is no substitute
+  for reviewing a pin change.
 
 ## References
 
 - [.NET support policy](https://dotnet.microsoft.com/platform/support/policy/dotnet-core)
 - [Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management)
+- [Minimum package publish age](https://learn.microsoft.com/nuget/consume-packages/minimum-package-publish-age)
 - [File-based apps](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps)
 - ADR 0002: Aspire, Configuration and Infrastructure
 - ADR 0005: Application Layer

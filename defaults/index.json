@@ -1,11 +1,11 @@
 {
     "version": "1.0",
-    "generated": "2026-11-19T21:55:19Z",
+    "generated": "2026-11-25T11:15:00Z",
     "documents": [
         {
             "id": "0001-platform-and-build",
             "title": "ADR 0001: Platform and Build",
-            "description": "Follows the newest GA .NET release (today .NET 11 and C# 15) pinned in global.json, with Central Package Management, lock files, warnings as errors, a single .editorconfig, locked CI restore and C# file-based scripts.",
+            "description": "Follows the newest GA .NET release (today .NET 11 and C# 15) pinned in global.json, with Central Package Management, lock files, a 72-hour NuGet minimum publish age, warnings as errors, a single .editorconfig, locked CI restore and C# file-based scripts.",
             "category": "adrs",
             "relativePath": "arc42/adr/0001-platform-and-build.md",
             "tags": [
@@ -14,6 +14,7 @@
                 "global-json",
                 "central-package-management",
                 "nuget",
+                "publish-age",
                 "build",
                 "analyzers",
                 "editorconfig",
