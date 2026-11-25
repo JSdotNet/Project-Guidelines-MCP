@@ -19,7 +19,7 @@ joined with commas, and its `description` is copied from the rule. Check that `a
 
 | Topic | Paths | Covers |
 |---|---|---|
-| [defaults](defaults.md) | `defaults/arc42/**`, `defaults/ai/**`, `defaults/index.json` | Doc taxonomy, front matter, `defaults/index.json` |
+| [defaults](defaults.md) | `defaults/arc42/**`, `defaults/ai/**`, `defaults/tech/**`, `defaults/index.json` | Doc taxonomy, front matter, `defaults/index.json` |
 | [design-content](design-content.md) | `defaults/design/**` | Style-guide authoring, customization boundary, its index entries |
 | [mcp-server](mcp-server.md) | `src/**`, `tests/**` | Server invariants and the coverage floor |
 

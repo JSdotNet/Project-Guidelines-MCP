@@ -1,5 +1,5 @@
 ---
-applyTo: 'defaults/arc42/**,defaults/ai/**,defaults/index.json'
+applyTo: 'defaults/arc42/**,defaults/ai/**,defaults/tech/**,defaults/index.json'
 description: Taxonomy, front matter and index rules for the guidance documents under defaults/.
 ---
 

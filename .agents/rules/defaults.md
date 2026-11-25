@@ -4,6 +4,7 @@ description: Taxonomy, front matter and index rules for the guidance documents u
 paths:
   - "defaults/arc42/**"
   - "defaults/ai/**"
+  - "defaults/tech/**"
   - "defaults/index.json"
 ---
 
@@ -22,6 +23,7 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 | `defaults/arc42/05-building-block-view.md`, `building-blocks/` | The one solution structure and one page per block | `structures` |
 | `defaults/ai/` | Instruction-file setup and skill authoring | `recommendations` |
 | `defaults/ai/config/` | One standard configuration file per doc, named `<file>.md` | `config` |
+| `defaults/tech/` | Technology ratings: `technology-graph.md` plus one file per layer | `tech` |
 | `defaults/design/` | The UX style guide | `design` |
 
 - **ADRs** — `NNNN-title.md`, numbered sequentially; title `ADR NNNN: Concise Title`;
@@ -36,6 +38,10 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
   indexed.
 - **Building blocks** — one block per file: its responsibility, layout, a minimal code shell
   using `Company.Product` placeholders or the `Contoso.Orders` example, and its rules.
+- **Technology ratings** — devbook's `tech/` shape without `meta` blocks: one
+  `## <Technology>` chapter per technology with its rating (`adopted` or `hold`), version,
+  depends-on links and the ADR behind it. An ADR changes first; `tech/` records the outcome,
+  and `technology-graph.md`'s graph changes in the same edit.
 - **Recommendations** — prescriptive, stable, narrowly scoped guidance; link the originating
   ADR where one exists.
 
