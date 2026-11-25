@@ -128,3 +128,7 @@ dotnet test JSdotNet.AppDefaults.slnx
 Merging to `main` publishes the `JSdotNet.AppDefaults.Mcp` package through
 [publish-nuget.yml](.github/workflows/publish-nuget.yml) when its source changed; the server
 reads documents from `main`, so a merged default reaches every project at once.
+A merge by [auto-merge.yml](.github/workflows/auto-merge.yml) uses `GITHUB_TOKEN` when the
+repository has no `AUTO_MERGE_TOKEN` secret, and such a push starts no workflow, so auto-merge
+dispatches `publish-nuget.yml` itself with `since` set to `main`'s commit before the merge. A
+manual dispatch without `since` publishes every package, the retired notices included.

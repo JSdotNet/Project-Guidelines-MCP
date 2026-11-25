@@ -147,5 +147,6 @@ dnx JSdotNet.AppDefaults.Mcp --yes --add-source ./local-packages
 
 `JSdotNet.MCP.Guidelines` and `JSdotNet.MCP.Design` were merged into `JSdotNet.AppDefaults.Mcp`.
 Their last version, 1.0.13, only prints that notice to stderr and exits; earlier versions are
-unlisted. Their sources live in `retired/`, which publishes nothing but that notice version.
+unlisted. Their sources live in `retired/`, which publishes nothing but that notice version:
+`publish-nuget.yml` pushes it when `retired/` changed, or on a dispatch without `since`.
 `JSdotNet.MCP.Publish` is not retired: it lives on in `JSdotNet/mcp-publish`.

@@ -245,7 +245,7 @@
         {
             "id": "0013-agent-ready-repository",
             "title": "ADR 0013: Agent-Ready Repository",
-            "description": "Prescribes one AGENTS.md wrapped per host with path-scoped rules, Aspire skills from aspire agent init used CLI first, dotnet/skills, and an .mcp.json that runs the guidelines server through dnx.",
+            "description": "Prescribes one AGENTS.md wrapped per host with path-scoped rules, Aspire skills from aspire agent init used CLI first, dotnet/skills, and an .mcp.json that runs the jsdotnet-app-defaults server through dnx.",
             "category": "adrs",
             "relativePath": "arc42/adr/0013-agent-ready-repository.md",
             "tags": [
@@ -563,7 +563,7 @@
         {
             "id": "config-mcp-json",
             "title": "MCP Server Configuration (.mcp.json)",
-            "description": "Standard .mcp.json setup for GitHub Copilot CLI, including required fields, baseline server entries for Microsoft Learn, JSdotNet Guidelines, and Aspire, plus maintenance best practices.",
+            "description": "Standard .mcp.json setup for GitHub Copilot CLI, including required fields, baseline server entries for Microsoft Learn, jsdotnet-app-defaults run through dnx, and Aspire, plus maintenance best practices.",
             "category": "config",
             "relativePath": "ai/config/.mcp.json.md",
             "tags": [
