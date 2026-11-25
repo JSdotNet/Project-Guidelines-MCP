@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - main
+  # A merge the auto-merge workflow makes with GITHUB_TOKEN starts no push run, so that workflow
+  # dispatches this one with `since` set to the base commit before the merge. A dispatch without
+  # `since` publishes every package, the retired notices included.
   workflow_dispatch:
+    inputs:
+      since:
+        description: 'Publish only the packages changed since this commit; empty publishes every package'
+        required: false
+        default: ''
 
 env:
   DOTNET_VERSION: '11.0.x'
@@ -30,9 +38,12 @@ jobs:
       retired: ${{ steps.filter.outputs.retired }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          base: ${{ inputs.since }}
           filters: |
             defaults:
               - 'src/JSdotNet.MCP.Shared/**'
@@ -185,7 +196,7 @@ jobs:
       id-token: write
     if: |
       needs.detect-changes.outputs.defaults == 'true' ||
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' && inputs.since == '')
     steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -230,7 +241,7 @@ jobs:
       id-token: write
     if: |
       needs.detect-changes.outputs.hosting == 'true' ||
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' && inputs.since == '')
     steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -259,7 +270,7 @@ jobs:
           NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
 
   # 3c. Publish the final notice version of each retired package and unlist its earlier
-  #     versions (only when retired/ changed). Pushing is idempotent (--skip-duplicate).
+  #     versions (when retired/ changed, or on a dispatch without `since`). Pushing is idempotent (--skip-duplicate).
   publish-retired:
     name: Publish retired notices
     runs-on: ubuntu-latest
@@ -269,7 +280,7 @@ jobs:
       id-token: write
     if: |
       needs.detect-changes.outputs.retired == 'true' ||
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' && inputs.since == '')
     steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
