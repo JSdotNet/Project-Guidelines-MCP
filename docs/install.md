@@ -35,8 +35,9 @@ For every project on the machine, register it at user level instead:
 claude mcp add -s user jsdotnet-app-defaults -- dnx JSdotNet.AppDefaults.Mcp --yes
 ```
 
-A server in a project's `.mcp.json` overrides a user-level one with the same id. Verify with
-`/mcp` in a new session.
+A server in a project's `.mcp.json` overrides a user-level one with the same id, and Claude Code
+asks to approve it the first time `claude` starts in that project. Verify with
+`claude mcp get jsdotnet-app-defaults` or `/mcp` in a new session.
 
 **Plugin.** Add this repository as a marketplace and install the plugin:
 
@@ -47,10 +48,15 @@ A server in a project's `.mcp.json` overrides a user-level one with the same id.
 
 ## GitHub Copilot CLI
 
-Copilot CLI reads the same project `.mcp.json` shown above; start `copilot` in the project
-folder and run `/mcp show jsdotnet-app-defaults` to verify. To add it for every project, run
-`/mcp add` in a session and enter `stdio`, the command `dnx`, the arguments
-`JSdotNet.AppDefaults.Mcp --yes` and the tools `*`.
+Copilot CLI reads the same project `.mcp.json` shown above once the project folder is trusted:
+start `copilot` in the folder and trust it when asked. To add the server for every project:
+
+```powershell
+copilot mcp add jsdotnet-app-defaults -- dnx JSdotNet.AppDefaults.Mcp --yes
+```
+
+Verify with `copilot mcp get jsdotnet-app-defaults`, or `/mcp show jsdotnet-app-defaults` in a
+session.
 
 **Plugin.** Copilot reads the plugin's `.github/plugin/plugin.json` manifest from the same
 marketplace:
