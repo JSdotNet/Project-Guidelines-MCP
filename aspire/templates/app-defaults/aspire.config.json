@@ -1,5 +1,8 @@
 {
   "$schema": "https://aspire.dev/reference/cli/configuration/schema/17.0.0.json",
+  "sdk": {
+    "version": "17.0.0"
+  },
   "appHost": {
     "path": "src/Aspire/Company.Product.AppHost/Company.Product.AppHost.csproj"
   }

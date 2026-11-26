@@ -21,7 +21,7 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 | `defaults/arc42/adr/` | ADRs | `adrs` |
 | `defaults/arc42/02-constraints.md`, `04-solution-strategy.md`, `07-deployment-view.md`, `08-crosscutting-concepts.md` | arc42 chapters on givens, approach, deployment and crosscutting concepts | `designs` |
 | `defaults/arc42/05-building-block-view.md`, `building-blocks/` | The one solution structure and one page per block | `structures` |
-| `defaults/ai/` | Instruction-file setup and skill authoring | `recommendations` |
+| `defaults/ai/` | Instruction-file setup and skill authoring | `ai` |
 | `defaults/ai/config/` | One standard configuration file per doc, named `<file>.md` | `config` |
 | `defaults/tech/` | Technology ratings: `technology-graph.md` plus one file per layer | `tech` |
 | `defaults/design/` | The UX style guide | `design` |
@@ -47,8 +47,8 @@ on a meaningful content change, not on a typo, grammar, or formatting-only edit.
 
 ## `defaults/index.json`
 
-The one document registry both MCP servers read: the design server serves category `design`,
-the guidelines server everything else. Without it they fall back to directory traversal.
+The one document registry the `jsdotnet-app-defaults` MCP server reads, every category in one
+catalog, `design` among them. Without it the server falls back to directory traversal.
 Whenever you add, modify, or remove a file under `defaults/`, update it in the same change:
 one entry per markdown file with `id` (the file name without `.md`, unique across the index),
 `title` and `tags` from the front matter, a one-sentence `description` of what the doc decides

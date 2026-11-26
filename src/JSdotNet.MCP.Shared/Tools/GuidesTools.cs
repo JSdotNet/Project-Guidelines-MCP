@@ -10,7 +10,7 @@ namespace JSdotNet.MCP.Shared.Tools;
 [McpServerToolType]
 public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, ILogger<GuidesTools> logger)
 {
-    [McpServerTool(Name = "list_guides"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, recommendations, structures, and config guidelines. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
+    [McpServerTool(Name = "list_guides"), Description("Retrieves the complete catalog of all available documentation, including ADRs, designs, structures, AI setup, config, and design guidelines. Returns id, title, category, description, relative path, and tags for each document. Use this to get a full overview of available guidance before deciding which documents to read in detail.")]
     public async Task<string> ListGuidesAsync(CancellationToken ct)
     {
         string[] ids = [];
@@ -36,7 +36,7 @@ public sealed class GuidesTools(IDocumentCatalog catalog, IUsageLog usageLog, IL
         }
     }
 
-    [McpServerTool(Name = "list_guides_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'recommendations' (prescriptive best-practice guidance), 'structures' (canonical project scaffolds and templates), 'config' (configuration file guidelines, e.g. github-app.yml), and 'design' (the UX style guide: tokens, color, typography, components). Use this when you know the type of guidance you need rather than searching by keyword.")]
+    [McpServerTool(Name = "list_guides_by_type"), Description("Retrieves all documents belonging to a specific category. Valid categories are: 'adrs' (Architecture Decision Records with status, context, and consequences), 'designs' (exploratory design documents and diagrams), 'structures' (canonical project scaffolds and templates), 'ai' (instruction-file setup and skill authoring), 'config' (configuration file guidelines, e.g. github-app.yml), 'tech' (technology ratings), and 'design' (the UX style guide: tokens, color, typography, components). Use this when you know the type of guidance you need rather than searching by keyword.")]
     public async Task<string> ListGuidesByTypeAsync([Description("Category to filter by")] string category, CancellationToken ct)
     {
         string[] ids = [];

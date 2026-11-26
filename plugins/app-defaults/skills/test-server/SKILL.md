@@ -10,7 +10,7 @@ Run each check in order and report pass or fail with what came back. Failures:
 
 | # | Call | Pass when |
 |---|---|---|
-| 1 | `list_guides()` | Entries in every category: `adrs`, `designs`, `structures`, `recommendations`, `config`, `design` |
+| 1 | `list_guides()` | Entries in every category: `adrs`, `designs`, `structures`, `ai`, `config`, `tech`, `design` |
 | 2 | `list_guides_by_type(c)` for each category | Each returns ≥1 entry, all of category `c` |
 | 3 | `list_guides_by_type("design")` | Only style-guide documents, `readme` and `01-color-palette` among them |
 | 4 | `search_guides("persistence")`, `search_guides("color palette")` | ≥1 result each, matching the term |

@@ -23,7 +23,9 @@ aspire new --template-repository https://github.com/JSdotNet/app-defaults --temp
 
 `aspire update --use-config-source` binds an existing app to the source. `aspire agent init`
 then registers the defaults skills in the agent's own plugin settings (`.claude/settings.json`,
-`.github/copilot/settings.json`), and `aspire add` finds the shared hosting integration; with
+`.github/copilot/settings.json`); it also installs Aspire's telemetry hooks for Copilot and
+Claude Code at user level (`~/.copilot/hooks/aspire-telemetry.json`, `~/.claude/settings.json`),
+even with `--scope project`. `aspire add` finds the shared hosting integration; with
 `--non-interactive`, name it exactly: `aspire add JSdotNet.AppDefaults.Hosting`.
 `aspire update --config-source` refreshes an app that accepted the source; setting
 `configSource.optOut` to `true` in the app's `aspire.config.json` opts it out.

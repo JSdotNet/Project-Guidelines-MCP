@@ -24,8 +24,9 @@ Every document is also a resource at `defaults://<path without .md>`, for exampl
 | `adrs` | ADRs `0001`–`0013` and the numbering `README` |
 | `designs` | arc42 chapters `02-constraints`, `04-solution-strategy`, `07-deployment-view`, `08-crosscutting-concepts` |
 | `structures` | `05-building-block-view` and the building blocks: `module`, `domain-model`, `api`, `data-provider`, `apphost`, `service-defaults`, `test-harness`, `notifications`, `file-storage` |
-| `recommendations` | `agent-skill-authoring`, `copilot-instruction-file-setup` |
+| `ai` | `agent-skill-authoring`, `copilot-instruction-file-setup` |
 | `config` | `config-mcp-json`, `config-github-app-yml` |
+| `tech` | `technology-graph`, `shared`, `backend`, `web`, `tooling` |
 | `design` | The UX style guide: `readme`, `01-color-palette` … `09-interaction-patterns` |
 
 ## Where to start

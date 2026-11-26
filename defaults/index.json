@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-11-25T15:03:33Z",
+    "generated": "2026-11-26T12:00:00Z",
     "documents": [
         {
             "id": "0001-platform-and-build",
@@ -280,7 +280,7 @@
             "id": "agent-skill-authoring",
             "title": "Agent Skill Authoring: Scope, Preconditions, and Descriptions",
             "description": "Rules for writing SKILL.md descriptions and preconditions so an agent cannot wrongly exclude a skill that should apply. Covers narrowing scope by work type rather than process maturity, when negative scope is legitimate, Stage 0 scope discovery for missing inputs, stop conditions that route to a successor, anti-patterns, and a pass/fail audit checklist.",
-            "category": "recommendations",
+            "category": "ai",
             "relativePath": "ai/agent-skill-authoring.md",
             "tags": [
                 "skills",
@@ -530,7 +530,7 @@
             "id": "copilot-instruction-file-setup",
             "title": "Instruction-File Setup: One AGENTS.md, Wrapped per Host",
             "description": "Prescribes one root AGENTS.md as the only authored instruction file, CLAUDE.md as an @AGENTS.md import and .github/copilot-instructions.md as a one-sentence pointer, path-scoped rules authored once under .agents/rules/ with a wrapper per host, MCP-first selection with disclosed fallback, and the migration from a Copilot-only file.",
-            "category": "recommendations",
+            "category": "ai",
             "relativePath": "ai/copilot-instruction-file-setup.md",
             "tags": [
                 "instructions",

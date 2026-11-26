@@ -1,5 +1,5 @@
 <Project>
-  <!-- ADR 0001: every version lives here, transitive versions are pinned and lock files are committed. -->
+  <!-- ADR 0001: every version lives here and transitive versions are pinned; each project writes its lock file on the first restore and the app commits it (aspire/README.md). -->
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>

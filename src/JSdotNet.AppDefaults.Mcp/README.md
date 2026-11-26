@@ -1,7 +1,7 @@
 # JSdotNet.AppDefaults.Mcp
 
 MCP server that serves the **JSdotNet application defaults** — every document under `defaults/`:
-ADRs, building blocks, recommendations, structures, configuration and design (one category of
+ADRs, building blocks, structures, AI setup, configuration and design (one category of
 the same catalog).
 
 ## Identity
@@ -30,7 +30,7 @@ No install needed on .NET 11:
 
 | Primitive | Names |
 |---|---|
-| Tools | `list_guides`, `list_guides_by_type` (`adrs`, `designs`, `recommendations`, `structures`, `config`, `design`), `search_guides`, `search_guides_by_tag`, `get_guide`, `get_usage_logs` |
+| Tools | `list_guides`, `list_guides_by_type` (`adrs`, `designs`, `structures`, `ai`, `config`, `tech`, `design`), `search_guides`, `search_guides_by_tag`, `get_guide`, `get_usage_logs` |
 | Resources | every document at `defaults://<relative path without .md>`, e.g. `defaults://arc42/adr/0001-platform-and-build` |
 | Prompts | `new-app`, `review-against-defaults`, `propose-adr` |
 
